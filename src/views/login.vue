@@ -46,8 +46,9 @@
         methods: {
             login() {
                 this.$validator.validateAll().then((result) => {
+                    this.$store.dispatch('login')
                     if(result) {
-                        alert('sukses')
+                        
                     } else {
                         alert('fill form with correct format')
                     }

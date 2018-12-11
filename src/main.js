@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 import VeeValidate from 'vee-validate'
 
 import router from './router'
+import store from './store'
 
 Vue.use(Vuex)
 Vue.use(VueRouter)
@@ -16,5 +17,6 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')
