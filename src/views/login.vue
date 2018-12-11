@@ -7,18 +7,26 @@
                         <h2>Admin Login</h2>
                         <p>Please enter your email and password</p>
                     </div>
-                    <form id="Login">
+                    <form @submit.prevent="login">
 
                         <div class="form-group">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email Address">
+                            <input v-validate="'required|email'" type="email" class="form-control" id="inputEmail" placeholder="Email Address" v-model="email" name="email">
+                            <div v-show="errors.has('email')">
+                                <i v-show="errors.has('email')" class="fa fa-warning"></i>
+                                <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                            <input type="password" v-validate="'required'" class="form-control" id="inputPassword" placeholder="Password" v-model="password" name="password">
+                            <div v-show="errors.has('password')">
+                                <i v-show="errors.has('password')" class="fa fa-warning"></i>
+                                <span v-show="errors.has('password')" class="help is-danger">{{ errors.first('password') }}</span>
+                            </div>
                         </div>
 
                         <div class="forgot">
-                            <a href="reset.html">Forgot password?</a>
+                            <a href="#">Forgot password? Contact Administrator</a>
                         </div>
                         <button type="submit" class="btn btn-primary">Login</button>
                     </form>
@@ -30,6 +38,23 @@
 
 <script>
     export default {
+        data: () => ({
+            email: '',
+            password: ''
+        }),
+
+        methods: {
+            login() {
+                this.$validator.validateAll().then((result) => {
+                    if(result) {
+                        alert('sukses')
+                    } else {
+                        alert('fill form with correct format')
+                    }
+                })
+            }
+        },
+
         name: 'login'
     }
 </script>

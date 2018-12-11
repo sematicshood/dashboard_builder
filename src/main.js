@@ -1,3 +1,5 @@
+require('font-awesome/css/font-awesome.min.css')
+
 import Vue from 'vue'
 import App from './App.vue'
 import Vuex from 'vuex'
