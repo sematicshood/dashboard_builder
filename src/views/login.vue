@@ -10,10 +10,10 @@
                     <form @submit.prevent="login">
 
                         <div class="form-group">
-                            <input v-validate="'required|email'" type="email" class="form-control" id="inputEmail" placeholder="Email Address" v-model="email" name="email">
-                            <div v-show="errors.has('email')">
-                                <i v-show="errors.has('email')" class="fa fa-warning"></i>
-                                <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
+                            <input v-validate="'required'" type="text" class="form-control" id="inputEmail" placeholder="Email Address" v-model="username" name="username">
+                            <div v-show="errors.has('username')">
+                                <i v-show="errors.has('username')" class="fa fa-warning"></i>
+                                <span v-show="errors.has('username')" class="help is-danger">{{ errors.first('username') }}</span>
                             </div>
                         </div>
 
@@ -39,16 +39,15 @@
 <script>
     export default {
         data: () => ({
-            email: '',
+            username: '',
             password: ''
         }),
 
         methods: {
             login() {
                 this.$validator.validateAll().then((result) => {
-                    this.$store.dispatch('login')
                     if(result) {
-                        
+                        this.$store.dispatch('login/login', this.$data)
                     } else {
                         alert('fill form with correct format')
                     }
