@@ -25,8 +25,6 @@ const actions = {
                         localStorage.setItem('user', JSON.stringify(data))
                         localStorage.setItem('login', JSON.stringify(res.data))
 
-                        dispatch('core/changeLogged', true, { root: true })
-
                         alert('Login berhasil, selamat datang ')
 
                         router.push('/')
@@ -34,6 +32,34 @@ const actions = {
                     .catch((err) => {
                         if(err.response['status'] == 401)
                             alert('Username atau password salah')
+                    })
+        })
+    },
+
+    reload({ dispatch, rootGetters }) {
+        const db        =   rootGetters['core/getDatabase'],
+              user      =   rootGetters['core/getUser'],
+              url       =   '/api_v2/auth/get_tokens',
+              data      =   {
+                  'db': db,
+                  'username': user['username'],
+                  'password': user['password']
+              }
+
+        return new Promise((resolve, reject) => {
+            client.post(url, qs.stringify(data))
+                    .then((res) => {
+                        data['db'] = ':P'
+                        localStorage.setItem('user', JSON.stringify(data))
+                        localStorage.setItem('login', JSON.stringify(res.data))
+
+                        dispatch('core/updateToken', res.data['access_token'], { root: true })
+                        resolve(res.data['access_token'])
+                    })
+                    .catch((err) => {
+                        if(err.response['status'] == 401)
+                            alert('Username atau password salah')
+                        reject('hello')
                     })
         })
     }

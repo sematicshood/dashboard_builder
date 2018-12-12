@@ -1,23 +1,32 @@
 const state = {
     db_name: 'db_feremall',
-    isLogged: false
+    user: JSON.parse(localStorage.getItem('user')),
+    token: null
 }
 
 const getters = {
     getDatabase(state) {
         return state.db_name
     },
+
+    getUser(state) {
+        return state.user
+    },
+
+    getToken(state) {
+        return state.token
+    }
 }
 
 const actions = {
-    changeLogged({commit}, status) {
-        commit('logged', status)
+    updateToken({commit}, token) {
+        commit('setToken', token)
     }
 }
 
 const mutations = {
-    logged(state, status) {
-        state.isLogged = status
+    setToken(state, token) {
+        state.token = token
     }
 }
 
