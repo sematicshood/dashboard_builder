@@ -1,25 +1,25 @@
 const client = require('./client');
 
 const state = {
-    fields: {}
+    datas: {}
 }
 
 const getters = {
-    getFields(state) {
-        return state.fields
+    getDatas(state) {
+        return state.datas
     }
 }
 
 const mutations = {
-    setFields(state, context) {
-        return state.fields[`${ context['id'] }`] = context['data']
+    setDatas(state, context) {
+        return state.datas[`${ context['model'] }`] = context['data']
     }
 }
 
 const actions = {
-    getFields({ commit, dispatch, getters, rootGetters }, id) {
+    getDatas({ commit, dispatch, getters, rootGetters }, model) {
         return new Promise((resolve, reject) => {
-            if(getters.getFields[id] == undefined) {
+            if(getters.getDatas[model] == undefined) {
                 dispatch('login/reload', {}, {root: true})
                     .then((res) => {
                         const token     = res,
@@ -29,17 +29,16 @@ const actions = {
                                                 }
                                             },
                             data      = {
-                                field: "['name']",
-                                filters: `[('model_id', '=', ${ id })]`
+                                orders: "id desc"
                             }
 
-                        client.get('/api_v2/ir.model.fields', {params: data}, config)
+                        client.get('/api_v2/' + model, {params: data}, config)
                                 .then(res => {
-                                    let field       =   {}
+                                    let data       =   {}
 
-                                    field[`${id}`]  =   res.data['results']
+                                    data[`${model}`]  =   res.data['results']
 
-                                    commit('setFields', {data: res.data['results'], id: id})
+                                    commit('setDatas', {data: res.data['results'], model: model})
                                     
                                     resolve(res.data['results'])
                                 })
@@ -51,7 +50,7 @@ const actions = {
                         console.log(err)
                     })
             } else {
-                resolve(getters.getFields[id])
+                resolve(getters.getDatas[model])
             }
         })
     }

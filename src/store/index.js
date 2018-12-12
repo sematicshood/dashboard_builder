@@ -6,6 +6,7 @@ import login from './modules/login'
 import core from './modules/core'
 import models from './modules/models'
 import fields from './modules/fields'
+import data from './modules/data'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
         login,
         core,
         models,
-        fields
+        fields,
+        data
     },
     strict: debug
 })
