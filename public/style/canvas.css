@@ -1,0 +1,23 @@
+.rows {
+    background: blue; 
+    position: relative;
+    margin-bottom: 75px;
+}
+
+.add-column {
+    position: absolute;
+    top: -30px;
+}
+
+#canvas {
+    margin-top: 100px;
+}
+.column {
+    background: #fafafa; 
+    height: 100%; 
+    position: absolute; 
+    border: 1px dashed gray;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
