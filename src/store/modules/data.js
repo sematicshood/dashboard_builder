@@ -59,27 +59,31 @@ const actions = {
     
     loadData({ getters, commit, dispatch, rootGetters }) {
         let models = getters.getModels
-        
-        rootGetters['rows/getRows'].forEach(element => {
-            for (let index = 0; index < element.length; index++) {
-                if(index != 0) {
-                    let model = element[index]['model']
 
-                    if(model != undefined) {
-                        if(dispatch('inArray', {model, models}) == false) {
-                            commit('ADD_MODELS', model)
+        if(rootGetters['rows/getRows'] != undefined) {
+            rootGetters['rows/getRows'].forEach(element => {
+                for (let index = 0; index < element.length; index++) {
+                    if(index != 0) {
+                        let model = element[index]['model']
+
+                        if(model != undefined) {
+                            if(dispatch('inArray', {model, models}) == false) {
+                                commit('ADD_MODELS', model)
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
 
-        models.forEach(model => {
-            dispatch('data/getDatas', model)
-                .then(res => {
-                    commit('SET_DATA', {model, res})
-                })
-        });
+        if(models != undefined) {
+            models.forEach(model => {
+                dispatch('data/getDatas', model)
+                    .then(res => {
+                        commit('SET_DATA', {model, res})
+                    })
+            });
+        }
     },
 
     getDatas({ commit, dispatch, getters, rootGetters }, model) {
