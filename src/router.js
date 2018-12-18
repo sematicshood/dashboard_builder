@@ -1,10 +1,15 @@
 import VueRouter from 'vue-router'
 
+import ChartExample from './views/chartExample.vue'
 import Login from './views/login.vue'
 import Gallery from './views/gallery.vue'
 import Dashboard from './views/dashboard.vue'
 
 const routes = [
+    {
+        path: '/example',
+        component: ChartExample
+    },
     {
         path: '/login',
         component: Login
