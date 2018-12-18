@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
     <div id="gallery">           
         <!-- Navbar -->
         <b-navbar toggleable="md" type="dark" variant="info">
@@ -40,8 +39,9 @@
                     <b-col cols="12">
                         <b-container>
                             <router-link to="/">Back</router-link>
-                            <button-changed :vuetype="type" :vuename="name"></button-changed>
-                            <canvasWorkspace :vuetype="type" :vuename="name" :vuedata.sync="data" :vueloading="loading" :vuetotal="total" :vuetitles="titles"></canvasWorkspace>
+                            <button-changed></button-changed>
+                            <button-delete></button-delete>
+                            <canvasWorkspace></canvasWorkspace>    
                         </b-container>
                     </b-col>                    
                 </b-row>   
@@ -50,7 +50,7 @@
                 <b-card no-body style="height: 90vh; max-height: 90vh; overflow: auto;">
                     <b-tabs pills card>
                         <b-tab title="Model" active>
-                            <selectModels v-if="type == 'edit'" :vuedata.sync="data" :vueloading="loading" :vuetotal="total" :vuetitles="titles"></selectModels>           
+                            <selectModels></selectModels>           
                         </b-tab>
                         <b-tab title="Field">
                             Tab Contents 2
@@ -72,18 +72,8 @@
                     </b-tabs>
                 </b-card>
             </b-col>
-        </b-row>       
-=======
-    <div id="gallery">
-        <div class="container">
-            <router-link to="/">Back</router-link>
-            <button-changed></button-changed>
-            <button-delete></button-delete>
-            <selectModels></selectModels>
-            <canvasWorkspace></canvasWorkspace>
-        </div>
->>>>>>> af223a76939cc73e32ee7f2753fd318ac3cfbeb8
-    </div>
+        </b-row>
+    </div>       
 </template>
 
 <script>
