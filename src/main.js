@@ -17,6 +17,7 @@ import VueDataTables from 'vue-data-tables'
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 import BootstrapVue from 'bootstrap-vue'
+import Datatable from 'vue2-datatable-component'
 
 locale.use(lang)
 
@@ -25,7 +26,8 @@ Vue.use(VueRouter)
 Vue.use(VeeValidate)
 Vue.use(ElementUI)
 Vue.use(VueDataTables)
-Vue.use(BootstrapVue);
+Vue.use(Datatable)
+Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
 

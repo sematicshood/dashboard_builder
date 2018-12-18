@@ -2,7 +2,7 @@ import VueRouter from 'vue-router'
 
 import Login from './views/login.vue'
 import Gallery from './views/gallery.vue'
-import Create from './views/create.vue'
+import Dashboard from './views/dashboard.vue'
 
 const routes = [
     {
@@ -17,8 +17,9 @@ const routes = [
         }
     },
     {
-        path: '/create',
-        component: Create,
+        path: '/dashboard/:name/:type',
+        component: Dashboard,
+        name: 'dashboard',
         meta: {
             requiresAuth: true
         }

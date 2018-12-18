@@ -1,5 +1,5 @@
 <template>
-    <div id="selectModels">
+    <div id="selectModels" v-if="type == 'edit'">
         <multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect>
 
         <ul>
@@ -11,29 +11,6 @@
                 <br/>
             </li>
         </ul>
-
-        <!-- <hr>
-        <h4>Fields</h4>
-        <hr>
-        <ul>
-            <li v-for="column in columns" style="display: inline-block;">
-                <button class="btn-primary btn-sm" v-text="column['name']" @click="addTitle(column['name'])"></button> &nbsp;
-                <br/>
-                <br/>
-            </li>
-        </ul> -->
-        <!-- <div class="col-md-3" style="display:inline-block;">
-            <h3>Titles</h3>
-            <draggable element="span" v-model="titles" :move="onMove" :options="dragOptions">
-                <transition-group name="no" class="list-group" tag="ul">
-                    <li class="list-group-item" v-for="(element, index) in titles" :key="element.prop">
-                        {{element.label}}
-
-                        <button @click="removeTitle(index)">x</button>
-                    </li>
-                </transition-group>
-            </draggable>
-        </div> -->
     </div>
 </template>
 
@@ -41,6 +18,7 @@
     import Multiselect from 'vue-multiselect'
     import draggable from 'vuedraggable'
     import { Event } from '../../event.js'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'selectModels',
@@ -84,14 +62,12 @@
                     .then(res => {
                         this.$data.columns = res
 
-                        Event.$emit('selectColumns', res)
+                        this.$store.dispatch('rows/selectColumns', res)
                     })
 
                 this.$store.dispatch('data/getDatas', model)
                     .then(res => {
-                        this.$data.data[model] = res
-
-                        Event.$emit('selectData', {model, res})
+                        this.$store.dispatch('data/selectData', {model, res})
                     })
 
                 Event.$emit('selectModel', model)
@@ -124,14 +100,9 @@
             this.loadModels()            
         },
         computed: {
-            dragOptions() {
-                return {
-                    animation: 0,
-                    group: "description",
-                    // disabled: !this.editable,
-                    ghostClass: "ghost"
-                };
-            },
+            ...mapGetters('workspace', {
+                type: 'getType',
+            })
         }
     }
 </script>
