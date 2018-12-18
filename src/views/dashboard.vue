@@ -3,6 +3,7 @@
         <div class="container">
             <router-link to="/">Back</router-link>
             <button-changed></button-changed>
+            <button-delete></button-delete>
             <selectModels></selectModels>
             <canvasWorkspace></canvasWorkspace>
         </div>
@@ -13,13 +14,14 @@
     import selectModels from './components/selectModels.vue'
     import canvasWorkspace from './components/canvasWorkspace.vue'
     import buttonChanged from './components/buttonChanged.vue'
+    import buttonDelete from './components/buttonDelete.vue'
     import { Event } from '../event.js'
     import { mapGetters } from 'vuex'
 
     export default {
         name: 'dashboard',
         components: {
-            selectModels, canvasWorkspace,  buttonChanged
+            selectModels, canvasWorkspace,  buttonChanged, buttonDelete
         },
         
         data() {

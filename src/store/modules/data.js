@@ -39,7 +39,15 @@ const mutations = {
     },
 
     ADD_DATA(state, option) {
-        state.data[`${option['model']}`] = option['res']
+        let data = {}
+
+        data[`${option['model']}`] = option['res']
+        
+        if(state.data != {}) {
+            state.data[`${option['model']}`] = option['res']
+        } else {
+            state.data = data
+        }
     },
 
     DEFAULT_DATA(state, data) {
