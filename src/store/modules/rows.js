@@ -237,11 +237,10 @@ const actions = {
 
     loadTemplate({ commit, dispatch, rootGetters }) {
         let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
-            template    = JSON.parse(localStorage.getItem(name)),
+            template    = JSON.parse(localStorage.getItem(name)) || [],
             rows        = JSON.parse(localStorage.getItem(name))['rows'] || []
 
         commit('SET_ROWS', rows)
-        dispatch('setRows', template['rows'])
 
         dispatch('reset')
     },

@@ -1,5 +1,5 @@
 <template>
-    <div id="colOption" v-if="colOptionShow">
+    <div id="colOption" v-if="colOptionShow && type == 'edit'">
         <b-form-input size="sm" type="text" v-model="rows['rows'][rowOp][colOp]['title']"
                         placeholder="Judul Column"/>
         <br/>
@@ -79,6 +79,10 @@
         },
 
         computed: {
+            ...mapGetters('workspace', {
+               type: 'getType' 
+            }),
+
             ...mapGetters('rows', {
                 rows: 'getRows',
                 rowOp: 'getRowOp',
