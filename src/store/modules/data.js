@@ -3,7 +3,8 @@ const client = require('./client');
 const state = {
     datas: {},
     data: {},
-    models: []
+    models: [],
+    selected: []
 }
 
 const getters = {
@@ -12,11 +13,15 @@ const getters = {
     },
 
     getData(state) {
-        return state.data
+        return state.data || {}
     },
 
     getModels(state) {
         return state.models
+    },
+
+    getSelected(state) {
+        return state.selected
     }
 }
 
@@ -33,8 +38,33 @@ const mutations = {
         state.data[model] = res
     },
 
-    ADD_DATA(state, {model, res}) {
-        state.data[model] = res
+    ADD_DATA(state, option) {
+        let data = {}
+
+        data[`${option['model']}`] = option['res']
+        
+        if(state.data != null) {
+            console.log('masuk sini')
+            state.data[`${option['model']}`] = option['res']
+        } else {
+            state.data = data
+        }
+    },
+
+    DEFAULT_DATA(state, data) {
+        state.data = data
+    },
+
+    ADD_SELECTED(state, value) {
+        state.selected.push(value)
+    },
+
+    SET_SELECTED(state, selected) {
+        state.selected = selected
+    },
+
+    REMOVE_SELECTED(state, i) {
+        state.selected.splice(i, 1)
     }
 }
 
@@ -45,41 +75,75 @@ const actions = {
         dispatch('saveData')
     },
 
+    removeSelected({ commit, dispatch }, i) {
+        commit('REMOVE_SELECTED', i)
+
+        dispatch('saveModels')
+    },
+
+    addSelected({ commit, dispatch }, value) {
+        commit('ADD_SELECTED', value)
+
+        dispatch('saveModels')
+    },
+
+    setSelected({ commit, rootGetters }) {
+        let name            = 'template-dashboard-' +  rootGetters['workspace/getName'],
+            selected        = JSON.parse(localStorage.getItem(name))['selected'] || []
+            
+        commit('SET_SELECTED', selected)
+    },
+
     saveData({ getters }) {
         localStorage.setItem('data', JSON.stringify(getters.getData))
     },
 
-    inArray({}, {needle, haystack}) {
-        var length = haystack.length;
+    saveModels({ getters, rootGetters }) {
+        let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
+            template    = JSON.parse(localStorage.getItem(name))
+
+        template['selected'] = getters.getSelected
+
+        localStorage.setItem(name, JSON.stringify(template))
+    },
+
+    inArray({ getters }, options) {
+        var length = options['models'].length;
         for(var i = 0; i < length; i++) {
-            if(haystack[i] == needle) return true;
+            if(options['models'][i] == options['model']) return true;
         }
         return false;
     },
     
     loadData({ getters, commit, dispatch, rootGetters }) {
         let models = getters.getModels
-        
-        rootGetters['rows/getRows'].forEach(element => {
-            for (let index = 0; index < element.length; index++) {
-                if(index != 0) {
-                    let model = element[index]['model']
 
-                    if(model != undefined) {
-                        if(dispatch('inArray', {model, models}) == false) {
-                            commit('ADD_MODELS', model)
+        commit('DEFAULT_DATA', JSON.parse(localStorage.getItem('data')))
+
+        if(rootGetters['rows/getRows'] != undefined) {
+            rootGetters['rows/getRows'].forEach(element => {
+                for (let index = 0; index < element.length; index++) {
+                    if(index != 0) {
+                        let model = element[index]['model']
+
+                        if(model != undefined) {
+                            if(dispatch('inArray', {model, models}) == false) {
+                                commit('ADD_MODELS', model)
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
 
-        models.forEach(model => {
-            dispatch('data/getDatas', model)
-                .then(res => {
-                    commit('SET_DATA', {model, res})
-                })
-        });
+        if(models != undefined) {
+            models.forEach(model => {
+                dispatch('data/getDatas', model)
+                    .then(res => {
+                        commit('SET_DATA', {model, res})
+                    })
+            });
+        }
     },
 
     getDatas({ commit, dispatch, getters, rootGetters }, model) {

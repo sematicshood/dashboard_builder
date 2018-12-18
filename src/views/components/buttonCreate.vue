@@ -31,6 +31,18 @@
             createDashboard() {
                 let name = this.$data.name.replace(/ /g, '-')
 
+                if(localStorage.getItem(`template-dashboard-${ name }`) != null) {
+                    alert('Nama telah digunakan')
+
+                    return false
+                }
+
+                if(name == '') {
+                    alert('Masukkan nama')
+
+                    return false
+                }
+
                 localStorage.setItem(`template-dashboard-${ name }`, JSON.stringify({name: this.$data.name}))
 
                 this.$data.name = ''

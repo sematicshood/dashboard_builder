@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <div id="gallery">           
         <!-- Navbar -->
         <b-navbar toggleable="md" type="dark" variant="info">
@@ -72,6 +73,16 @@
                 </b-card>
             </b-col>
         </b-row>       
+=======
+    <div id="gallery">
+        <div class="container">
+            <router-link to="/">Back</router-link>
+            <button-changed></button-changed>
+            <button-delete></button-delete>
+            <selectModels></selectModels>
+            <canvasWorkspace></canvasWorkspace>
+        </div>
+>>>>>>> af223a76939cc73e32ee7f2753fd318ac3cfbeb8
     </div>
 </template>
 
@@ -79,6 +90,7 @@
     import selectModels from './components/selectModels.vue'
     import canvasWorkspace from './components/canvasWorkspace.vue'
     import buttonChanged from './components/buttonChanged.vue'
+    import buttonDelete from './components/buttonDelete.vue'
     import { Event } from '../event.js'
     import { mapGetters } from 'vuex'
 
@@ -86,61 +98,19 @@
     export default {
         name: 'dashboard',
         components: {
-            selectModels, canvasWorkspace,  buttonChanged
+            selectModels, canvasWorkspace,  buttonChanged, buttonDelete
         },
         
         data() {
             return {
-                data: {},
-                titles: [],
-                loading: false,
-                total: 0,
                 type: this.$route.params.type,
                 name: this.$route.params.name
             }
         },
 
-        methods: {
-            inArray(needle, haystack) {
-                var length = haystack.length;
-                for(var i = 0; i < length; i++) {
-                    if(haystack[i] == needle) return true;
-                }
-                return false;
-            },
-
-            load() {
-                let models = [],
-                    modeling = JSON.parse(localStorage.getItem('models'))
-
-                this.$data.data = JSON.parse(localStorage.getItem('data'))
-
-                // modeling.forEach(element => {
-                //     let model = element['model']
-
-                //     if(this.inArray(model, models) == false) {
-                //         models.push(model)
-                //     }
-                // });
-
-                // models.forEach(model => {
-                //     this.$store.dispatch('data/getDatas', model)
-                //         .then(res => {
-                //             this.$data.data[model] = res
-                //         })
-                // });
-            }
-        },
-
         created() {
-            Event.$on('selectData', ({model, res}) => {
-                localStorage.setItem('data', JSON.stringify(this.$data.data))
-            }),
-
             this.$store.dispatch('workspace/setType', this.$route.params.type),
-            this.$store.dispatch('workspace/setName', this.$route.params.name),
-
-            this.load()
+            this.$store.dispatch('workspace/setName', this.$route.params.name)
         },
     }
 </script>

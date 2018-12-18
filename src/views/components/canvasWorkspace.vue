@@ -31,29 +31,6 @@
             draggable, RowCanvas, addRows, rowOption, addColumn, colOption
         },
 
-        data() {
-            return {
-                title: '',
-                data: this.vuedata,
-                titles: this.vuetitles,
-
-                isLoad: false,
-                name: this.vuename,
-            }
-        },
-
-        methods: {
-            addTitle(field) {
-                Event.$emit('selectField', {prop: field,label: field})
-            },
-            
-            removeTitle(index) {
-                if (this.cekColRow()) {
-                    this.$data.rows[this.$data.rowOp][this.$data.colOp]['titles'].splice(index, 1)
-                }
-            },
-        },
-
         computed: {
             ...mapGetters('workspace', {
                 type: 'getType',

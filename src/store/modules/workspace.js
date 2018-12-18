@@ -31,7 +31,7 @@ const mutations = {
         let is = true
 
         state.dashboards.forEach(dashboard => {
-            if (state['name'] == dashboards['name'])
+            if (dashboard['name'] == dashboards['name'])
                 is = false
         })
 
@@ -51,7 +51,7 @@ const actions = {
 
     addDashboards({commit}, dashboards) {
         commit('ADD_DASHBOARDS', dashboards)
-    }
+    },
 }
 
 export default {

@@ -1,5 +1,5 @@
 <template>
-    <div id="colOption" v-if="colOptionShow">
+    <div id="colOption" v-if="colOptionShow && type == 'edit'">
         <b-form-input size="sm" type="text" v-model="rows['rows'][rowOp][colOp]['title']"
                         placeholder="Judul Column"/>
         <br/>
@@ -75,10 +75,22 @@
 
             save() {
                 this.$store.dispatch('rows/save')
-            }
+            },
+
+            addTitle(field) {
+                this.$store.dispatch('rows/addTitle', {prop: field,label: field})
+            },
+            
+            removeTitle(index) {
+                this.$store.dispatch('rows/removeTitle', index)
+            },
         },
 
         computed: {
+            ...mapGetters('workspace', {
+               type: 'getType' 
+            }),
+
             ...mapGetters('rows', {
                 rows: 'getRows',
                 rowOp: 'getRowOp',
@@ -95,7 +107,7 @@
 
             selected: {
                 set(selected) {
-                    this.$store.dispatch('rows/setSelected', selected)
+                    this.$store.dispatch('rows/updateSelected', selected)
                 },
 
                 get() {

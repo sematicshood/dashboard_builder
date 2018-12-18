@@ -27,7 +27,7 @@ const actions = {
 
                         alert('Login berhasil, selamat datang ')
 
-                        router.push('/')
+                        window.location = '/'
                     })
                     .catch((err) => {
                         if(err.response['status'] == 401)
@@ -38,7 +38,7 @@ const actions = {
 
     reload({ dispatch, rootGetters }) {
         const db        =   rootGetters['core/getDatabase'],
-              user      =   rootGetters['core/getUser'],
+              user      =   rootGetters['core/getUser'] || localStorage.getItem('user'),
               url       =   '/api_v2/auth/get_tokens',
               data      =   {
                   'db': db,
