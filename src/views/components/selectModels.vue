@@ -26,20 +26,11 @@
             Multiselect, draggable
         },
 
-        props: [
-            'vuedata', 'vuetitles', 'vueloading', 'vuetotal',
-        ],
-
         data () {
             return {
                 value: [],
                 options: [],
-                selected: [],
                 columns: [],
-                data: this.vuedata,
-                titles: this.vuetitles,
-                loading: this.vueloading,
-                total: this.vuetotal,
             }
         },
         methods: {
@@ -47,22 +38,18 @@
                 return `${name}`
             },
             action(value) {
-                if(this.$data.selected.indexOf(value) < 0)
-                    this.$data.selected.push(value)
-
-                this.save()
+                if(this.selected.indexOf(value) < 0)
+                    this.$store.dispatch('data/addSelected', value)
             },
             remove(i) {
-                this.$data.selected.splice(i, 1)
-
-                this.save()
+                this.$store.dispatch('data/removeSelected', i)
             },
             modelClick(id, model) {
                 this.$store.dispatch('fields/getFields', id)
                     .then(res => {
-                        this.$data.columns = res
-
                         this.$store.dispatch('rows/selectColumns', res)
+
+                        this.$store.dispatch('rows/save', false)
                     })
 
                 this.$store.dispatch('data/getDatas', model)
@@ -70,7 +57,7 @@
                         this.$store.dispatch('data/selectData', {model, res})
                     })
 
-                Event.$emit('selectModel', model)
+                this.$store.dispatch('rows/selectModel', model)
             },
             inArray(needle, haystack) {
                 var length = haystack.length;
@@ -83,13 +70,6 @@
                 const relatedElement = relatedContext.element;
                 const draggedElement = draggedContext.element;
             },
-            loadModels() {
-                this.$data.selected = JSON.parse(localStorage.getItem('models')) || []
-            },
-
-            save() {
-                localStorage.setItem('models', JSON.stringify(this.$data.selected))
-            }
         },
         created() {
             this.$store.dispatch('models/getModels')
@@ -97,11 +77,15 @@
                     this.$data.options = res
                 }),
 
-            this.loadModels()            
+            this.$store.dispatch('data/setSelected')           
         },
         computed: {
             ...mapGetters('workspace', {
                 type: 'getType',
+            }),
+
+            ...mapGetters('data', {
+                selected: 'getSelected'
             })
         }
     }

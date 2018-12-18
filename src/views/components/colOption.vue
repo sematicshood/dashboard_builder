@@ -75,7 +75,15 @@
 
             save() {
                 this.$store.dispatch('rows/save')
-            }
+            },
+
+            addTitle(field) {
+                this.$store.dispatch('rows/addTitle', {prop: field,label: field})
+            },
+            
+            removeTitle(index) {
+                this.$store.dispatch('rows/removeTitle', index)
+            },
         },
 
         computed: {
@@ -99,7 +107,7 @@
 
             selected: {
                 set(selected) {
-                    this.$store.dispatch('rows/setSelected', selected)
+                    this.$store.dispatch('rows/updateSelected', selected)
                 },
 
                 get() {

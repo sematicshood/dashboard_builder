@@ -154,6 +154,22 @@ const mutations = {
 
     ADD_COLUMNS(state, columns) {
         state.rows[state.rowOp][state.colOp]['columns'] = columns
+    },
+
+    ADD_MODEL(state, model) {
+        state.rows[state.rowOp][state.colOp]['model'] = model
+    },
+
+    UPDATE_SELECTED(state, selected) {
+        state.rows[state.rowOp][state.colOp]['type'] = selected
+    },
+
+    ADD_TITLE(state, option) {
+        state.rows[state.rowOp][state.colOp]['titles'].push(option)
+    },
+
+    REMOVE_TITLE(state, index) {
+        state.rows[state.rowOp][state.colOp]['titles'].splice(index, 1)
     }
 }
 
@@ -190,6 +206,10 @@ const actions = {
         commit('ADD_ROWS', rows)
     },
 
+    updateSelected({commit}, selected) {
+        commit('UPDATE_SELECTED', selected)
+    },
+
     setColOp({commit}, index) {
         commit('SET_COL_OP', index)
     },
@@ -219,9 +239,9 @@ const actions = {
         commit('SET_ROW_SELECT', '')
         commit('SET_WIDTH', '')
         commit('SET_HEIGHT', '')
-        commit('SET_SELECTED', '')
 
         if(all) {
+            commit('SET_SELECTED', '')
             commit('SET_ROW_OP', '')
             commit('SET_ROW_OPTION_SHOW', false)
             commit('SET_COL_OP', '')
@@ -260,16 +280,32 @@ const actions = {
     },
 
     selectColumns({ dispatch, commit }, columns) {
-        if (dispatch('cekColRow')) {
+        if (dispatch('cekColRow'))
             commit('ADD_COLUMNS', columns)
-        }
-
-        dispatch('save', false)
     },
 
     cekColRow({ getters }) {
         return getters.getRowOp.length == undefined && getters.getColOp.length == undefined
     },
+
+    selectModel({ dispatch, commit }, model) {
+        if (dispatch('cekColRow'))
+            commit('ADD_MODEL', model)
+    },
+
+    addTitle({ commit, dispatch }, option) {
+        if(dispatch('cekColRow'))
+            commit('ADD_TITLE', option)
+
+        dispatch('save', false)
+    },
+
+    removeTitle({ commit, dispatch }, index) {
+        if (dispatch('cekColRow'))
+            commit('REMOVE_TITLE', index)
+
+        dispatch('save', false)
+    }
 }
 
 export default {

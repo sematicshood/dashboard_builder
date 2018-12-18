@@ -37,6 +37,10 @@ const mutations = {
 
         if(is)
             state.dashboards.push(dashboards)
+    },
+
+    SET_DASHBOARDS(state, dashboards) {
+        state.dashboards = dashboards
     }
 }
 
@@ -51,6 +55,10 @@ const actions = {
 
     addDashboards({commit}, dashboards) {
         commit('ADD_DASHBOARDS', dashboards)
+    },
+
+    setDashboards({commit}, dashboards) {
+        commit('SET_DASHBOARDS', dashboards)
     }
 }
 

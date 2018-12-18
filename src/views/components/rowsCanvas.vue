@@ -21,7 +21,7 @@
                         <el-table-column
                         type="index"
                         fixed sortable
-                        :index="indexMethod" width="50">
+                        :index="indexMethod" width="50" v-if="data[column['model']] != undefined && column['titles'].length > 0">
                         </el-table-column>
 
                         <el-table-column fixed sortable v-for="t in column['titles']" :prop="t.prop" :label="t.label" :key="t.label">
