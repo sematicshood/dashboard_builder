@@ -43,7 +43,8 @@ const mutations = {
 
         data[`${option['model']}`] = option['res']
         
-        if(state.data != {}) {
+        if(state.data != null) {
+            console.log('masuk sini')
             state.data[`${option['model']}`] = option['res']
         } else {
             state.data = data
