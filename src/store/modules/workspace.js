@@ -31,16 +31,12 @@ const mutations = {
         let is = true
 
         state.dashboards.forEach(dashboard => {
-            if (state['name'] == dashboards['name'])
+            if (dashboard['name'] == dashboards['name'])
                 is = false
         })
 
         if(is)
             state.dashboards.push(dashboards)
-    },
-
-    SET_DASHBOARDS(state, dashboards) {
-        state.dashboards = dashboards
     }
 }
 
@@ -56,10 +52,6 @@ const actions = {
     addDashboards({commit}, dashboards) {
         commit('ADD_DASHBOARDS', dashboards)
     },
-
-    setDashboards({commit}, dashboards) {
-        commit('SET_DASHBOARDS', dashboards)
-    }
 }
 
 export default {

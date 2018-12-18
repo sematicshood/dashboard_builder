@@ -40,7 +40,7 @@
                     if(d[0] == 'template' && d[1] == 'dashboard') {
                         let data = JSON.parse(localStorage.getItem(dashboard[index])) 
 
-                        this.$store.dispatch('workspace/setDashboards', data)
+                        this.$store.dispatch('workspace/addDashboards', data)
                     }
                 }
             }
