@@ -1,18 +1,11 @@
 <template>
     <div id="rowOption" v-if="rowOptionShow">
-        <b-btn v-show="type == 'edit'" size="sm" 
-                variant="warning" 
-                @click="deleteRow(rowOp)">Hapus Row</b-btn>
+        <button-delete-row/>
         <br><br>
-        <b-form-input size="sm" type="text" v-model="rows[rowOp][0]['height']"
-                        placeholder="Tinggi row dalam px (default 300px)"/>
+        <height-row/>
         <br>
-        <b-btn v-show="type == 'edit'" size="sm" 
-                variant="danger" 
-                @click="save()">Save</b-btn> &nbsp;
-        <b-btn v-show="type == 'edit'" size="sm" 
-                variant="danger" 
-                @click="loadTemplate()">Cancel</b-btn>
+        <button-save/>
+        <button-cancel/>
 
         <br><br>
         <br><br>
@@ -20,10 +13,18 @@
 </template>
 
 <script>
+    import buttonDeleteRow from './rowComponent/buttonDeleteRow.vue'
+    import heightRow from './rowComponent/heightRow.vue'
+    import buttonSave from './selectComponent/buttonSaveComponent.vue'
+    import buttonCancel from './selectComponent/buttonCancelComponent.vue'
     import { mapGetters } from 'vuex'
 
     export default {
         name: 'row-option',
+
+        components: {
+            buttonDeleteRow, heightRow, buttonSave, buttonCancel
+        },
 
         computed: {
             ...mapGetters('rows', {
@@ -36,19 +37,5 @@
                 type: 'getType'
             })
         },
-
-        methods: {
-            deleteRow(rowOp) {
-                this.$store.dispatch('rows/deleteRow', rowOp)
-            },
-
-            loadTemplate() {
-                this.$store.dispatch('rows/loadTemplate')
-            },
-
-            save() {
-                this.$store.dispatch('rows/save')
-            }
-        }
     }
 </script>

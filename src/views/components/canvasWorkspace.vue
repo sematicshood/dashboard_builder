@@ -6,7 +6,7 @@
 
         <row-canvas></row-canvas>
 
-        <b-btn v-show="type == 'edit'" v-b-modal.modalRow size="sm" variant="primary">Add Row</b-btn>
+        <button-add-row/>
 
         <add-rows></add-rows>
 
@@ -22,13 +22,14 @@
     import rowOption from './rowOption.vue'
     import addColumn from './addColumn.vue'
     import colOption from './colOption.vue'
+    import buttonAddRow from './buttonAddRow.vue'
     import { mapGetters } from 'vuex'
 
     export default {
         name: 'canvasWorkspace',
 
         components: {
-            draggable, RowCanvas, addRows, rowOption, addColumn, colOption
+            draggable, RowCanvas, addRows, rowOption, addColumn, colOption, buttonAddRow
         },
 
         computed: {

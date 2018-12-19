@@ -38,7 +38,7 @@
     import titlesColumn from './selectComponent/titlesComponent.vue'
     import fieldsColumn from './selectComponent/fieldsCompunent.vue'
     import buttonSave from './selectComponent/buttonSaveComponent.vue'
-    import buttonDelete from './selectComponent/buttonDeleteComponent.vue'
+    import buttonDeleteColumn from './selectComponent/buttonDeleteComponent.vue'
     import buttonCancel from './selectComponent/buttonCancelComponent.vue'
     import { mapGetters, mapState } from 'vuex'
 
@@ -46,7 +46,7 @@
         name: 'col-option',
 
         components: {
-            judulColumn, jenisColumn, titlesColumn, fieldsColumn, buttonSave, buttonDelete, buttonCancel
+            judulColumn, jenisColumn, titlesColumn, fieldsColumn, buttonSave, buttonDeleteColumn, buttonCancel
         },
 
         computed: {
