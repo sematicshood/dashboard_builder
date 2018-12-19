@@ -1,73 +1,122 @@
 <template>
     <div id="gallery">           
         <!-- Navbar -->
-        <b-navbar toggleable="md" type="dark" variant="info">
+        <b-navbar toggleable="md" type="light" variant="" class="studio-nav">
 
         <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
-        <b-navbar-brand href="#">Dashboard Studio</b-navbar-brand>
+        <b-navbar-brand href="#"><img src="../assets/semut.png" class="d-inline-block align-top logo" alt=""></b-navbar-brand>
 
         <b-collapse is-nav id="nav_collapse">
 
             <b-navbar-nav>
-                <b-nav-item-dropdown text="File" left>
+                <i class="fa-studio fa-file-text"></i>
+                <b-nav-item-dropdown text="File" class="item-nav" left>
                     <b-dropdown-item href="#"><i class="fa fa-file" style="padding-right:15px;"></i>New File</b-dropdown-item>
                     <b-dropdown-item href="#"><i class="fa fa-folder-open" style="padding-right:15px;"></i>Open</b-dropdown-item>
                     <b-dropdown-item href="#"><i class="fa fa-save" style="padding-right:15px;"></i>Save</b-dropdown-item>
                 </b-nav-item-dropdown>
+                <i class="fa-studio fa-area-chart"></i>
+                <b-nav-item-dropdown text="Chart" class="item-nav" left>
+                    <b-dropdown-item href="#"><i class="fa fa-table" style="padding-right:15px;"></i>Table</b-dropdown-item>
+                    <b-dropdown-item href="#"><i class="fa fa-bar-chart" style="padding-right:15px;"></i>Bar</b-dropdown-item>
+                    <b-dropdown-item href="#"><i class="fa fa-line-chart" style="padding-right:15px;"></i>Line</b-dropdown-item>
+                    <b-dropdown-item href="#"><i class="fa fa-pie-chart" style="padding-right:15px;"></i>Pie</b-dropdown-item>
+                </b-nav-item-dropdown>
+                <i class="fa-studio fa-upload"></i>
                 <b-nav-item-dropdown text="Export" left>
                     <b-dropdown-item href="#"><i class="fa fa-file-excel-o" style="padding-right:15px;"></i>Excel</b-dropdown-item>
                     <b-dropdown-item href="#"><i class="fa fa-file-pdf-o" style="padding-right:15px;"></i>Pdf</b-dropdown-item>
-                </b-nav-item-dropdown>            
+                </b-nav-item-dropdown>
+                <b-nav-item></b-nav-item>
+                <b-nav-item>
+                    <router-link to="/"><b-button size="sm" variant="primary">Back</b-button></router-link>
+                </b-nav-item>   
+                <b-nav-item>
+                    <button-changed></button-changed>    
+                </b-nav-item> 
+                <b-nav-item>
+                    <button-delete></button-delete>
+                </b-nav-item>  
+                <b-nav-item> </b-nav-item>
+                <b-nav-item>
+                    <input class="form-control input-sm input-nav" placeholder="Height" style="width: 75px; height: 31px">    
+                </b-nav-item> 
+                <b-nav-item>
+                    <input class="form-control input-sm input-nav" placeholder="width" style="width: 75px; height: 31px">    
+                </b-nav-item>
+                <b-nav-item></b-nav-item> 
+                <b-nav-item>
+                    <p>Koneksi:</p>
+                </b-nav-item>
+                <b-nav-item>
+                    <b-form-select size="sm">
+                        <option>--Pilih--</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </b-form-select>                    
+                </b-nav-item>
+                <b-nav-item>
+                    <button type="button" class="btn btn-sm btn-search-nav"><i class="fa fa-search"></i></button>
+                </b-nav-item>
             </b-navbar-nav>
 
             <!-- Right aligned nav items -->
             <b-navbar-nav class="ml-auto">
-
-            </b-nav-item-dropdown>
             </b-navbar-nav>
 
         </b-collapse>
         </b-navbar>
 
 
-
-        <!-- Sidebar -->
         <b-row>
-            <b-col cols="9" align-self="start">
-                <b-row>
+            <!-- Container -->
+            <b-col cols="9" align-self="end">
+                <b-row class="studio-container">
                     <b-col cols="12">
-                        <b-container>
-                            <router-link to="/">Back</router-link>
-                            <button-changed></button-changed>
-                            <button-delete></button-delete>
+                        <b-container>                            
                             <canvasWorkspace></canvasWorkspace>    
                         </b-container>
                     </b-col>                    
                 </b-row>   
             </b-col>
-            <b-col cols="3" align-self="end">
-                <b-card no-body style="height: 90vh; max-height: 90vh; overflow: auto;">
-                    <b-tabs pills card>
-                        <b-tab title="Model" active>
-                            <selectModels></selectModels>           
+
+            <!-- Sidebar -->
+            <b-col cols="3" align-self="start" class="studio-side-bar">
+                <b-card no-body class="contain-side-bar">
+                    <b-tabs pills card class="tab-side-bar">
+                        <b-tab title="Model" active class="title-tab-side-bar">
+                            <div class="body-properties">
+                                <selectModels></selectModels>
+                            </div>            
                         </b-tab>
                         <b-tab title="Field">
-                            Tab Contents 2
+                            <div class="body-properties">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor maxime ipsa mollitia nam quo, dolore reiciendis placeat provident sed ex libero commodi explicabo natus vel voluptate minima. Nihil, consequuntur laboriosam?
+                            </div>
                         </b-tab>
                         <b-tab title="Field">
-                            Tab Contents 3
+                            <div class="body-properties">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima iure perferendis suscipit accusamus explicabo corrupti, maxime molestias hic obcaecati dolorum atque ipsa reiciendis rem recusandae, tempore quasi, quibusdam harum ut omnis! Dolores, placeat! Nihil et, inventore consectetur modi officia nemo.
+                            </div>
                         </b-tab>
                     </b-tabs>
-                    <b-tabs pills card>
+                    <b-tabs pills card class="tab-side-bar">
                         <b-tab title="Model" active>
-                            Tab Contents 1
+                            <div class="body-properties">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi assumenda eos quibusdam dolor quia porro non necessitatibus laborum modi doloribus.
+                            </div>    
                         </b-tab>
                         <b-tab title="Field">
-                            Tab Contents 2
+                            <div class="body-properties">
+                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Placeat architecto neque consectetur, iusto laborum assumenda nesciunt quos distinctio quia rerum asperiores voluptas deleniti accusantium, ab exercitationem velit facere. Quae, similique?
+                            </div>
                         </b-tab>
                         <b-tab title="Field">
-                            Tab Contents 3
+                            <div class="body-properties">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae debitis a quaerat blanditiis alias ut sequi nam natus ea non? At, fugit dolorem, ratione temporibus nihil consequuntur in rem ducimus odio voluptatem nesciunt quidem, ut iusto incidunt harum dolore placeat!
+                            </div>
                         </b-tab>
                     </b-tabs>
                 </b-card>
