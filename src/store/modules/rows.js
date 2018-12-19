@@ -12,7 +12,9 @@ const state = {
     colOptionShow : false,
     title         : '',
     options: [
-        { value: 'table', text: 'table' }
+        { value: 'table', text: 'table' },
+        { value: 'line', text: 'line' },
+        { value: 'bar', text: 'bar' },
     ],
 }
 

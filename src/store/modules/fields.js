@@ -29,7 +29,7 @@ const actions = {
                                                 }
                                             },
                             data      = {
-                                field: "['name']",
+                                field: "['name', 'field_description']",
                                 filters: `[('model_id', '=', ${ id })]`
                             }
 

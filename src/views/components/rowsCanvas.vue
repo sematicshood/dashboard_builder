@@ -17,16 +17,20 @@
 
                     <h5 v-text="column['title']"></h5>
                     
-                    <el-table :max-height="row[0]['height'] - 100" v-if="column['type'] == 'table'" :data="data[column['model']]" :summary-method="getSummaries" show-summary>
-                        <el-table-column
-                        type="index"
-                        fixed sortable
-                        :index="indexMethod" width="50" v-if="data[column['model']] != undefined && column['titles'].length > 0">
-                        </el-table-column>
+                    <table-component v-if="column['type'] == 'table'"
+                           :vuedata="data[column['model']]"
+                           :vuetitles="column['titles']"
+                           :vueheight="row[0]['height'] - 100"/>
 
-                        <el-table-column fixed sortable v-for="t in column['titles']" :prop="t.prop" :label="t.label" :key="t.label">
-                        </el-table-column>
-                    </el-table>
+                    <line-component v-if="column['type'] == 'line'"
+                           :vuedata="data[column['model']]"
+                           :vuetitles="column['titles']"
+                           :vueheight="row[0]['height'] - 100"/>
+
+                    <bar-component v-if="column['type'] == 'bar'"
+                           :vuedata="data[column['model']]"
+                           :vuetitles="column['titles']"
+                           :vueheight="row[0]['height'] - 100"/>
                 </div>
             </div>
         </div>
@@ -34,11 +38,18 @@
 </template>
 
 <script>
+    import tableComponent from './type/tableComponent.vue'
+    import lineComponent from './type/lineComponent.vue'
+    import barComponent from './type/barComponent.vue'
     import { Event } from '../../event.js'
     import { mapGetters, mapState } from 'vuex'
 
     export default {
         name: 'row-canvas',
+
+        components: {
+            tableComponent, lineComponent, barComponent
+        },
 
         methods: {
             addColumn(row) {
@@ -60,39 +71,6 @@
             rowOption(index) {
                 this.$store.dispatch('rows/setRowOp', index)
                 this.$store.dispatch('rows/setRowOptionShow', true)
-            },
-
-            getSummaries(param) {
-                const { columns, data } = param;
-                const sums = [];
-
-                columns.forEach((column, index) => {
-                    if (index === 0) {
-                        sums[index] = 'Total';
-                        return;
-                    }
-
-                    const values = data.map(item => Number(item[column.property]));
-                    
-                    if (!values.every(value => isNaN(value))) {
-                    sums[index] = values.reduce((prev, curr) => {
-                    const value = Number(curr);
-                    if (!isNaN(value)) {
-                        return prev + curr;
-                    } else {
-                        return prev;
-                    }
-                    }, 0);
-                    } else {
-                        sums[index] = 'N/A';
-                    }
-                });
-
-                return sums;
-            },
-
-            indexMethod(index) {
-                return index += 1;
             },
 
             colOption(index, indexes) {
