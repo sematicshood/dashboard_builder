@@ -1,7 +1,7 @@
 <template>
     <div id="fields" v-if="colOptionShow && type == 'edit'">
         <li v-for="column in rows[rowOp][colOp]['columns']" style="display: inline-block;">
-            <button class="btn-primary btn-sm" v-text="column['field_description']" @click="addTitle(column['name'])"></button> &nbsp;
+            <button class="btn-primary btn-sm" v-text="column['field_description']" @click="addTitle(column['name'], column['field_description'])"></button> &nbsp;
         </li>
     </div>
 </template>
@@ -26,8 +26,8 @@
         },
 
         methods: {
-            addTitle(field) {
-                this.$store.dispatch('rows/addTitle', {prop: field,label: field})
+            addTitle(field, label) {
+                this.$store.dispatch('rows/addTitle', {prop: field,label: label})
             },
         }
     }
