@@ -1,14 +1,13 @@
 <template>
     <div id="rowOption" v-if="rowOptionShow">
         <button-delete-row/>
-        <br><br>
+        <br>
         <height-row/>
         <br>
-        <button-save/>
-        <button-cancel/>
-
-        <br><br>
-        <br><br>
+        <b-form inline @submit.prevent>
+            <button-save/>
+            <button-cancel/>
+        </b-form>  
     </div>
 </template>
 

@@ -1,7 +1,5 @@
 <template>
     <div id="canvas">
-        <row-option></row-option>
-
         <col-option></col-option>
 
         <row-canvas></row-canvas>
@@ -21,7 +19,6 @@
     import addRows from './addRows.vue'
     import rowOption from './rowOption.vue'
     import addColumn from './addColumn.vue'
-    import colOption from './colOption.vue'
     import buttonAddRow from './buttonAddRow.vue'
     import { mapGetters } from 'vuex'
 
@@ -29,7 +26,7 @@
         name: 'canvasWorkspace',
 
         components: {
-            draggable, RowCanvas, addRows, rowOption, addColumn, colOption, buttonAddRow
+            draggable, RowCanvas, addRows, rowOption, addColumn, buttonAddRow
         },
 
         computed: {

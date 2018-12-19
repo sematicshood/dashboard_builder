@@ -3,9 +3,8 @@
         <draggable element="span" v-model="rows[rowOp][colOp]['titles']">
             <transition-group name="no" class="list-group" tag="ul">
                 <li class="list-group-item" v-for="(element, index) in rows[rowOp][colOp]['titles']" :key="element.prop">
-                    {{element.label}}
-
-                    <button @click="removeTitle(index)">x</button>
+                    <button class="btn btn-info btn-sm">{{element.label}}</button>
+                    <button @click="removeTitle(index)" class="btn btn-info btn-sm">x</button>
                 </li>
             </transition-group>
         </draggable>

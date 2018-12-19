@@ -1,5 +1,5 @@
 const state = {
-    db_name: 'db_feremall',
+    db_name: 'local_eng',
     user: JSON.parse(localStorage.getItem('user')),
     token: null
 }

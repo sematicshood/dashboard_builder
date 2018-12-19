@@ -27,3 +27,116 @@
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.studio-nav {
+    background-color: #ffc107!important;
+    height: 50px;
+}
+
+.fa-studio {
+    padding-top: 10px;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.el-nav{
+    padding-top: 10px;
+}
+
+.input-nav{
+    margin: 0px -7px;
+}
+
+.nav-item{
+    height: 50px;
+}
+
+.logo {
+    height: 30px;
+    width: auto;
+    padding: 0px 10px;
+}
+
+.item-nav {
+    margin-right: 20px;
+}
+
+.btn-search-nav{
+    margin-left: -15px;
+}
+
+.studio-side-bar{
+    float: right;
+}
+
+.studio-container{
+    height: auto; 
+    max-height: 90vh; 
+    overflow: auto;
+}
+.studio-container::-webkit-scrollbar { 
+    width: 0 !important 
+}
+
+.contain-side-bar{
+    height: auto; 
+    max-height: 90vh; 
+    overflow: auto;
+    background: rgb(255, 123, 0);
+}
+.contain-side-bar::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 3px;
+    background-color: #F5F5F5;
+}
+.contain-side-bar::-webkit-scrollbar{
+	width: 7px;
+	background-color: #F5F5F5;
+}
+.contain-side-bar::-webkit-scrollbar-thumb{
+	border-radius: 3px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #ffc107;
+}
+
+.tab-side-bar{
+    background-color: rgb(255, 123, 0);
+    color: white;
+}
+
+.body-properties{
+    height: 200px; 
+    max-height: 300px; 
+    overflow: auto;
+}
+.body-properties::-webkit-scrollbar { 
+    width: 0 !important 
+}
+
+.nav-pills .nav-link.active{
+    background-color: #ffc107 !important;
+    color: black !important;
+}
+
+a {
+    color: black !important;
+}
+
+.btn-primary {
+    background-color: rgb(255, 123, 0) !important;
+    border-color: rgb(255, 123, 0) !important;
+}
+
+.btn-info {
+    color: black !important;
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+}
+
+.list-group-item{
+    background-color: rgb(255, 123, 0) !important;
+    border: 0px solid #ffc107 !important;
+}
