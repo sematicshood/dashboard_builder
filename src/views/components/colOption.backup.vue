@@ -5,28 +5,17 @@
 
         <div class="col-md-12">
             <div class="col-md-3" style="display: inline-block; float: left;">
-                <hr>
-                <h4>Titles</h4>
-                <hr>
-                <titles-column/>
+               
             </div>
 
             <div class="col-md-9" style="display: inline-block;">
-                <hr>
-                <h4>Fields</h4>
-                <hr>
-                <ul>
-                    <fields-column/>
-                </ul>
+                
             </div>
         </div>
 
         <br><br>
 
         &nbsp;
-        <button-save/>
-        <button-delete-column/> &nbsp;
-        <button-cancel/>
         <br><br>
         <br><br>
     </div>

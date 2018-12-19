@@ -21,14 +21,13 @@
     import addRows from './addRows.vue'
     import rowOption from './rowOption.vue'
     import addColumn from './addColumn.vue'
-    import colOption from './colOption.vue'
     import { mapGetters } from 'vuex'
 
     export default {
         name: 'canvasWorkspace',
 
         components: {
-            draggable, RowCanvas, addRows, rowOption, addColumn, colOption
+            draggable, RowCanvas, addRows, rowOption, addColumn
         },
 
         computed: {

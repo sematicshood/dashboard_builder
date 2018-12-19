@@ -120,3 +120,12 @@
     background-color: #ffc107 !important;
     color: black !important;
 }
+
+a {
+    color: black !important;
+}
+
+.btn-primary {
+    background-color: rgb(255, 123, 0) !important;
+    border-color: rgb(255, 123, 0) !important;
+}

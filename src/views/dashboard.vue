@@ -16,13 +16,13 @@
                     <b-dropdown-item href="#"><i class="fa fa-folder-open" style="padding-right:15px;"></i>Open</b-dropdown-item>
                     <b-dropdown-item href="#"><i class="fa fa-save" style="padding-right:15px;"></i>Save</b-dropdown-item>
                 </b-nav-item-dropdown>
-                <i class="fa-studio fa-area-chart"></i>
+                <!-- <i class="fa-studio fa-area-chart"></i>
                 <b-nav-item-dropdown text="Chart" class="item-nav" left>
                     <b-dropdown-item href="#"><i class="fa fa-table" style="padding-right:15px;"></i>Table</b-dropdown-item>
                     <b-dropdown-item href="#"><i class="fa fa-bar-chart" style="padding-right:15px;"></i>Bar</b-dropdown-item>
                     <b-dropdown-item href="#"><i class="fa fa-line-chart" style="padding-right:15px;"></i>Line</b-dropdown-item>
                     <b-dropdown-item href="#"><i class="fa fa-pie-chart" style="padding-right:15px;"></i>Pie</b-dropdown-item>
-                </b-nav-item-dropdown>
+                </b-nav-item-dropdown> -->
                 <i class="fa-studio fa-upload"></i>
                 <b-nav-item-dropdown text="Export" left>
                     <b-dropdown-item href="#"><i class="fa fa-file-excel-o" style="padding-right:15px;"></i>Excel</b-dropdown-item>
@@ -34,9 +34,6 @@
                 </b-nav-item>   
                 <b-nav-item>
                     <button-changed></button-changed>    
-                </b-nav-item> 
-                <b-nav-item>
-                    <button-delete></button-delete>
                 </b-nav-item>  
                 <b-nav-item> </b-nav-item>
                 <b-nav-item>
@@ -86,36 +83,41 @@
             <b-col cols="3" align-self="start" class="studio-side-bar">
                 <b-card no-body class="contain-side-bar">
                     <b-tabs pills card class="tab-side-bar">
-                        <b-tab title="Model" active class="title-tab-side-bar">
+                        <b-tab title="Chart Options" active>
+                            <div class="body-properties">
+                                <judul-column/>
+                                <jenis-column/>                                   
+                            </div>
+                        </b-tab>
+                        <b-tab title="Model">
                             <div class="body-properties">
                                 <selectModels></selectModels>
                             </div>            
                         </b-tab>
-                        <b-tab title="Field">
+                        <b-tab title="Fields">
                             <div class="body-properties">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor maxime ipsa mollitia nam quo, dolore reiciendis placeat provident sed ex libero commodi explicabo natus vel voluptate minima. Nihil, consequuntur laboriosam?
+                                <ul>
+                                    <fields-column/>
+                                </ul>    
                             </div>
-                        </b-tab>
-                        <b-tab title="Field">
-                            <div class="body-properties">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima iure perferendis suscipit accusamus explicabo corrupti, maxime molestias hic obcaecati dolorum atque ipsa reiciendis rem recusandae, tempore quasi, quibusdam harum ut omnis! Dolores, placeat! Nihil et, inventore consectetur modi officia nemo.
-                            </div>
-                        </b-tab>
+                        </b-tab>                        
                     </b-tabs>
                     <b-tabs pills card class="tab-side-bar">
-                        <b-tab title="Model" active>
+                        <b-tab title="Titles" active>
                             <div class="body-properties">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi assumenda eos quibusdam dolor quia porro non necessitatibus laborum modi doloribus.
+                                <titles-column/>   
                             </div>    
                         </b-tab>
-                        <b-tab title="Field">
-                            <div class="body-properties">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Placeat architecto neque consectetur, iusto laborum assumenda nesciunt quos distinctio quia rerum asperiores voluptas deleniti accusantium, ab exercitationem velit facere. Quae, similique?
+                        <b-tab title="Row Options">
+                            <div class="body-properties">                               
+                                <button-save/>                                
+                                <button-cancel/>
+                                <button-delete></button-delete>
                             </div>
                         </b-tab>
-                        <b-tab title="Field">
+                        <b-tab title="Col Options">
                             <div class="body-properties">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae debitis a quaerat blanditiis alias ut sequi nam natus ea non? At, fugit dolorem, ratione temporibus nihil consequuntur in rem ducimus odio voluptatem nesciunt quidem, ut iusto incidunt harum dolore placeat!
+                                <button-delete-column/>
                             </div>
                         </b-tab>
                     </b-tabs>
@@ -130,14 +132,21 @@
     import canvasWorkspace from './components/canvasWorkspace.vue'
     import buttonChanged from './components/buttonChanged.vue'
     import buttonDelete from './components/buttonDelete.vue'
+    import judulColumn from './components/selectComponent/judulComponent.vue'
+    import jenisColumn from './components/selectComponent/jenisColumnComponent.vue'
+    import titlesColumn from './components/selectComponent/titlesComponent.vue'
+    import fieldsColumn from './components/selectComponent/fieldsCompunent.vue'
+    import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
+    import buttonDeleteColumn from './components/selectComponent/buttonDeleteComponent.vue'
+    import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
     import { Event } from '../event.js'
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapState } from 'vuex'
 
 
     export default {
         name: 'dashboard',
         components: {
-            selectModels, canvasWorkspace,  buttonChanged, buttonDelete
+            selectModels, canvasWorkspace,  buttonChanged, buttonDelete, judulColumn, jenisColumn, titlesColumn, fieldsColumn, buttonSave, buttonDeleteColumn, buttonCancel
         },
         
         data() {
