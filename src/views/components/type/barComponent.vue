@@ -14,7 +14,7 @@
             barChart
         },
 
-        props: ['vueheight'],
+        props: ['vueheight', 'vuedata', 'vuetitles'],
 
         data () {
             return {
@@ -23,16 +23,34 @@
                     responsive: true,
                     maintainAspectRatio: false
                 },
-                height: this.vueheight
+                height: this.vueheight,
+                data: this.vuedata,
+                titles: this.vuetitles
             }
         },
         mounted () {
             this.fillData()
         },
         methods: {
+            inArray(all, newed) {
+                var length = all.length;
+                for(var i = 0; i < length; i++) {
+                    if(all[i] == newed) return true;
+                }
+                return false;
+            },
             fillData () {
+                let xaxis   = this.$data.titles[0]['prop'],
+                    labels  = []
+                console.log(this.$data.titles)
+
+                this.$data.data.forEach(el => {
+                    if(this.inArray(labels, el[xaxis]) == false)
+                        labels.push(el[xaxis])
+                })
+
                 this.datacollection = {
-                    labels: [this.getRandomInt(), this.getRandomInt()],
+                    labels: labels,
                     datasets: [
                         {
                         label: 'Data One',
