@@ -31,6 +31,11 @@
                            :vuedata="data[column['model']]"
                            :vuetitles="column['titles']"
                            :vueheight="row[0]['height'] - 100"/>
+
+                    <pie-component v-if="column['type'] == 'pie'"
+                           :vuedata="data[column['model']]"
+                           :vuetitles="column['titles']"
+                           :vueheight="row[0]['height'] - 100"/>
                 </div>
             </div>
         </div>
@@ -41,6 +46,7 @@
     import tableComponent from './type/tableComponent.vue'
     import lineComponent from './type/lineComponent.vue'
     import barComponent from './type/barComponent.vue'
+    import pieComponent from './type/pieComponent.vue'
     import { Event } from '../../event.js'
     import { mapGetters, mapState } from 'vuex'
 
@@ -48,7 +54,7 @@
         name: 'row-canvas',
 
         components: {
-            tableComponent, lineComponent, barComponent
+            tableComponent, lineComponent, barComponent, pieComponent
         },
 
         methods: {
