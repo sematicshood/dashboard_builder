@@ -34,7 +34,13 @@
                 </b-nav-item>   
                 <b-nav-item>
                     <button-changed></button-changed>    
-                </b-nav-item>  
+                </b-nav-item> 
+                <b-nav-item>
+                    <button-save/>    
+                </b-nav-item> 
+                <b-nav-item>
+                    <button-cancel/>
+                </b-nav-item>
                 <b-nav-item> </b-nav-item>
                 <b-nav-item>
                     <input class="form-control input-sm input-nav" placeholder="Height" style="width: 75px; height: 31px">    
@@ -72,7 +78,8 @@
             <b-col cols="9" align-self="end">
                 <b-row class="studio-container">
                     <b-col cols="12">
-                        <b-container>                            
+                        <b-container>   
+                            <!-- <button-delete></button-delete>                          -->
                             <canvasWorkspace></canvasWorkspace>    
                         </b-container>
                     </b-col>                    
@@ -85,8 +92,16 @@
                     <b-tabs pills card class="tab-side-bar">
                         <b-tab title="Chart Options" active>
                             <div class="body-properties">
-                                <judul-column/>
-                                <jenis-column/>                                   
+                                <b-form-group id="exampleInputGroup1"
+                                    label="Title Chart:"
+                                    label-for="exampleInput1">
+                                        <judul-column/>
+                                </b-form-group>
+                                <b-form-group id="exampleInputGroup1"
+                                    label="Type Chart:"
+                                    label-for="exampleInput1">
+                                        <jenis-column/>
+                                </b-form-group>                                   
                             </div>
                         </b-tab>
                         <b-tab title="Model">
@@ -108,14 +123,12 @@
                                 <titles-column/>   
                             </div>    
                         </b-tab>
-                        <b-tab title="Row Options">
-                            <div class="body-properties">                               
-                                <button-save/>                                
-                                <button-cancel/>
-                                <button-delete></button-delete>
+                        <b-tab title="Row">
+                            <div class="body-properties">                              
+                                <row-option></row-option>
                             </div>
                         </b-tab>
-                        <b-tab title="Col Options">
+                        <b-tab title="Column">
                             <div class="body-properties">
                                 <button-delete-column/>
                             </div>
@@ -132,6 +145,7 @@
     import canvasWorkspace from './components/canvasWorkspace.vue'
     import buttonChanged from './components/buttonChanged.vue'
     import buttonDelete from './components/buttonDelete.vue'
+    import rowOption from './components/rowOption.vue'
     import judulColumn from './components/selectComponent/judulComponent.vue'
     import jenisColumn from './components/selectComponent/jenisColumnComponent.vue'
     import titlesColumn from './components/selectComponent/titlesComponent.vue'
@@ -146,7 +160,7 @@
     export default {
         name: 'dashboard',
         components: {
-            selectModels, canvasWorkspace,  buttonChanged, buttonDelete, judulColumn, jenisColumn, titlesColumn, fieldsColumn, buttonSave, buttonDeleteColumn, buttonCancel
+            selectModels, canvasWorkspace,  buttonChanged, buttonDelete, rowOption, judulColumn, jenisColumn, titlesColumn, fieldsColumn, buttonSave, buttonDeleteColumn, buttonCancel
         },
         
         data() {

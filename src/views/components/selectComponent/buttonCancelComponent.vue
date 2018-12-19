@@ -1,8 +1,8 @@
 <template>
     <div class="buttonCancel" v-if="colOptionShow && type == 'edit'">
-        <b-btn size="sm" 
+        <button class="btn btn-primary btn-sm" 
                 variant="warning" 
-                @click="loadTemplate()">Cancel</b-btn>
+                @click="loadTemplate()">Cancel</button>
     </div>
 </template>
 

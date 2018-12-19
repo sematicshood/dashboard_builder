@@ -1,8 +1,8 @@
 <template>
     <div class="buttonSave" v-if="colOptionShow && type == 'edit'">
-        <b-btn size="sm" 
+        <button class="btn btn-primary btn-sm" 
                 variant="primary" 
-                @click="save()">Save</b-btn>
+                @click="save()">Save</button>
     </div>
 </template>
 

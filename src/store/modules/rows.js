@@ -15,6 +15,7 @@ const state = {
         { value: 'table', text: 'table' },
         { value: 'line', text: 'line' },
         { value: 'bar', text: 'bar' },
+        { value: 'pie', text: 'pie' },
     ],
 }
 

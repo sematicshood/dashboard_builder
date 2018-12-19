@@ -1,13 +1,10 @@
 <template>
     <div id="selectModels" v-if="type == 'edit'">
         <multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect>
-
+        <br/>
         <ul>
             <li v-for="(select, i) in selected" style="display: inline-block;">
-                <br/>
-                <br/>
-                <button  class="btn-primary btn-sm" @click="modelClick(select['id'], select['model'])" v-text="select['name']"></button> <button class="btn-primary btn-sm" @click="remove(i)">x</button> &nbsp; &nbsp;
-                <br/>
+                <button  class="btn-info btn-sm" @click="modelClick(select['id'], select['model'])" v-text="select['name']"></button> <button class="btn-info btn-sm" @click="remove(i)">x</button> &nbsp; &nbsp;
                 <br/>
             </li>
         </ul>

@@ -1,7 +1,7 @@
 <template>
     <div id="fields" v-if="colOptionShow && type == 'edit'">
         <li v-for="column in rows[rowOp][colOp]['columns']" style="display: inline-block;">
-            <button class="btn-primary btn-sm" v-text="column['field_description']" @click="addTitle(column['name'], column['field_description'])"></button> &nbsp;
+            <button style="margin: 5px 0px;" class="btn btn-info btn-sm" v-text="column['field_description']" @click="addTitle(column['name'], column['field_description'])"></button> &nbsp;
         </li>
     </div>
 </template>
