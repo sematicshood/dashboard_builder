@@ -25,7 +25,7 @@
 
         &nbsp;
         <button-save/>
-        <button-delete/> &nbsp;
+        <button-delete-column/> &nbsp;
         <button-cancel/>
         <br><br>
         <br><br>

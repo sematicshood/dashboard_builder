@@ -10,7 +10,7 @@
     import { mapGetters } from 'vuex'
 
     export default {
-        name: 'button-delete',
+        name: 'button-delete-column',
 
         methods: {
             deleteColumn() {
