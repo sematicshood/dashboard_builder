@@ -1,6 +1,7 @@
 <template>
     <div id="button-changed">
-        <b-btn size="sm" variant="primary" @click="changed" v-text="change(type)"></b-btn>
+        <font-awesome-icon icon="eye" @click="changed" v-if="type == 'edit'"/>
+        <font-awesome-icon icon="edit" @click="changed" v-if="type == 'view'"/>
     </div>
 </template>
 
@@ -22,6 +23,8 @@
 
                 this.$store.dispatch('workspace/setType', typeChange)
 
+                this.$store.dispatch('style/changeSidebar')
+
                 this.$router.push({ name: 'dashboard', params: { name: this.name, type: typeChange } })
             },
 
@@ -41,3 +44,9 @@
         }
     }
 </script>
+
+<style>
+    #button-changed * {
+        margin-left: 0px;
+    }
+</style>

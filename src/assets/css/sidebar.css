@@ -1,0 +1,89 @@
+#sidebar {
+    float: right;
+    background: white;
+    display: inline-block;
+    font-size: .875rem;
+    height: 100vh;
+    border-left: 1px solid #c8ced3;
+    position: fixed;
+    z-index: 999999;
+    top: 50px;
+    box-sizing: border-box;
+    padding: 0;
+    right: 0;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.option-side * {
+    font-size: .875rem;
+    color: #73818f;
+}
+
+.s-active {
+    border: 1px solid #c8ced3;
+    border-left: 0;
+}
+
+.s-actived {
+    border-left: 1px solid #c8ced3;
+    border: 1px solid #c8ced3;
+}
+
+.s-side {
+    display: inline-block;
+    padding: 17px 21px;
+    border-top: 0;
+}
+
+.content-view {
+    overflow-y: scroll;
+}
+
+.title-view {
+    text-align: center;
+    padding: 10px;
+    background: #55efc4;
+}
+
+.title-view h6 {
+    margin: 0;
+    padding: 0;
+}
+
+#selectModels {
+    height: 300px;
+    overflow-y: hidden;
+}
+
+#selectModels ul, #fields ul {
+    padding: 0;
+    margin: 0;
+}
+
+#selectModels ul li, #titles li {
+    list-style: none;
+}
+
+#selectModels ul li button, #titles li button {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #dfe6e9;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#selectModels ul li button:first-child, #titles li button:first-child {
+    border-top: 1px solid #dfe6e9;
+}
+
+#selectModels ul li button span:first-child, #titles li button span:first-child {
+    float: left;
+}
+
+#selectModels ul li button span:last-child, #titles li button span:last-child {
+    float: right;
+}

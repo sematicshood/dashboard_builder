@@ -1,6 +1,6 @@
 <template>
     <div id="buttonAddRow" v-show="type == 'edit'">
-        <b-btn v-b-modal.modalRow size="sm" variant="primary">Add Row</b-btn>
+        <font-awesome-icon v-b-modal.modalRow icon="plus"/>
     </div>
 </template>
 

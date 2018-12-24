@@ -9,6 +9,7 @@ import fields from './modules/fields'
 import data from './modules/data'
 import rows from './modules/rows'
 import workspace from './modules/workspace'
+import style from './modules/style'
 
 Vue.use(Vuex)
 
@@ -22,7 +23,8 @@ const store = new Vuex.Store({
         fields,
         data,
         rows,
-        workspace
+        workspace,
+        style
     },
     strict: debug
 })

@@ -1,6 +1,6 @@
 <template>
-    <div id="buttonCreate">
-        <b-btn v-b-modal.create size="sm" variant="primary">Create New Dashboard</b-btn>
+    <div id="buttonCreate" class="full">
+        <b-btn v-b-modal.create class="full button-c" size="sm" variant="primary">+</b-btn>
 
         <b-modal id="create" 
                 centered 
@@ -58,3 +58,14 @@
         }
     }
 </script>
+
+<style>
+    .full {
+        height: 100%;
+        width: 100%;
+    }
+
+    .button-c {
+        font-size: 100px !important;
+    }
+</style>

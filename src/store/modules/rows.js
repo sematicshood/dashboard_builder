@@ -16,6 +16,9 @@ const state = {
         { value: 'line', text: 'line' },
         { value: 'bar', text: 'bar' },
         { value: 'pie', text: 'pie' },
+        { value: 'doughnut', text: 'doughnut' },
+        { value: 'horizontal', text: 'horizontal' },
+        { value: 'polar', text: 'polar' },
     ],
 }
 
@@ -70,6 +73,20 @@ const getters = {
 
     getOptions(state) {
         return state.options
+    },
+
+    getColumnDetail: (state) => (data) => {
+        console.log(data)
+        return state.rows[0][1]
+    },
+
+    // getColumnDetail(state) {
+    //     console.log(state.rows[0][1])
+    //     return state.rows[0][1]
+    // },
+
+    getHeightRow: (state) => (data) => {
+        return state.rows[data][0]['height']
     }
 }
 
@@ -173,7 +190,7 @@ const mutations = {
 
     REMOVE_TITLE(state, index) {
         state.rows[state.rowOp][state.colOp]['titles'].splice(index, 1)
-    }
+    },
 }
 
 const actions = {
@@ -308,7 +325,7 @@ const actions = {
             commit('REMOVE_TITLE', index)
 
         dispatch('save', false)
-    }
+    },
 }
 
 export default {

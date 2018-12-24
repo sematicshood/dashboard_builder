@@ -1,0 +1,13 @@
+#breadcumb {
+    margin-top: 50px;
+    background: white;
+    padding: 15px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #c8ced3;
+    transition: .5s ease;
+}
+
+#breadcumb h6 {
+    font-size: .875rem;
+    letter-spacing: .2px;
+}

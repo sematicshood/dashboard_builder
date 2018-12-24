@@ -1,18 +1,18 @@
 <template>
-    <div id="barComponent">
-        <bar-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="chartOptions"></bar-chart>
+    <div id="doughnutComponent">
+        <doughnut-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="chartOptions"></doughnut-chart>
     </div>
 </template>
 
 <script>
-    import barChart from './chart/BarChart.js'
+    import DoughnutChart from './chart/DoughnutChart.js'
     import { mapGetters, mapState } from 'vuex'
 
     export default {
-        name: 'bar-component',
+        name: 'doughnut-component',
 
         components: {
-            barChart
+            DoughnutChart
         },
 
         props: ['vuecolumn', 'vuerow'],
@@ -77,66 +77,46 @@
                 return false;
             },
             fillData () {
-                let xaxis       = this.titles[0]['prop'] || [],
-                    key         = this.titles[1]['prop'] || [],
-                    value       = this.titles[2]['prop'] || [],
-                    labels      = [],
-                    datasets    = [],
-                    keys        = [],
-                    values      = {}
+                let xaxis           = this.titles[0]['prop'] || [],
+                    value           = this.titles[1]['prop'] || [],
+                    labels          = [],
+                    datasets        = [],
+                    values          = [],
+                    backgroundColor = []
 
                 this.datas.forEach(el => {
-                    if(this.inArray(labels, el[xaxis]) == false)
-                        labels.push(el[xaxis])
+                    if(el[xaxis].length == 2) {
+                        if(this.inArray(labels, el[xaxis][1]) == false)
+                            labels.push(el[xaxis][1])
+                    } else {
+                        if(this.inArray(labels, el[xaxis]) == false)
+                            labels.push(el[xaxis])
+                    }
                 })
 
                 labels.forEach(el => {
+                    let amount = 0
+
                     let datas = this.datas.filter((data) => {
-                        return data[xaxis] == el
+                        if(data[xaxis].length == 2)
+                            return data[xaxis][1] == el
+                        else
+                            return data[xaxis] == el
                     })
 
-                    datas.forEach(e => {
-                        if(e[key].length == 2) {
-                            if(this.inArray(keys, e[key][1]) == false)
-                                keys.push(e[key][1])
-                        } else {
-                            if(this.inArray(keys, e[key]) == false)
-                                keys.push(e[key])
-                        }
+                    datas.forEach(e => {    
+                        amount += e[value]   
                     })
 
-                    keys.forEach(e => {
-                        let amount = 0
+                    values.push(amount)
 
-                        let list_amount = datas.filter(dat => {
-                            if(dat[key].length == 2)
-                                return dat[key][1] == e
-                            else
-                                return dat[key] == e
-                        })
-
-                        try {
-                            list_amount.forEach(li => {
-                                amount += li[value]
-                            })
-                        } catch (error) {
-                            amount = 0   
-                        }
-
-                        if(values[e] == undefined) {
-                            values[e] = [amount]
-                        } else {
-                            values[e].push(amount)
-                        }
-                    })
+                    backgroundColor.push(this.getRandomColor())
                 })
 
-                keys.forEach(e => {
-                    datasets.push({
-                        label: e,
-                        backgroundColor: this.getRandomColor(),
-                        data: values[e]
-                    })
+                datasets.push({
+                    label: 'hello',
+                    backgroundColor: backgroundColor,
+                    data: values
                 })
 
                 this.datacollection = {

@@ -1,18 +1,18 @@
 <template>
-    <div id="barComponent">
-        <bar-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="chartOptions"></bar-chart>
+    <div id="horizontalComponent">
+        <horizontal-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="chartOptions"></horizontal-chart>
     </div>
 </template>
 
 <script>
-    import barChart from './chart/BarChart.js'
+    import HorizontalChart from './chart/HorizontalChart.js'
     import { mapGetters, mapState } from 'vuex'
 
     export default {
-        name: 'bar-component',
+        name: 'horizontal-component',
 
         components: {
-            barChart
+            HorizontalChart
         },
 
         props: ['vuecolumn', 'vuerow'],
@@ -63,8 +63,6 @@
         watch: {
             titles(newv, oldv) {
                 this.fillData()
-
-                console.log(newv, oldv)
             }
         },
 
