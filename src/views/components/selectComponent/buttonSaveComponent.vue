@@ -1,8 +1,6 @@
 <template>
     <div class="buttonSave" v-if="colOptionShow && type == 'edit'">
-        <button class="btn btn-primary btn-sm" 
-                variant="primary" 
-                @click="save()">Save</button>
+        <font-awesome-icon icon="save" @click="save()"/>
     </div>
 </template>
 
@@ -29,3 +27,9 @@
         }
     }
 </script>
+
+<style>
+    .buttonSave * {
+        margin-left: 0 !important;
+    }
+</style>

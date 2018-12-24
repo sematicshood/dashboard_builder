@@ -1,10 +1,10 @@
 <template>
     <div id="table">
-        <el-table :max-height="height" :data="data" :summary-method="getSummaries" show-summary>
+        <el-table :max-height="height" :data="datas" :summary-method="getSummaries" show-summary>
             <el-table-column
             type="index"
             fixed sortable
-            :index="indexMethod" width="50" v-if="data != undefined && titles.length > 0">
+            :index="indexMethod" width="50" v-if="datas != undefined && titles.length > 0">
             </el-table-column>
 
             <el-table-column fixed sortable v-for="t in titles" :prop="t.prop" :label="t.label" :key="t.label">
@@ -14,16 +14,40 @@
 </template>
 
 <script>
+    import { mapState, mapGetters } from 'vuex'
+
     export default {
         name: 'table-component',
 
-        props: [ 'vuedata', 'vuetitles', 'vueheight' ],
+        props: ['vuecolumn', 'vuerow'],
 
-        data() {
-            return {
-                data: this.vuedata,
-                titles: this.vuetitles,
-                height: this.vueheight
+        computed: {
+            ...mapState(['rows', 'data']),
+
+            column: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]
+                }
+            },
+            row: {
+                get() {
+                    return this.rows.rows[this.vuerow]
+                }
+            },
+            height: {
+                get() {
+                    return this.rows.rows[this.vuerow][0]['height'] - 75
+                }
+            },
+            titles: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['titles']
+                }
+            },
+            datas: {
+                get() {
+                    return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']]
+                }
             }
         },
 

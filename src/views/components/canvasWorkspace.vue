@@ -1,10 +1,6 @@
 <template>
     <div id="canvas">
-        <col-option></col-option>
-
         <row-canvas></row-canvas>
-
-        <button-add-row/>
 
         <add-rows></add-rows>
 

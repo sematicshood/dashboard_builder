@@ -2,9 +2,8 @@
     <div id="titles" v-if="colOptionShow && type == 'edit'">
         <draggable element="span" v-model="rows[rowOp][colOp]['titles']">
             <transition-group name="no" class="list-group" tag="ul">
-                <li class="list-group-item" v-for="(element, index) in rows[rowOp][colOp]['titles']" :key="element.prop">
-                    <button class="btn btn-info btn-sm">{{element.label}}</button>
-                    <button @click="removeTitle(index)" class="btn btn-info btn-sm">x</button>
+                <li v-for="(element, index) in rows[rowOp][colOp]['titles']" :key="element.prop">
+                    <button><span>{{element.label}}</span> <span @click="removeTitle(index)">x</span></button>
                 </li>
             </transition-group>
         </draggable>

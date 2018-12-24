@@ -1,15 +1,20 @@
 <template>
     <div id="gallery">
-        <div class="container">
-            <div class="text-center">
+        <navbar/>
+
+        <div class="container-3">
+            <!-- <div class="text-center">
                 <hr>
                 <h1>List Dashboard</h1>
-                <button-create></button-create>
+                <logout-button></logout-button>
                 <hr>
-            </div>
+            </div> -->
 
             <div class="row">
-                <div class="col-xs-12 col-md-6" v-for="dashboard in dashboards">
+                <div class="col-xs-12 col-md-3 bottom">
+                    <button-create></button-create>
+                </div>
+                <div class="col-xs-12 col-md-3 bottom" v-for="dashboard in dashboards">
                     <router-link tag="div" :to="{ name: 'dashboard', params: { name: dashboard['name'].replace(/ /g, '-'), type: 'view' } }" class="bg bg-left">
                         <h2 v-text="dashboard['name']"></h2>
                     </router-link>
@@ -21,13 +26,15 @@
 
 <script>
     import ButtonCreate from './components/buttonCreate.vue'
+    import logoutButton from './components/logoutButton.vue'
+    import navbar from './navbar.vue'
     import { mapGetters } from 'vuex'
 
     export default {
         name: 'gallery',
 
         components: {
-            ButtonCreate
+            ButtonCreate, logoutButton, navbar
         },
 
         methods: {

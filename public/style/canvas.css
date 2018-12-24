@@ -1,5 +1,9 @@
+body {
+    overflow: hidden;
+}
+
 .rows {
-    background: blue; 
+    background: #b2bec3; 
     position: relative;
     margin-bottom: 75px;
 }
@@ -10,7 +14,7 @@
 }
 
 #canvas {
-    margin-top: 100px;
+    margin-top: 30px;
 }
 .column {
     background: #fafafa; 
@@ -20,4 +24,8 @@
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
+}
+
+body {
+    background: #e4e5e7;
 }

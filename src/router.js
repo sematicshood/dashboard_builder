@@ -1,15 +1,10 @@
 import VueRouter from 'vue-router'
 
-import ChartExample from './views/chartExample.vue'
 import Login from './views/login.vue'
 import Gallery from './views/gallery.vue'
 import Dashboard from './views/dashboard.vue'
 
 const routes = [
-    {
-        path: '/example',
-        component: ChartExample
-    },
     {
         path: '/login',
         component: Login
@@ -26,7 +21,8 @@ const routes = [
         component: Dashboard,
         name: 'dashboard',
         meta: {
-            requiresAuth: true
+            requiresAuth: true,
+            breadcumb: 'Home / Dashboard / :name'
         }
     }
 ]
@@ -39,6 +35,10 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     const token   =   JSON.parse(localStorage.getItem('login')),
           acc     =   JSON.parse(localStorage.getItem('user'))
+
+          to.matched.some(record => {
+            console.log(record.meta.breadcumb)
+          })
     
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if(token && acc) {

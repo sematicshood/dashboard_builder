@@ -1,10 +1,18 @@
+.container-3 {
+    width: 95%;
+    margin: 100px auto;
+}
+
+.bottom {
+    margin-bottom: 30px;
+}
+
 .bg {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
     color: #FFFFFF;
-    padding: 90px 90px
-    ;
+    padding: 90px 90px;
 }
 
 .col {
