@@ -9,8 +9,8 @@
             <div class="content col-md-6">
                 <button-add-row/>
                 <font-awesome-icon icon="sync"/>
-                <font-awesome-icon icon="save"/>
-                <font-awesome-icon icon="undo"/>
+                <button-save/>
+                <button-cancel/>
                 <button-changed></button-changed>
             </div>
         </div>
@@ -20,11 +20,13 @@
 <script>
     import buttonChanged from './components/buttonChanged.vue'
     import buttonAddRow from './components/buttonAddRow.vue'
+    import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
+    import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
 
     export default {
         name: 'navbar',
         components: {
-            buttonChanged, buttonAddRow
+            buttonChanged, buttonAddRow, buttonSave, buttonCancel
         }      
     }
 </script>

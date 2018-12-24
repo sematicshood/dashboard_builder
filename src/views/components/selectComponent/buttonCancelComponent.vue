@@ -1,8 +1,6 @@
 <template>
     <div class="buttonCancel" v-if="colOptionShow && type == 'edit'">
-        <button class="btn btn-primary btn-sm" 
-                variant="warning" 
-                @click="loadTemplate()">Cancel</button>
+        <font-awesome-icon icon="undo" @click="loadTemplate()"/>
     </div>
 </template>
 
@@ -29,3 +27,9 @@
         }
     }
 </script>
+
+<style>
+    .buttonCancel * {
+        margin-left: 0 !important;
+    }
+</style>
