@@ -25,7 +25,6 @@
         data () {
             return {
                 value: [],
-                options: [],
                 columns: [],
             }
         },
@@ -70,7 +69,7 @@
         created() {
             this.$store.dispatch('models/getModels')
                 .then((res) => {
-                    this.$data.options = res
+                    
                 }),
 
             this.$store.dispatch('data/setSelected')           
@@ -82,7 +81,11 @@
 
             ...mapGetters('data', {
                 selected: 'getSelected'
-            })
-        }
+            }),
+
+            ...mapGetters('models', {
+                options: 'getModels'
+            }),
+        },
     }
 </script>

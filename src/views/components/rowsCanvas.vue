@@ -48,6 +48,9 @@
                     <polar-component v-if="column['type'] == 'polar'"
                            :vuerow="index"
                            :vuecolumn="indexes"/>
+
+                    <input v-model="date" type="date" @change="change"/>
+                    <input v-model="date_to" type="date" @change="change"/>
                 </div>
             </div>
         </div>
@@ -68,11 +71,26 @@
     export default {
         name: 'row-canvas',
 
+        data() {
+            return {
+                date: '',
+                date_to: ''
+            }
+        },
+
         components: {
             tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent
         },
 
         methods: {
+            change() {
+                let data = {
+                    from: this.$data.date,
+                    to: this.$data.date_to
+                }
+                this.$store.dispatch('data/filterData', data)
+            },
+
             addColumn(row) {
                 this.$store.dispatch('rows/setRowSelect', row)
                 let totalWidth       = 100,

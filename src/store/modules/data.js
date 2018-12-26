@@ -16,6 +16,10 @@ const getters = {
         return state.data || {}
     },
 
+    getSpecData(state, param) {
+        return state.data || {}
+    },
+
     getModels(state) {
         return state.models
     },
@@ -44,7 +48,6 @@ const mutations = {
         data[`${option['model']}`] = option['res']
         
         if(state.data != null) {
-            console.log('masuk sini')
             state.data[`${option['model']}`] = option['res']
         } else {
             state.data = data
@@ -108,14 +111,16 @@ const actions = {
     },
 
     inArray({ getters }, options) {
-        var length = options['models'].length;
-        for(var i = 0; i < length; i++) {
-            if(options['models'][i] == options['model']) return true;
-        }
-        return false;
+        return new Promise((res, rej) => {
+            var length = options['models'].length;
+            for(var i = 0; i < length; i++) {
+                if(options['models'][i] == options['model']) rej('true');
+            }
+            res('false');
+        })
     },
     
-    loadData({ getters, commit, dispatch, rootGetters }) {
+    loadData({ getters, state, commit, dispatch, rootGetters }) {
         let models = getters.getModels
 
         commit('DEFAULT_DATA', JSON.parse(localStorage.getItem('data')))
@@ -127,60 +132,91 @@ const actions = {
                         let model = element[index]['model']
 
                         if(model != undefined) {
-                            if(dispatch('inArray', {model, models}) == false) {
+                            dispatch('inArray', {model, models}).then(res => {
                                 commit('ADD_MODELS', model)
-                            }
+
+                                dispatch('getDatas', model)
+                                    .then(res => {
+                                        commit('SET_DATA', {model, res})
+
+                                        dispatch('saveData')
+                                    })
+                            }).catch(err => console.log(err))
                         }
                     }
                 }
             });
         }
-
-        if(models != undefined) {
-            models.forEach(model => {
-                dispatch('data/getDatas', model)
-                    .then(res => {
-                        commit('SET_DATA', {model, res})
-                    })
-            });
-        }
     },
 
     getDatas({ commit, dispatch, getters, rootGetters }, model) {
+        var d       =  new Date(),
+            from    = `${d.getFullYear()}-${d.getMonth()}-1`,
+            to      = `${d.getFullYear()}-${d.getMonth()+1}-1`
+        
         return new Promise((resolve, reject) => {
             if(getters.getDatas[model] == undefined) {
-                dispatch('login/reload', {}, {root: true})
-                    .then((res) => {
-                        const token     = res,
-                            config    =   {
-                                                headers: {
-                                                    'access_token': token
-                                                }
-                                            },
-                            data      = {
-                                orders: "id desc"
-                            }
+                const data      = {
+                    order: "id desc",
+                    // filters: `[('create_date','>=','${ from }'), ('create_date','<','${ to }')]`,
+                    username: JSON.parse(localStorage.getItem('user'))['username'],
+                    password: JSON.parse(localStorage.getItem('user'))['password'],
+                    db_name: rootGetters['core/getDatabase']
+                },
+                    config    =   {
+                        headers: {
+                            'username': localStorage.getItem('user')['username'],
+                            'password': localStorage.getItem('user')['password'],
+                            'db_name': rootGetters['core/getDatabase'],
+                        }
+                    }
 
-                        client.get('/api_v2/' + model, {params: data}, config)
-                                .then(res => {
-                                    let data       =   {}
+                client.get('/api_dashboard/' + model, {params: data})
+                        .then(res => {
+                            let data          =   {}
 
-                                    data[`${model}`]  =   res.data['results']
+                            data[`${model}`]  =   res.data['results']
 
-                                    commit('setDatas', {data: res.data['results'], model: model})
-                                    
-                                    resolve(res.data['results'])
-                                })
-                                .catch(err => {
-                                    console.log(err)
-                                })
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
+                            commit('setDatas', {data: res.data['results'], model: model})
+                            
+                            resolve(res.data['results'])
+                        })
+                        .catch(err => {
+                            console.log(err.response)
+                        })
             } else {
                 resolve(getters.getDatas[model])
             }
+        })
+    },
+
+    filterData({ commit, dispatch, getters, rootGetters }, filter) {
+        return new Promise((resolve, reject) => {
+            const data      = {
+                order: "id desc",
+                filters: `[('create_date','>=','${ filter['from'] }'), ('create_date','<=','${ filter['to'] }'),]`
+            },
+                config    =   {
+                    headers: {
+                        'username': localStorage.getItem('user')['username'],
+                        'password': localStorage.getItem('user')['password'],
+                        'db_name': rootGetters['core/getDatabase'],
+                    }
+                }
+
+            client.get('/api_v2/' + 'account.analytic.account', {params: data})
+                    .then(res => {
+                        let data          =   {}
+
+                        data[`account.analytic.account`]  =   res.data['results']
+
+                        commit('SET_DATA', {res: res.data['results'], model: 'account.analytic.account'})
+                        
+                        resolve(res.data['results'])
+                    })
+                    .catch(err => {
+                        commit('SET_DATA', {res: [], model: 'account.analytic.account'})
+                    })
         })
     }
 }
