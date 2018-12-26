@@ -54,7 +54,7 @@
         computed: {
             ...mapGetters('style', {
                 sidebar: 'getSidebar'
-            })
+            }),
         }
     }
 </script>

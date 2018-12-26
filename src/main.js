@@ -5,6 +5,7 @@ import App from './App.vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import VeeValidate from 'vee-validate'
+import { sync } from 'vuex-router-sync'
 
 import router from './router'
 import store from './store'
@@ -37,6 +38,8 @@ Vue.use(ElementUI)
 Vue.use(VueDataTables)
 Vue.use(Datatable)
 Vue.use(BootstrapVue)
+
+sync(store, router)
 
 Vue.config.productionTip = false
 

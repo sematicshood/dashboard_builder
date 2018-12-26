@@ -12,7 +12,7 @@
         name: 'bar-component',
 
         components: {
-            barChart
+            barChart,
         },
 
         props: ['vuecolumn', 'vuerow'],
@@ -27,6 +27,7 @@
             }
         },
         mounted() {
+            console.log(this.datas),
             this.fillData()
         },
 
@@ -63,8 +64,9 @@
         watch: {
             titles(newv, oldv) {
                 this.fillData()
-
-                console.log(newv, oldv)
+            },
+            datas(newv, oldv) {
+                this.fillData()
             }
         },
 
