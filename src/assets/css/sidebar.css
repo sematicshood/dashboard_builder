@@ -45,7 +45,7 @@
 .title-view {
     text-align: center;
     padding: 10px;
-    background: #55efc4;
+    background: #20A8D8;
 }
 
 .title-view h6 {
@@ -70,14 +70,14 @@
 #selectModels ul li button, #titles li button {
     background: none;
     border: none;
-    border-bottom: 1px solid #dfe6e9;
+    border-bottom: 1px solid #ffffff;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
 }
 
 #selectModels ul li button:first-child, #titles li button:first-child {
-    border-top: 1px solid #dfe6e9;
+    border-top: 1px solid #ffffff;
 }
 
 #selectModels ul li button span:first-child, #titles li button span:first-child {
@@ -86,4 +86,8 @@
 
 #selectModels ul li button span:last-child, #titles li button span:last-child {
     float: right;
+}
+
+.select_model {
+    background: #63C2DE
 }

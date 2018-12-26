@@ -12,6 +12,7 @@
                 <button-save/>
                 <button-cancel/>
                 <button-changed></button-changed>
+                <font-awesome-icon icon="sign-out-alt" />
             </div>
         </div>
     </div>

@@ -1,7 +1,7 @@
 var axios = require('axios');
 
 var axiosInstance = axios.create({
-  baseURL: 'https://apps.feremall.com',
+  baseURL: 'http://localhost:7073',
 });
 
 module.exports = axiosInstance;
