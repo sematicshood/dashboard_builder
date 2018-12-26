@@ -43,6 +43,8 @@
             this.$store.dispatch('rows/loadTemplate'),
 
             this.$store.dispatch('data/loadData')
+
+            // this.loadData()
         },
     }
 </script>

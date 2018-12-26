@@ -17,6 +17,7 @@
                             <h6>Models</h6>
                         </div>
 
+                        <category-component/>
                         <select-models></select-models>
                     </div>
                     <div class="select-f">
@@ -60,12 +61,13 @@
     import judulColumn from './components/selectComponent/judulComponent.vue'
     import jenisColumn from './components/selectComponent/jenisColumnComponent.vue'
     import rowOption from './components/rowOption.vue'
+    import categoryComponent from './components/categoryComponent.vue'
 
     export default {
         name: 'sidebar',
 
         components: {
-            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption
+            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption, categoryComponent
         },
         
         computed: {
