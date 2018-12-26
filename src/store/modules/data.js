@@ -48,7 +48,6 @@ const mutations = {
         data[`${option['model']}`] = option['res']
         
         if(state.data != null) {
-            console.log('masuk sini')
             state.data[`${option['model']}`] = option['res']
         } else {
             state.data = data
@@ -159,7 +158,7 @@ const actions = {
             if(getters.getDatas[model] == undefined) {
                 const data      = {
                     order: "id desc",
-                    filters: `[('create_date','>=','${ from }'), ('create_date','<','${ to }')]`,
+                    // filters: `[('create_date','>=','${ from }'), ('create_date','<','${ to }')]`,
                     username: JSON.parse(localStorage.getItem('user'))['username'],
                     password: JSON.parse(localStorage.getItem('user'))['password'],
                     db_name: rootGetters['core/getDatabase']
@@ -174,7 +173,6 @@ const actions = {
 
                 client.get('/api_dashboard/' + model, {params: data})
                         .then(res => {
-                            console.log(res)
                             let data          =   {}
 
                             data[`${model}`]  =   res.data['results']
@@ -206,11 +204,8 @@ const actions = {
                     }
                 }
 
-            console.log(filter)
-
             client.get('/api_v2/' + 'account.analytic.account', {params: data})
                     .then(res => {
-                        console.log(res)
                         let data          =   {}
 
                         data[`account.analytic.account`]  =   res.data['results']
