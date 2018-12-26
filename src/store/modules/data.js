@@ -159,7 +159,7 @@ const actions = {
             if(getters.getDatas[model] == undefined) {
                 const data      = {
                     order: "id desc",
-                    // filters: `[('create_date','>=','${ from }'), ('create_date','<','${ to }')]`,
+                    filters: `[('create_date','>=','${ from }'), ('create_date','<','${ to }')]`,
                     username: JSON.parse(localStorage.getItem('user'))['username'],
                     password: JSON.parse(localStorage.getItem('user'))['password'],
                     db_name: rootGetters['core/getDatabase']

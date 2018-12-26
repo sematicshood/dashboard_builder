@@ -30,36 +30,32 @@ const mutations = {
 const actions = {
     getModels({ commit, dispatch, getters, rootGetters }) {
         return new Promise((resolve, reject) => {
-            if(getters.getModels.length == 0) {
-                dispatch('login/reload', {}, {root: true})
-                    .then((res) => {
-                        const token     = res,
-                                config    =   {
-                                                headers: {
-                                                    'access_token': token
-                                                }
-                                            },
-                                data      = {
-                                    field: "['name', 'model']"
-                                }
+            dispatch('login/reload', {}, {root: true})
+                .then((res) => {
+                    const token     = res,
+                            config    =   {
+                                            headers: {
+                                                'access_token': token
+                                            }
+                                        },
+                            data      = {
+                                field: "['name', 'model']"
+                            }
 
-                        client.get('/api_v2/ir.model', {params: data}, config)
-                                .then(res => {
-                                    console.log(res.data)
-                                    commit('setModels', res.data['results'])
-                                        
-                                    resolve(res.data['results'])
-                                })
-                                .catch(err => {
-                                    console.log(err)
-                                })
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
-            } else {
-                resolve(getters.getModels)
-            }
+                    client.get('/api_v2/ir.model', {params: data}, config)
+                            .then(res => {
+                                console.log(res.data['results'])
+                                commit('setModels', res.data['results'])
+                                    
+                                resolve(res.data['results'])
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         })
         
     },
@@ -69,7 +65,7 @@ const actions = {
         console.log(category)
 
         if(category == 'all') {
-            dispatch('getModels')
+            dispatch('getModels').then(res => commit('setModels', res))
         } else {
             const data      = {
                 username: JSON.parse(localStorage.getItem('user'))['username'],
