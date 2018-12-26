@@ -55,7 +55,7 @@
             },
             datas: {
                 get() {
-                    return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']]
+                    return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']] || []
                 }
             }
         },
@@ -63,8 +63,11 @@
         watch: {
             titles(newv, oldv) {
                 this.fillData()
+            },
 
-                console.log(newv, oldv)
+            row() {
+                console.log('change')
+                this.fillData()
             }
         },
 

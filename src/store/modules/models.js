@@ -1,5 +1,4 @@
 const client = require('./client');
-import qs from 'qs'
 
 const state = {
     models: [],
@@ -19,7 +18,6 @@ const getters = {
 const mutations = {
     setModels(state, models) {
         state.models = models
-        console.log(state.models)
     },
 
     SET_CATEGORY(state, category) {
@@ -44,7 +42,6 @@ const actions = {
 
                     client.get('/api_v2/ir.model', {params: data}, config)
                             .then(res => {
-                                console.log(res.data['results'])
                                 commit('setModels', res.data['results'])
                                     
                                 resolve(res.data['results'])
@@ -62,7 +59,6 @@ const actions = {
 
     setCategory({ commit, rootGetters, dispatch }, category) {
         commit('SET_CATEGORY', category)
-        console.log(category)
 
         if(category == 'all') {
             dispatch('getModels').then(res => commit('setModels', res))
@@ -75,9 +71,7 @@ const actions = {
     
             client.get('/api_dashboard/filter-modul/' + category, {params: data})
                         .then(res => {
-                            console.log(res)
                             let data          =   {}
-                            console.log(res.data)
     
                             commit('setModels', res.data)
                             

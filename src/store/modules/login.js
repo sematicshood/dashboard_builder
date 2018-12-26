@@ -1,5 +1,4 @@
 import qs from 'qs';
-import router from '../../router'
 
 const client = require('./client');
 
