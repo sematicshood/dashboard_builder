@@ -19,6 +19,8 @@
                     :style="`width: ${column['width']}%; left: ${column['left']}%;`"
                     @click="colOption(index, indexes)" v-if="indexes != 0">
 
+                    <b-btn v-if="type == 'view'" v-b-modal.filterModal size="sm" variant="danger">Filter Dashboard</b-btn>
+
                     <h5 v-text="column['title']"></h5>
                     
                     <table-component v-if="column['type'] == 'table'"
@@ -48,12 +50,11 @@
                     <polar-component v-if="column['type'] == 'polar'"
                            :vuerow="index"
                            :vuecolumn="indexes"/>
-
-                    <input v-model="date" type="date" @change="change"/>
-                    <input v-model="date_to" type="date" @change="change"/>
                 </div>
             </div>
         </div>
+
+        <filter-modal></filter-modal>
     </div>
 </template>
 
@@ -65,6 +66,7 @@
     import polarComponent from './type/polarComponent.vue'
     import doughnutComponent from './type/doughnutComponent.vue'
     import horizontalComponent from './type/horizontalComponent.vue'
+    import filterModal from './filterModal.vue'
     import { Event } from '../../event.js'
     import { mapGetters, mapState } from 'vuex'
 
@@ -79,18 +81,10 @@
         },
 
         components: {
-            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent
+            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal
         },
 
         methods: {
-            change() {
-                let data = {
-                    from: this.$data.date,
-                    to: this.$data.date_to
-                }
-                this.$store.dispatch('data/filterData', data)
-            },
-
             addColumn(row) {
                 this.$store.dispatch('rows/setRowSelect', row)
                 let totalWidth       = 100,
