@@ -12,14 +12,12 @@
 
 <script>
     import Multiselect from 'vue-multiselect'
-    import draggable from 'vuedraggable'
-    import { Event } from '../../event.js'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'selectModels',
         components: {
-            Multiselect, draggable
+            Multiselect
         },
 
         data () {
@@ -30,7 +28,7 @@
             }
         },
         methods: {
-            nameWithLang ({ name, model, id }) {
+            nameWithLang ({ name }) {
                 return `${name}`
             },
             action(value) {
@@ -63,10 +61,6 @@
                     if(haystack[i].prop == needle) return true;
                 }
                 return false;
-            },
-            onMove({ relatedContext, draggedContext }) {
-                const relatedElement = relatedContext.element;
-                const draggedElement = draggedContext.element;
             },
         },
         created() {
