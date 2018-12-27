@@ -94,9 +94,8 @@ const actions = {
     setSelected({ commit, rootGetters }) {
         let name            = 'template-dashboard-' +  rootGetters['workspace/getName'],
             selected        = JSON.parse(localStorage.getItem(name))
-            
-        if(name != undefined)
-            commit('SET_SELECTED', selected['selected'])
+        
+        commit('SET_SELECTED', selected['selected'] || [])
     },
 
     saveData({ getters }) {
