@@ -87,6 +87,13 @@ const getters = {
         return state.rows[row][column]['columns']
     },
 
+    getModel(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 1
+        
+        return state.rows[row][column]['model']
+    },
+
     // getColumnDetail(state) {
     //     console.log(state.rows[0][1])
     //     return state.rows[0][1]
@@ -348,7 +355,7 @@ const actions = {
 
     resetTitles({ commit }, data) {
         commit('RESET_TITLES', data)
-    }
+    },
 }
 
 export default {

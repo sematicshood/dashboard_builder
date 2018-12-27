@@ -192,31 +192,30 @@ const actions = {
 
     filterData({ commit, dispatch, getters, rootGetters }, filter) {
         return new Promise((resolve, reject) => {
+            let model = rootGetters['rows/getModel']
+            console.log(filter)
+
             const data      = {
                 order: "id desc",
-                // filters: `[('create_date','>=','${ filter['from'] }'), ('create_date','<=','${ filter['to'] }'),]`
-            },
-                config    =   {
-                    headers: {
-                        'username': localStorage.getItem('user')['username'],
-                        'password': localStorage.getItem('user')['password'],
-                        'db_name': rootGetters['core/getDatabase'],
-                    }
-                }
+                filters: filter,
+                'username': JSON.parse(localStorage.getItem('user'))['username'],
+                'password': JSON.parse(localStorage.getItem('user'))['password'],
+                'db_name': rootGetters['core/getDatabase'],
+            }
 
-            // client.get('/api_v2/' + 'account.analytic.account', {params: data})
-            //         .then(res => {
-            //             let data          =   {}
+            client.get('/api_dashboard/' + model, {params: data})
+                    .then(res => {
+                        let data          =   {}
 
-            //             data[`account.analytic.account`]  =   res.data['results']
+                        data[`model`]  =   res.data['results']
 
-            //             commit('SET_DATA', {res: res.data['results'], model: 'account.analytic.account'})
+                        commit('SET_DATA', {res: res.data['results'], model: model})
                         
-            //             resolve(res.data['results'])
-            //         })
-            //         .catch(err => {
-            //             commit('SET_DATA', {res: [], model: 'account.analytic.account'})
-            //         })
+                        resolve(res.data['results'])
+                    })
+                    .catch(err => {
+                        // commit('SET_DATA', {res: [], model: model})
+                    })
         })
     }
 }

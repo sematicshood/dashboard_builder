@@ -30,7 +30,7 @@ const actions = {
                                             },
                             data      = {
                                 field: "['name', 'field_description', 'ttype']",
-                                filters: `[('model_id', '=', ${ id }), ('ttype', '!=', 'many2one'), ('ttype', '!=', 'many2many')]`
+                                filters: `[('model_id', '=', ${ id }), ('ttype', '!=', 'many2one'), ('ttype', '!=', 'many2many'), ('ttype', '!=', 'selection'), ('ttype', '!=', 'boolean'), ('ttype', '!=', 'binary'), ('ttype', '!=', 'html')]`
                             }
 
                         client.get('/api_v2/ir.model.fields', {params: data}, config)
