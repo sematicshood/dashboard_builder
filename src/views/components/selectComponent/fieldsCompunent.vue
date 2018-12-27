@@ -2,7 +2,7 @@
     <div id="fields" v-if="colOptionShow">
         <!-- <multiselect v-model="val" :options="rows[rowOp][colOp]['columns']" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect> -->
         <select type="option" v-model="val" @change="addTitle(val)">
-            <option v-for="column in rows[rowOp][colOp]['columns']" :value="column">
+            <option v-for="column in rows[(rowOp) ? rowOp : 0][(colOp) ? colOp : 0]['columns']" :value="column">
                 <button @click="addTitle(column['name'], column['field_description'], column['ttype'])"><span>{{ column['field_description'] }}</span></button>
             </option>
         </select>
@@ -40,7 +40,7 @@
         },
 
         created() {
-            this.$data.options = this.rows[this.rowOp][this.colOp]['columns']
+            this.$data.options = this.rows[(this.rowOp) ? this.rowOp : 0][(this.colOp) ? this.colOp : 0]['columns']
         },
 
         methods: {

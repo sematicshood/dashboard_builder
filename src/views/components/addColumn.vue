@@ -62,7 +62,6 @@
             ...mapGetters('rows', {
                 'totalLeft': 'getTotalLeft',
                 'title': 'getTitle',
-                'selected': 'getSelected',
                 'options': 'getOptions',
                 'width': 'getWidth',
                 'maxWidth': 'getMaxWidth',
