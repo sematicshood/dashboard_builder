@@ -109,6 +109,16 @@
                         { text: 'set', value: 'True' },
                         { text: 'not set', value: 'False' },
                     ],
+                    float: [
+                        { text: 'equal to', value: '=' },
+                        { text: 'not equal to', value: '!=' },
+                        { text: 'greater than', value: '>' },
+                        { text: 'less than', value: '<' },
+                        { text: 'greater than and equal to', value: '>=' },
+                        { text: 'less than and equal to', value: '<=' },
+                        { text: 'set', value: 'True' },
+                        { text: 'not set', value: 'False' },
+                    ],
                 }
             }
         },

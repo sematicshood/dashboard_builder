@@ -1,7 +1,5 @@
 <template>
-    <div id="rowOption" v-if="rowOptionShow">
-        <button-delete-row/>
-        <br>
+    <div id="rowOption">
         <height-row/>
     </div>
 </template>

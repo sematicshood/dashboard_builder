@@ -7,7 +7,7 @@
             :index="indexMethod" width="50" v-if="datas != undefined && titles.length > 0">
             </el-table-column>
 
-            <el-table-column fixed sortable v-for="t in titles" :prop="t.prop" :label="t.label" :key="t.label">
+            <el-table-column fixed sortable v-for="t in titles" :prop="filterProp(t)" :label="t.label" :key="t.label">
             </el-table-column>
         </el-table>
     </div>
@@ -53,6 +53,14 @@
         },
 
         methods: {
+            filterProp(prop) {
+                if(prop.type == 'many2one' || prop.type == 'one2many') {
+                    return prop.prop + '[1]'
+                } else {
+                    return prop.prop
+                }
+            },
+
             getSummaries(param) {
                 const { columns, data } = param;
                 const sums = [];

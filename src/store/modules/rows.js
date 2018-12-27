@@ -76,7 +76,6 @@ const getters = {
     },
 
     getColumnDetail: (state) => (data) => {
-        console.log(data)
         return state.rows[0][1]
     },
 
@@ -165,10 +164,6 @@ const mutations = {
         state.title = title
     },
 
-    SET_SELECTED(state, selected) {
-        state.selected = selected
-    },
-
     DELETE_COLUMN(state) {
         let width   =   state.rows[state.rowOp][state.colOp]['width']
 
@@ -199,7 +194,8 @@ const mutations = {
     },
 
     ADD_TITLE(state, option) {
-        state.rows[state.rowOp][state.colOp]['titles'].push(option)
+        if(state.rows[state.rowOp][state.colOp]['titles'].map(e => e.prop).indexOf(option.prop) < 0)
+            state.rows[state.rowOp][state.colOp]['titles'].push(option)
     },
 
     SET_DATA_ROW(state, data) {
@@ -299,7 +295,6 @@ const actions = {
 
     loadTemplate({ commit, dispatch, rootGetters }) {
         let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
-            template    = JSON.parse(localStorage.getItem(name)) || [],
             rows        = JSON.parse(localStorage.getItem(name))['rows'] || []
 
         commit('SET_ROWS', rows)
