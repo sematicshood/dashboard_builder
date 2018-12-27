@@ -1,8 +1,8 @@
 <template>
     <div id="category">
-        <select v-model="val" @change="change()">
-            <option v-for="category in categories" :value="category" v-text="category"></option>
-        </select>
+        <b-form-select v-model="val" @change="change()" size="sm">
+            <option v-for="category in categories" :value="category" v-text="category" ></option>
+        </b-form-select>
     </div>
 </template>
 

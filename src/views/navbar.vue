@@ -7,18 +7,18 @@
                 </div>
             </div>
             <div class="content col-md-6">
-                <button-add-row/>
-                <font-awesome-icon icon="sync"/>
+                <button-add-row/>  
                 <button-save/>
                 <button-cancel/>
                 <button-changed></button-changed>
-                <font-awesome-icon icon="sign-out-alt" />
+                <logout-button/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import logoutButton from './components/logoutButton.vue'
     import buttonChanged from './components/buttonChanged.vue'
     import buttonAddRow from './components/buttonAddRow.vue'
     import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
@@ -27,7 +27,7 @@
     export default {
         name: 'navbar',
         components: {
-            buttonChanged, buttonAddRow, buttonSave, buttonCancel
+            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton
         }      
     }
 </script>

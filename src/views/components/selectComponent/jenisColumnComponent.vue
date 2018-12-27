@@ -1,6 +1,9 @@
 <template>
     <div id="jenisColumn" v-if="colOptionShow && type == 'edit'">
-        <b-form-select v-model="selected" :options="options" size="sm" placeholder="Pilih jenis column"/>
+        <b-form-group>
+            <label class="label-form">Type Chart</label>
+            <b-form-select v-model="selected" :options="options" size="sm" placeholder="Pilih jenis column"/>
+        </b-form-group>
     </div>
 </template>
 

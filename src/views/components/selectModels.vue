@@ -1,6 +1,6 @@
 <template>
     <div id="selectModels" v-if="type == 'edit'">
-        <multiselect class="dropdownMultySelect" v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect>
+        <multiselect class="dropdownMultySelect sidebar-dropdown" v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action" size="sm"></multiselect>
         
         <ul>
             <li v-for="(select, i) in selected">

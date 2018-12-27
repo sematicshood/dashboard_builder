@@ -1,11 +1,14 @@
 <template>
     <div id="fields" v-if="colOptionShow && type == 'edit'">
         <!-- <multiselect v-model="val" :options="rows[rowOp][colOp]['columns']" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect> -->
-        <select type="option" v-model="val" @change="addTitle(val)">
-            <option v-for="column in rows[rowOp][colOp]['columns']" :value="column">
-                <button @click="addTitle(column['name'], column['field_description'])"><span>{{ column['field_description'] }}</span></button>
-            </option>
-        </select>
+        <b-form-group>
+            <label class="label-form">Select Field</label> 
+            <select type="option" v-model="val" @change="addTitle(val)" class="form-control form-control-sm custom-select custom-select-sm">
+                <option v-for="column in rows[rowOp][colOp]['columns']" :value="column">
+                    <button @click="addTitle(column['name'], column['field_description'])"><span>{{ column['field_description'] }}</span></button>
+                </option>
+            </select>
+        </b-form-group>
     </div>
 </template>
 
