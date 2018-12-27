@@ -55,3 +55,14 @@
 }
 .back { text-align: left; margin-top:10px;}
 .back a {color: #444444; font-size: 13px;text-decoration: none;}
+
+.img-login img{
+  margin-top: 70px;
+  width: 70%;
+}
+
+.logo-semut{
+  width: 50px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}

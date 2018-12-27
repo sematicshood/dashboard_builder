@@ -98,7 +98,4 @@
 </script>
 
 <style>
-    .model_select {
-        background: crimson;
-    }
 </style>

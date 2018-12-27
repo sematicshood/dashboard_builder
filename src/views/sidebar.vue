@@ -55,7 +55,9 @@
                         <div class="title-view">
                             <h6>Row Style</h6>
                         </div>
-                        <row-option/>
+                        <div class="style-content-sidebar">
+                            <height-row/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,6 +67,7 @@
 
 <script>
     import { mapGetters } from 'vuex'
+    import heightRow from './components/rowComponent/heightRow.vue'
     import selectModels from './components/selectModels.vue'
     import titlesColumn from './components/selectComponent/titlesComponent.vue'
     import fieldsColumn from './components/selectComponent/fieldsCompunent.vue'
@@ -77,7 +80,7 @@
         name: 'sidebar',
 
         components: {
-            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption, categoryComponent
+            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption, categoryComponent, heightRow
         },
         
         computed: {
