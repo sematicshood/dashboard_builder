@@ -1,4 +1,5 @@
-const client = require('./client');
+// const client = require('./client');
+import { client } from './client'
 
 const state = {
     datas: {},
@@ -92,9 +93,9 @@ const actions = {
 
     setSelected({ commit, rootGetters }) {
         let name            = 'template-dashboard-' +  rootGetters['workspace/getName'],
-            selected        = JSON.parse(localStorage.getItem(name))['selected'] || []
-            
-        commit('SET_SELECTED', selected)
+            selected        = JSON.parse(localStorage.getItem(name))
+        
+        commit('SET_SELECTED', selected['selected'] || [])
     },
 
     saveData({ getters }) {

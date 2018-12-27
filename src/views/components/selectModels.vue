@@ -34,6 +34,7 @@
                 return `${name}`
             },
             action(value) {
+                console.log(this.selected)
                 if(this.selected.indexOf(value) < 0)
                     this.$store.dispatch('data/addSelected', value)
             },
@@ -70,10 +71,7 @@
             },
         },
         created() {
-            this.$store.dispatch('models/getModels')
-                .then((res) => {
-                    
-                }),
+            this.$store.dispatch('models/getModels'),
 
             this.$store.dispatch('data/setSelected')           
         },

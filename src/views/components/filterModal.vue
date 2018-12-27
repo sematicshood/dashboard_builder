@@ -81,6 +81,14 @@
                         { text: 'set', value: 'True' },
                         { text: 'not set', value: 'False' },
                     ],
+                    many2one: [
+                        { text: 'contains', value: 'ilike' },
+                        { text: "doesn't contain", value: 'not ilike' },
+                        { text: 'equal to', value: '=' },
+                        { text: 'not equal to', value: '!=' },
+                        { text: 'set', value: 'True' },
+                        { text: 'not set', value: 'False' },
+                    ],
                     integer: [
                         { text: 'equal to', value: '=' },
                         { text: 'not equal to', value: '!=' },

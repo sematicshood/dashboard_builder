@@ -1,5 +1,5 @@
 <template>
-    <div id="fields" v-if="colOptionShow && type == 'edit'">
+    <div id="fields" v-if="colOptionShow && type == 'edit' && rowOp != '' && colOp != ''">
         <!-- <multiselect v-model="val" :options="rows[rowOp][colOp]['columns']" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect> -->
         <select type="option" v-model="val" @change="addTitle(val)">
             <option v-for="column in rows[rowOp][colOp]['columns']" :value="column">
