@@ -74,6 +74,7 @@
     import judulColumn from './components/selectComponent/judulComponent.vue'
     import jenisColumn from './components/selectComponent/jenisColumnComponent.vue'
     import rowOption from './components/rowOption.vue'
+    import widthColumn from './components/column/widthColumn.vue'
     import categoryComponent from './components/categoryComponent.vue'
 
     export default {

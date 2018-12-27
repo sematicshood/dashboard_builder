@@ -43,7 +43,7 @@
         },
 
         created() {
-            this.$data.options = this.rows[this.rowOp][this.colOp]['columns']
+            this.$data.options = this.rows[(this.rowOp) ? this.rowOp : 0][(this.colOp) ? this.colOp : 0]['columns']
         },
 
         methods: {
