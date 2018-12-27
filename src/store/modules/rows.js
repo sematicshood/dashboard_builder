@@ -80,6 +80,13 @@ const getters = {
         return state.rows[0][1]
     },
 
+    getColumns(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 1
+        
+        return state.rows[row][column]['columns']
+    },
+
     // getColumnDetail(state) {
     //     console.log(state.rows[0][1])
     //     return state.rows[0][1]
@@ -188,9 +195,17 @@ const mutations = {
         state.rows[state.rowOp][state.colOp]['titles'].push(option)
     },
 
+    SET_DATA_ROW(state, data) {
+        state.rows[state.rowOp][state.colOp]['data'] = data
+    },
+
     REMOVE_TITLE(state, index) {
         state.rows[state.rowOp][state.colOp]['titles'].splice(index, 1)
     },
+
+    RESET_TITLES(state) {
+        state.rows[state.rowOp][state.colOp]['titles'] = []
+    }
 }
 
 const actions = {
@@ -326,6 +341,14 @@ const actions = {
 
         dispatch('save', false)
     },
+
+    setDataRow({ commit }, data) {
+        commit('SET_DATA_ROW', data)
+    },
+
+    resetTitles({ commit }, data) {
+        commit('RESET_TITLES', data)
+    }
 }
 
 export default {

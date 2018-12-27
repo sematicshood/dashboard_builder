@@ -3,7 +3,7 @@
         <multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect>
         
         <ul>
-            <li v-for="(select, i) in selected">
+            <li v-for="(select, i) in selected" :class="{'model_select': rows[rowOp][colOp]['model'] == select['model'] }">
                 <button @click="modelClick(select['id'], select['model'])"><span>{{ select['name'] }}</span> <span @click="remove(i)">x</span></button>
             </li>
         </ul>
@@ -14,7 +14,7 @@
     import Multiselect from 'vue-multiselect'
     import draggable from 'vuedraggable'
     import { Event } from '../../event.js'
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapState } from 'vuex'
 
     export default {
         name: 'selectModels',
@@ -26,6 +26,7 @@
             return {
                 value: [],
                 columns: [],
+                model: '',
             }
         },
         methods: {
@@ -50,6 +51,8 @@
                 this.$store.dispatch('data/getDatas', model)
                     .then(res => {
                         this.$store.dispatch('data/selectData', {model, res})
+                        this.$store.dispatch('rows/setDataRow', res)
+                        this.$store.dispatch('rows/resetTitles')
                     })
 
                 this.$store.dispatch('rows/selectModel', model)
@@ -86,6 +89,18 @@
             ...mapGetters('models', {
                 options: 'getModels'
             }),
+
+            ...mapGetters('rows', {
+                rowOp: 'getRowOp',
+                colOp: 'getColOp',
+                rows: 'getRows'
+            }),
         },
     }
 </script>
+
+<style>
+    .model_select {
+        background: crimson;
+    }
+</style>
