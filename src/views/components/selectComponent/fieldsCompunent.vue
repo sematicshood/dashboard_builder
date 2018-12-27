@@ -1,5 +1,5 @@
 <template>
-    <div id="fields" v-if="colOptionShow && type == 'edit' && rowOp != '' && colOp != ''">
+    <div id="fields" v-if="colOptionShow">
         <!-- <multiselect v-model="val" :options="rows[rowOp][colOp]['columns']" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect> -->
         <b-form-group>
             <label class="label-form">Select Field</label> 
