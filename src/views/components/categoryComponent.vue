@@ -1,7 +1,7 @@
 <template>
     <div id="category">
-        <select v-model="val" @change="change()">
-            <option v-for="category in categories" :value="category" v-text="category"></option>
+        <select v-model="val" @change="change()"  class="custom-select custom-select-sm">
+            <option v-for="category in categories" :value="category" v-text="category" ></option>
         </select>
     </div>
 </template>

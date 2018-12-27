@@ -133,18 +133,25 @@ a {
     color: black !important;
 }
 
-.btn-primary {
-    background-color: rgb(255, 123, 0) !important;
-    border-color: rgb(255, 123, 0) !important;
-}
-
-.btn-info {
-    color: black !important;
-    background-color: #ffc107 !important;
-    border-color: #ffc107 !important;
-}
 
 .list-group-item{
     background-color: rgb(255, 123, 0) !important;
     border: 0px solid #ffc107 !important;
 }
+
+#workspace{
+    height: 84vh;
+    overflow-y: scroll;
+}
+#workspace::-webkit-scrollbar
+{
+  width: 7px;
+  background-color: none;
+}
+#workspace::-webkit-scrollbar-thumb
+{
+  border-radius: 7px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: rgba(73, 73, 73, 0.096);
+}
+

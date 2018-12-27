@@ -19,7 +19,7 @@
   background: #ffffff none repeat scroll 0 0;
   border-radius: 2px;
   margin: 10px auto 30px;
-  max-width: 45%;
+  max-width: 75%;
   padding: 50px 70px 70px 71px;
 }
 
@@ -55,3 +55,14 @@
 }
 .back { text-align: left; margin-top:10px;}
 .back a {color: #444444; font-size: 13px;text-decoration: none;}
+
+.img-login img{
+  margin-top: 70px;
+  width: 70%;
+}
+
+.logo-semut{
+  width: 50px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}

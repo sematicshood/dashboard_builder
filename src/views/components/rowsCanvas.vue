@@ -1,17 +1,16 @@
 <template>
     <div id="rows">
+        
         <div v-for="(row, index) in rows" class="s-row">
+
             <div class="button-row" 
                  v-show="type == 'edit'" 
                  v-b-modal.modalColumn 
                  @click="addColumn(index)">
                 <font-awesome-icon icon="plus"/>
             </div>
-
-            <div class="button-row" 
-                v-show="type == 'edit'" 
-                @click="rowOption(index)">
-                <font-awesome-icon icon="edit"/>
+            <div class="button-row delete-row" v-show="type == 'edit'">
+                <button-delete-row/>
             </div>
 
             <div class="rows" :style="`height: ${ row[0]['height'] }px`">
@@ -19,7 +18,7 @@
                     :style="`width: ${column['width']}%; left: ${column['left']}%;`"
                     @click="colOption(index, indexes)" v-if="indexes != 0">
 
-                    <b-btn v-if="type == 'view'" v-b-modal.filterModal size="sm" variant="danger">Filter Dashboard</b-btn>
+                    <b-btn class="btn-filter-dashboard" v-if="type == 'view'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
 
                     <h5 v-text="column['title']"></h5>
                     
@@ -59,6 +58,7 @@
 </template>
 
 <script>
+    import buttonDeleteRow from './rowComponent/buttonDeleteRow.vue'
     import tableComponent from './type/tableComponent.vue'
     import lineComponent from './type/lineComponent.vue'
     import barComponent from './type/barComponent.vue'
@@ -81,7 +81,7 @@
         },
 
         components: {
-            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal
+            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow
         },
 
         methods: {
@@ -140,7 +140,7 @@
     }
 
     .button-row {
-        background: #6c5ce7;
+        background: #17a2b8;
         color: white;
         position: absolute;
         z-index: 99;
@@ -148,10 +148,20 @@
         padding: 5px 10px;
         border-radius: 3px;
         left: 10px;
+        widows: 30.25px;
+        height: 31px;
+
     }
 
     .button-row:nth-child(2) {
-        left: 50px;
-        background: #e17055;
+        top: 5px;
+        left: 40px;
+        background: none;
     }
+
+    .btn-filter-dashboard{
+        float: left;
+        margin-bottom: 10px;
+    }
+
 </style>
