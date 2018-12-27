@@ -55,7 +55,6 @@
                         <div class="title-view">
                             <h6>Row Style</h6>
                         </div>
-
                         <row-option/>
                     </div>
                 </div>
