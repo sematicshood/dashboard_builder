@@ -1,5 +1,5 @@
 <template>
-    <div id="selectModels" v-if="type == 'edit'">
+    <div id="selectModels" v-if="type == 'edit' && rowOp != '' && colOp != ''">
         <multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect>
         
         <ul>
@@ -70,10 +70,7 @@
             },
         },
         created() {
-            this.$store.dispatch('models/getModels')
-                .then((res) => {
-                    
-                }),
+            this.$store.dispatch('models/getModels'),
 
             this.$store.dispatch('data/setSelected')           
         },

@@ -1,4 +1,5 @@
-const client = require('./client');
+// const client = require('./client');
+import { client } from './client'
 
 const state = {
     models: [],
