@@ -1,6 +1,6 @@
 <template>
     <div id="logoutButton">
-        <b-btn @click="logout" size="sm" variant="danger">Logout</b-btn>
+        <font-awesome-icon icon="sign-out-alt" @click="logout"/>
     </div>
 </template>
 

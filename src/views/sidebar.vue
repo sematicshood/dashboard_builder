@@ -16,37 +16,47 @@
                         <div class="title-view">
                             <h6>Models</h6>
                         </div>
-
-                        <category-component/>
-                        <select-models></select-models>
+                        <div class="content-sidebar-view">
+                            <b-form-group>
+                                <label class="label-form">Select Module</label>
+                                <category-component/>
+                            </b-form-group>
+                            <b-form-group>
+                                <label class="label-form">Select Model</label>
+                                <select-models></select-models>
+                            </b-form-group>
+                        </div>
                     </div>
                     <div class="select-f">
                         <div class="title-view">
                             <h6>Fields</h6>
                         </div>
-                        <fields-column></fields-column>
-                        
-                        <titles-column></titles-column>
+                        <div class="content-sidebar-view">
+                            <fields-column></fields-column>                                      
+                            <titles-column></titles-column>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div id="style-view" v-show="style">
-                <div class="select-m">
-                    <div class="title-view">
-                        <h6>Column Style</h6>
+                <div class="content-view">
+                    <div class="select-m">
+                        <div class="title-view">
+                            <h6>Chart Style</h6>
+                        </div>
+                        <div class="style-content-sidebar">
+                            <judul-column/>
+                            <jenis-column/>
+                        </div>                    
                     </div>
 
-                    <judul-column/>
-                    <jenis-column/>
-                </div>
-
-                <div class="select-m">
-                    <div class="title-view">
-                        <h6>Row Style</h6>
+                    <div class="select-m">
+                        <div class="title-view">
+                            <h6>Row Style</h6>
+                        </div>
+                        <row-option/>
                     </div>
-
-                    <row-option/>
                 </div>
             </div>
         </div>
