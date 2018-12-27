@@ -34,6 +34,7 @@
                 return `${name}`
             },
             action(value) {
+                console.log(this.selected)
                 if(this.selected.indexOf(value) < 0)
                     this.$store.dispatch('data/addSelected', value)
             },
