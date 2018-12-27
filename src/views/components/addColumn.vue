@@ -41,7 +41,8 @@
                         title: this.title,
                         type: this.selected,
                         titles: [],
-                        columns: []
+                        columns: [],
+                        data: []
                     }
 
                 if(this.maxWidth != 0)

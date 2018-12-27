@@ -75,7 +75,7 @@ const actions = {
     selectData({ commit, dispatch }, {model, res}) {
         commit('ADD_DATA', {model, res})
 
-        dispatch('saveData')
+        // dispatch('saveData')
     },
 
     removeSelected({ commit, dispatch }, i) {
@@ -123,7 +123,7 @@ const actions = {
     loadData({ getters, state, commit, dispatch, rootGetters }) {
         let models = getters.getModels
 
-        commit('DEFAULT_DATA', JSON.parse(localStorage.getItem('data')))
+        // commit('DEFAULT_DATA', JSON.parse(localStorage.getItem('data')))
 
         if(rootGetters['rows/getRows'] != undefined) {
             rootGetters['rows/getRows'].forEach(element => {
@@ -139,7 +139,7 @@ const actions = {
                                     .then(res => {
                                         commit('SET_DATA', {model, res})
 
-                                        dispatch('saveData')
+                                        // dispatch('saveData')
                                     })
                             }).catch(err => console.log(err))
                         }
@@ -194,7 +194,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             const data      = {
                 order: "id desc",
-                filters: `[('create_date','>=','${ filter['from'] }'), ('create_date','<=','${ filter['to'] }'),]`
+                // filters: `[('create_date','>=','${ filter['from'] }'), ('create_date','<=','${ filter['to'] }'),]`
             },
                 config    =   {
                     headers: {
@@ -204,19 +204,19 @@ const actions = {
                     }
                 }
 
-            client.get('/api_v2/' + 'account.analytic.account', {params: data})
-                    .then(res => {
-                        let data          =   {}
+            // client.get('/api_v2/' + 'account.analytic.account', {params: data})
+            //         .then(res => {
+            //             let data          =   {}
 
-                        data[`account.analytic.account`]  =   res.data['results']
+            //             data[`account.analytic.account`]  =   res.data['results']
 
-                        commit('SET_DATA', {res: res.data['results'], model: 'account.analytic.account'})
+            //             commit('SET_DATA', {res: res.data['results'], model: 'account.analytic.account'})
                         
-                        resolve(res.data['results'])
-                    })
-                    .catch(err => {
-                        commit('SET_DATA', {res: [], model: 'account.analytic.account'})
-                    })
+            //             resolve(res.data['results'])
+            //         })
+            //         .catch(err => {
+            //             commit('SET_DATA', {res: [], model: 'account.analytic.account'})
+            //         })
         })
     }
 }
