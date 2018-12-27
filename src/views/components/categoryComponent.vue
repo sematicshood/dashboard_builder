@@ -1,8 +1,8 @@
 <template>
     <div id="category">
-        <b-form-select v-model="val" @change="change()" size="sm">
+        <select v-model="val" @change="change()"  class="custom-select custom-select-sm">
             <option v-for="category in categories" :value="category" v-text="category" ></option>
-        </b-form-select>
+        </select>
     </div>
 </template>
 

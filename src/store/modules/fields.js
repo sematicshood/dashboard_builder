@@ -1,4 +1,5 @@
-const client = require('./client');
+// const client = require('./client');
+import { client } from './client'
 
 const state = {
     fields: {}
@@ -29,6 +30,7 @@ const actions = {
                                                 }
                                             },
                             data      = {
+                                order: "name asc",
                                 field: "['name', 'field_description', 'ttype']",
                                 filters: `[('model_id', '=', ${ id }), ('ttype', '!=', 'many2one'), ('ttype', '!=', 'many2many'), ('ttype', '!=', 'selection'), ('ttype', '!=', 'boolean'), ('ttype', '!=', 'binary'), ('ttype', '!=', 'html')]`
                             }

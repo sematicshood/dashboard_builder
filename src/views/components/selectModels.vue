@@ -1,6 +1,6 @@
 <template>
     <div id="selectModels" v-if="type == 'edit'">
-        <multiselect class="dropdownMultySelect sidebar-dropdown" v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action" size="sm"></multiselect>
+        <multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect>
         
         <ul>
             <li v-for="(select, i) in selected" :class="{'model_select': rows[rowOp][colOp]['model'] == select['model'] }">
@@ -70,10 +70,7 @@
             },
         },
         created() {
-            this.$store.dispatch('models/getModels')
-                .then((res) => {
-                    
-                }),
+            this.$store.dispatch('models/getModels'),
 
             this.$store.dispatch('data/setSelected')           
         },

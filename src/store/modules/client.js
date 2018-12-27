@@ -1,7 +1,9 @@
-var axios = require('axios');
+// var axios = require('axios');
+import axios from 'axios'
 
-var axiosInstance = axios.create({
+export const client = axios.create({
   baseURL: 'http://localhost:7073',
 });
 
-export default axiosInstance
+// module.exports = axiosInstance;
+// export default axiosInstance
