@@ -22,6 +22,12 @@
     export default {
         name: 'add-column',
 
+        data() {
+            return {
+                selected: ''
+            }
+        },
+
         methods: {
             addColumnToRow() {
                 let width = 0,
@@ -39,7 +45,7 @@
                         width: width,
                         left: this.totalLeft,
                         title: this.title,
-                        type: this.selected,
+                        type: this.$data.selected,
                         titles: [],
                         columns: [],
                         data: []
@@ -85,15 +91,15 @@
                 }
             },
 
-            selected: {
-                set(selected) {
-                    this.$store.dispatch('rows/setSelected', selected)
-                },
+            // selected: {
+            //     set(selected) {
+            //         this.$store.dispatch('rows/setSelected', selected)
+            //     },
 
-                get() {
-                    return this.rows.selected
-                }
-            }
+            //     get() {
+            //         return this.rows.selected
+            //     }
+            // }
         }
     }
 </script>

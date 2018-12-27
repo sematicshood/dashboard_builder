@@ -195,11 +195,13 @@ const mutations = {
     },
 
     UPDATE_SELECTED(state, selected) {
+        console.log(state.colOp)
         state.rows[state.rowOp][state.colOp]['type'] = selected
     },
 
     ADD_TITLE(state, option) {
-        state.rows[state.rowOp][state.colOp]['titles'].push(option)
+        if(state.rows[state.rowOp][state.colOp]['titles'].map(e => e.prop).indexOf(option.prop) < 0)
+            state.rows[state.rowOp][state.colOp]['titles'].push(option)
     },
 
     SET_DATA_ROW(state, data) {

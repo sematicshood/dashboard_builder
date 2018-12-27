@@ -7,7 +7,7 @@
             :index="indexMethod" width="50" v-if="datas != undefined && titles.length > 0">
             </el-table-column>
 
-            <el-table-column fixed sortable v-for="t in titles" :prop="t.prop" :label="t.label" :key="t.label">
+            <el-table-column fixed sortable v-for="t in titles" :prop="(t.type == 'many2one' || t.type == 'one2many') ? t.prop + '[1]' : t.prop" :label="t.label" :key="t.label">
             </el-table-column>
         </el-table>
     </div>

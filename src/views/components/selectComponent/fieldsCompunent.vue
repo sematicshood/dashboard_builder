@@ -3,7 +3,7 @@
         <!-- <multiselect v-model="val" :options="rows[rowOp][colOp]['columns']" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect> -->
         <select type="option" v-model="val" @change="addTitle(val)">
             <option v-for="column in rows[rowOp][colOp]['columns']" :value="column">
-                <button @click="addTitle(column['name'], column['field_description'])"><span>{{ column['field_description'] }}</span></button>
+                <button @click="addTitle(column['name'], column['field_description'], column['ttype'])"><span>{{ column['field_description'] }}</span></button>
             </option>
         </select>
     </div>
@@ -45,7 +45,7 @@
 
         methods: {
             addTitle(column) {
-                this.$store.dispatch('rows/addTitle', {prop: column.name, label: column.field_description})
+                this.$store.dispatch('rows/addTitle', {prop: column.name, label: column.field_description, type: column.ttype})
             },
 
             action() {
