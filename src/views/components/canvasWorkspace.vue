@@ -9,6 +9,7 @@
 </template>
 
 <script>
+    import buttonDeleteRow from './rowComponent/buttonDeleteRow.vue'
     import { Event } from '../../event.js'
     import draggable from 'vuedraggable'
     import RowCanvas from './rowsCanvas.vue'
@@ -22,7 +23,7 @@
         name: 'canvasWorkspace',
 
         components: {
-            draggable, RowCanvas, addRows, rowOption, addColumn, buttonAddRow
+            draggable, RowCanvas, addRows, rowOption, addColumn, buttonAddRow, buttonDeleteRow
         },
 
         computed: {

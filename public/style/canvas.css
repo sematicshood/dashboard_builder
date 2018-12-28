@@ -3,7 +3,6 @@ body {
 }
 
 .rows {
-    background: #b2bec3; 
     position: relative;
     margin-bottom: 75px;
 }
@@ -20,10 +19,18 @@ body {
     background: #fafafa; 
     height: 100%; 
     position: absolute; 
-    border: 1px dashed gray;
+    border: 1px solid #c8ced3;
+    border-radius: 0.25rem;
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
+}
+
+.column-select{
+    border-color: #80bdff;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(128, 189, 255, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(128, 189, 255, 0.5);
 }
 
 body {

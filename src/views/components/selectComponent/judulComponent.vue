@@ -1,7 +1,10 @@
 <template>
     <div id="judulComponent" v-if="colOptionShow && type == 'edit'">
-        <b-form-input size="sm" type="text" v-model="rows[rowOp][colOp]['title']"
-                        placeholder="Judul Column"/>
+        <b-form-group>
+            <label class="label-form">Title Chart</label>
+            <b-form-input size="sm" type="text" v-model="rows[rowOp][colOp]['title']"
+                        placeholder="Judul Column"/>    
+        </b-form-group>
     </div>
 </template>
 
