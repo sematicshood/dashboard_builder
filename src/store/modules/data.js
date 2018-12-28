@@ -138,11 +138,18 @@ const actions = {
 
                                 dispatch('getDatas', model)
                                     .then(res => {
+                                        console.log('done')
                                         commit('SET_DATA', {model, res})
 
                                         // dispatch('saveData')
                                     })
-                            }).catch(err => console.log(err))
+                                    .catch(err => {
+                                        console.log(err)
+                                    })
+                            }).catch(err => {
+                                console.log(err)
+                                // commit('SET_DATA', {model, []})
+                            })
                         }
                     }
                 }
@@ -156,45 +163,33 @@ const actions = {
             to      = `${d.getFullYear()}-${d.getMonth()+1}-1`
         
         return new Promise((resolve, reject) => {
-            if(getters.getDatas[model] == undefined) {
-                const data      = {
-                    order: "id desc",
-                    // filters: `[('create_date','>=','${ from }'), ('create_date','<','${ to }')]`,
-                    username: JSON.parse(localStorage.getItem('user'))['username'],
-                    password: JSON.parse(localStorage.getItem('user'))['password'],
-                    db_name: rootGetters['core/getDatabase']
-                },
-                    config    =   {
-                        headers: {
-                            'username': localStorage.getItem('user')['username'],
-                            'password': localStorage.getItem('user')['password'],
-                            'db_name': rootGetters['core/getDatabase'],
-                        }
-                    }
-
-                client.get('/api_dashboard/' + model, {params: data})
-                        .then(res => {
-                            let data          =   {}
-
-                            data[`${model}`]  =   res.data['results']
-
-                            commit('setDatas', {data: res.data['results'], model: model})
-                            
-                            resolve(res.data['results'])
-                        })
-                        .catch(err => {
-                            console.log(err.response)
-                        })
-            } else {
-                resolve(getters.getDatas[model])
+            const data      = {
+                order: "id desc",
+                // filters: `[('create_date','>=','${ from }'), ('create_date','<','${ to }')]`,
+                username: JSON.parse(localStorage.getItem('user'))['username'],
+                password: JSON.parse(localStorage.getItem('user'))['password'],
+                db_name: rootGetters['core/getDatabase']
             }
+
+            client.get('/api_dashboard/' + model, {params: data})
+                    .then(res => {
+                        let data          =   {}
+
+                        data[`${model}`]  =   res.data['results']
+
+                        commit('setDatas', {data: res.data['results'], model: model})
+                        
+                        resolve(res.data['results'])
+                    })
+                    .catch(err => {
+                        reject(err.response)
+                    })
         })
     },
 
     filterData({ commit, dispatch, getters, rootGetters }, filter) {
         return new Promise((resolve, reject) => {
             let model = rootGetters['rows/getModel']
-            console.log(filter)
 
             const data      = {
                 order: "id desc",
@@ -215,6 +210,7 @@ const actions = {
                         resolve(res.data['results'])
                     })
                     .catch(err => {
+                        reject(err)
                         // commit('SET_DATA', {res: [], model: model})
                     })
         })

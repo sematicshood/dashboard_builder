@@ -1,8 +1,8 @@
 <template>
-    <div id="buttonDeleteRow" v-if="rowOptionShow && type == 'edit'">
-         <b-btn v-show="type == 'edit'" size="sm" 
-                variant="warning" 
-                @click="deleteRow(rowOp)">Hapus Row</b-btn>
+    <div id="buttonDeleteRow">
+         <b-btn size="sm" 
+                variant="info" 
+                @click="deleteRow(rowOp)"><font-awesome-icon icon="trash"/></b-btn>
     </div>
 </template>
 

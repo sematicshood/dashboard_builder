@@ -13,7 +13,7 @@
         data() {
             return {
                 val: [],
-                categories: ['crm', 'product', 'all', 'sale', 'hr', 'purchase']
+                categories: ['all', 'penjualan', 'pembelian', 'crm', 'kontak', 'proyek', 'penagihan', 'timesheet', 'karyawan', 'produk', 'beban']
             }
         },
 

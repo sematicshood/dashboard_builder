@@ -3,7 +3,7 @@
         <multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect>
         
         <ul>
-            <li v-for="(select, i) in selected" :class="{'model_select': rows[rowOp][colOp]['model'] == select['model'] }">
+            <li v-for="(select, i) in selected" :class="{'model_select': rows[(rowOp) ? rowOp : 0][(colOp) ? colOp : 0]['model'] == select['model'] }">
                 <button @click="modelClick(select['id'], select['model'])"><span>{{ select['name'] }}</span> <span @click="remove(i)">x</span></button>
             </li>
         </ul>
@@ -12,14 +12,12 @@
 
 <script>
     import Multiselect from 'vue-multiselect'
-    import draggable from 'vuedraggable'
-    import { Event } from '../../event.js'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'selectModels',
         components: {
-            Multiselect, draggable
+            Multiselect
         },
 
         data () {
@@ -30,12 +28,11 @@
             }
         },
         methods: {
-            nameWithLang ({ name, model, id }) {
+            nameWithLang ({ name }) {
                 return `${name}`
             },
             action(value) {
-                console.log(this.selected)
-                if(this.selected.indexOf(value) < 0)
+                if(this.selected.map(e => e.model).indexOf(value.model) < 0)
                     this.$store.dispatch('data/addSelected', value)
             },
             remove(i) {
@@ -55,6 +52,10 @@
                         this.$store.dispatch('rows/setDataRow', res)
                         this.$store.dispatch('rows/resetTitles')
                     })
+                    .catch(err => {
+                        this.$store.dispatch('rows/resetTitles')
+                        this.$store.dispatch('rows/setDataRow', [])
+                    })
 
                 this.$store.dispatch('rows/selectModel', model)
             },
@@ -64,10 +65,6 @@
                     if(haystack[i].prop == needle) return true;
                 }
                 return false;
-            },
-            onMove({ relatedContext, draggedContext }) {
-                const relatedElement = relatedContext.element;
-                const draggedElement = draggedContext.element;
             },
         },
         created() {
@@ -98,7 +95,4 @@
 </script>
 
 <style>
-    .model_select {
-        background: crimson;
-    }
 </style>

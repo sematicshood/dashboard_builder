@@ -1,3 +1,6 @@
+import { client } from './client'
+import qs from 'qs';
+
 const state = {
     rows: [],
     height: '',
@@ -76,7 +79,6 @@ const getters = {
     },
 
     getColumnDetail: (state) => (data) => {
-        console.log(data)
         return state.rows[0][1]
     },
 
@@ -92,6 +94,13 @@ const getters = {
             column  = (state.colOp != '') ? state.colOp : 1
         
         return state.rows[row][column]['model']
+    },
+
+    getColumnWidth(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 1
+        
+        return state.rows[row][column]['width']
     },
 
     // getColumnDetail(state) {
@@ -165,10 +174,6 @@ const mutations = {
         state.title = title
     },
 
-    SET_SELECTED(state, selected) {
-        state.selected = selected
-    },
-
     DELETE_COLUMN(state) {
         let width   =   state.rows[state.rowOp][state.colOp]['width']
 
@@ -199,7 +204,8 @@ const mutations = {
     },
 
     ADD_TITLE(state, option) {
-        state.rows[state.rowOp][state.colOp]['titles'].push(option)
+        if(state.rows[state.rowOp][state.colOp]['titles'].map(e => e.prop).indexOf(option.prop) < 0)
+            state.rows[state.rowOp][state.colOp]['titles'].push(option)
     },
 
     SET_DATA_ROW(state, data) {
@@ -271,6 +277,16 @@ const actions = {
             template    = JSON.parse(localStorage.getItem(name))
 
         template['rows'] = getters.getRows
+
+        for(let t in template['rows']) {
+            for(let a in template['rows'][t]) {
+                if(a != 0) {
+                    if(template['rows'][t][a].hasOwnProperty('data')) {
+                        delete template['rows'][t][a]['data']
+                    }
+                }
+            }
+        }
         
         localStorage.setItem(name, JSON.stringify(template))
 
@@ -299,12 +315,60 @@ const actions = {
 
     loadTemplate({ commit, dispatch, rootGetters }) {
         let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
-            template    = JSON.parse(localStorage.getItem(name)) || [],
             rows        = JSON.parse(localStorage.getItem(name))['rows'] || []
 
         commit('SET_ROWS', rows)
 
         dispatch('reset')
+    },
+
+    syncDatabase({ rootGetters }) {
+        let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
+            rows        = localStorage.getItem(name) || []
+
+        const data      = {
+            username: JSON.parse(localStorage.getItem('user'))['username'],
+            password: JSON.parse(localStorage.getItem('user'))['password'],
+            db_name: rootGetters['core/getDatabase']
+        }
+
+        let payload = {
+            name: name,
+            user_id: JSON.parse(localStorage.getItem('login'))['uid'],
+            template: rows
+        }
+
+        data['filters'] = `[('name', '=', '${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
+
+        console.log(data)
+
+        client.get('/api_dashboard/dashboard', { params: data })
+              .then(res => {
+                  delete data['filters']
+
+                  payload['id'] = res.data.results[0].id
+
+                  client.post('/api_dashboard/dashboard/' + payload['id'], qs.stringify(payload), {params: data})
+                            .then(re => {
+                                console.log(re)
+                            })
+                            .catch(er => {
+                                console.log(er)
+                            })
+              })
+              .catch(err => {
+                  delete data['filters']
+                  
+                  if(err.response.status) {
+                      client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                            .then(re => {
+                                console.log(re)
+                            })
+                            .catch(er => {
+                                console.log(er)
+                            })
+                  }
+              })
     },
 
     setTitle({commit}, title) {

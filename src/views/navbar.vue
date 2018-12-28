@@ -7,11 +7,34 @@
                 </div>
             </div>
             <div class="content col-md-6">
+
+                <button-sync/>
                 <button-add-row/>  
                 <button-save/>
                 <button-cancel/>
                 <button-changed></button-changed>
                 <logout-button/>
+
+                <a href="#">
+                    <button-add-row/> 
+                </a>
+                <a href="#">
+                    <font-awesome-icon icon="sync" class="icon-badge-navbar"/>
+                    <b-badge pill variant="danger" class="badge-navbar">1</b-badge>
+                </a>
+                <a href="#">
+                    <button-save/>
+                </a>
+                <a href="#">
+                    <button-cancel/>
+                </a>
+                <a href="#">
+                    <button-changed></button-changed>
+                </a>
+                <a href="#">
+                    <logout-button/>
+                </a>                
+
             </div>
         </div>
     </div>
@@ -23,11 +46,12 @@
     import buttonAddRow from './components/buttonAddRow.vue'
     import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
     import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
+    import buttonSync from './components/row/buttonSync.vue'
 
     export default {
         name: 'navbar',
         components: {
-            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton
+            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton, buttonSync
         }      
     }
 </script>

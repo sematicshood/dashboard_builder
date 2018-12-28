@@ -6,8 +6,8 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="panel">
-                                <h2>Dashboard Studio</h2>
-                                <p>Login</p>
+                                <h3>Login</h3>
+                                <center><img class="logo-semut" src="../assets/logo.jpg" alt=""></center>
                             </div>
                             <form @submit.prevent="login">
 
@@ -34,7 +34,12 @@
                             </form>
                         </div>
                         <div class="col-lg-6">
-                            uhdieuwhiu
+                            <div class="panel">
+                                <h2>Selamat datang di Dashboard Studio!</h2>
+                            </div>
+                            <div class="img-login">
+                                <center><img src="../assets/chart-icon.png" alt=""></center>
+                            </div>
                         </div>
                     </div>
                 </div>
