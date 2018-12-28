@@ -5,8 +5,6 @@
         <add-rows></add-rows>
 
         <add-column></add-column>
-
-        <button-delete-row></button-delete-row>
     </div>
 </template>
 
