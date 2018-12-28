@@ -12,8 +12,8 @@
                 </a>
                 <a href="#">
                     <font-awesome-icon icon="sync" class="icon-badge-navbar"/>
-                    <b-badge pill variant="danger" class="badge-navbar">1</b-badge>
                 </a>
+                <b-badge pill variant="danger" class="badge-navbar">1</b-badge>
                 <a href="#">
                     <button-save/>
                 </a>

@@ -8,11 +8,12 @@
 }
 
 .bg {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
+    background-image: linear-gradient(to bottom right, #20a8d8, #4dbd74); background-position:center; background-size:cover; padding:10px; height: 100vh;
+    /* background-color: #63c2de; */
     color: #FFFFFF;
-    padding: 90px 90px;
+    height: 160px;
+    padding: 20px;
+    border-radius: 0.25rem;
 }
 
 .col {
@@ -155,3 +156,27 @@ a {
   background-color: rgba(73, 73, 73, 0.096);
 }
 
+#loading-page{
+    position: fixed;
+    background: rgb(255, 255, 255) url("../../src/assets/loading.gif") no-repeat fixed center; 
+    background-size: 175px 175px;
+    top: 105px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9000;
+}
+
+#loading-page h5{
+    position: fixed;
+    top: 375px;
+    left: 530px;
+}
+
+#loading-page p{
+    position: fixed;
+    top: 405px;
+    left: 530px;
+    font-weight: 600;
+    font-size: 90%;
+}
