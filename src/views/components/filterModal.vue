@@ -211,7 +211,6 @@
                         this.$store.dispatch('rows/setDataRow', res)
                     })
                     .catch(err => {
-                        console.log('masuk sini')
                         this.$store.dispatch('rows/setDataRow', [])
                     })
 
