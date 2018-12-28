@@ -7,6 +7,11 @@
         <add-rows></add-rows>
 
         <add-column></add-column>
+
+        <!-- <div id="loading-page">
+            <h5>Loading . . .</h5>
+            <p>Sematics© 2018 Dashboard Studio.</p>
+        </div> -->
     </div>
 </template>
 

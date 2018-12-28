@@ -49,15 +49,15 @@
 
 .badge-navbar {
     margin-left: -7px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-size: 5pt !important;
     color: #007bff !important;
     background-color: #007bff !important;
 }
 
-.icon-badge-navbar{
+/* .icon-badge-navbar{
     margin-bottom: -12px !important;
-}
+} */
 
 .content a {
     margin-left: 0px;

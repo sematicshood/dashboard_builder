@@ -10,7 +10,10 @@
                 <a href="#">
                     <button-add-row/> 
                 </a>
-                <button-sync/>
+                <a href="#">
+                    <font-awesome-icon icon="sync" class="icon-badge-navbar"/>
+                </a>
+                <b-badge pill variant="danger" class="badge-navbar">1</b-badge>
                 <a href="#">
                     <button-save/>
                 </a>

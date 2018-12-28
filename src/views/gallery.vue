@@ -11,14 +11,19 @@
             </div> -->
 
             <div class="row">
-                <div class="col-xs-12 col-md-3 bottom">
-                    <button-create></button-create>
-                </div>
-                <div class="col-xs-12 col-md-3 bottom" v-for="dashboard in dashboards">
-                    <router-link tag="div" :to="{ name: 'dashboard', params: { name: dashboard['name'].replace(/ /g, '-'), type: 'view' } }" class="bg bg-left">
-                        <h2 v-text="dashboard['name']"></h2>
-                    </router-link>
-                </div>
+                <b-col sm="6" lg="3">
+                    <b-card no-body class="bg-primary">
+                        <button-create></button-create>
+                    </b-card>
+                </b-col>
+
+                <b-col sm="6" lg="3" v-for="dashboard in dashboards">
+                    <b-card no-body class="bg-info">
+                        <router-link tag="div" :to="{ name: 'dashboard', params: { name: dashboard['name'].replace(/ /g, '-'), type: 'view' } }" class="bg">
+                            <center><h4 v-text="dashboard['name']"></h4></center>
+                        </router-link>
+                    </b-card>
+                </b-col>
             </div>
         </div>
     </div>
