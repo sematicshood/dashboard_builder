@@ -322,7 +322,7 @@ const actions = {
         dispatch('reset')
     },
 
-    syncDatabase({ rootGetters }) {
+    syncDatabase({ rootGetters }, id = false) {
         let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
             rows        = localStorage.getItem(name) || []
 
@@ -340,8 +340,6 @@ const actions = {
 
         data['filters'] = `[('name', '=', '${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
 
-        console.log(data)
-
         client.get('/api_dashboard/dashboard', { params: data })
               .then(res => {
                   delete data['filters']
@@ -350,7 +348,37 @@ const actions = {
 
                   client.post('/api_dashboard/dashboard/' + payload['id'], qs.stringify(payload), {params: data})
                             .then(re => {
-                                console.log(re)
+                                if(id) {
+                                    payload['parent_id'] =   payload['id']
+                                    payload['user_id']   =   id
+                                    delete payload['id']
+
+                                    client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                                    .then(re => {
+                                        console.log(re)
+                                    })
+                                    .catch(er => {
+                                        console.log(er)
+                                    })
+                                }
+
+                                data['filters'] = `[('parent_id', '=', ${ res.data.results[0].id })]`
+                                data['field']   = "['id', 'user_id']"
+
+                                client.get('/api_dashboard/dashboard', { params: data })
+                                      .then(res => {
+                                          delete data['filters']
+                                          delete data['fields']
+
+                                          res.data['results'].forEach(el => {
+                                            payload['user_id'] = el['user_id']
+
+                                            client.post('/api_dashboard/dashboard/' + el['id'], qs.stringify(payload), {params: data})
+                                          })
+                                      })
+                                      .catch(err => {
+                                          console.log(err)
+                                      })
                             })
                             .catch(er => {
                                 console.log(er)
@@ -362,7 +390,18 @@ const actions = {
                   if(err.response.status) {
                       client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
                             .then(re => {
-                                console.log(re)
+                                if(id) {
+                                    payload['parent_id'] =   re.data.id
+                                    payload['user_id']   =   id
+
+                                    client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                                    .then(re => {
+                                        console.log(re)
+                                    })
+                                    .catch(er => {
+                                        console.log(er)
+                                    })
+                                }
                             })
                             .catch(er => {
                                 console.log(er)

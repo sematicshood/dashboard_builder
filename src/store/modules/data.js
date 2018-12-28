@@ -187,6 +187,26 @@ const actions = {
         })
     },
 
+    getUsers({ rootGetters }) {
+        return new Promise((resolve, reject) => {
+            const data      = {
+                order: 'name asc',
+                field: "['name', 'id']",
+                username: JSON.parse(localStorage.getItem('user'))['username'],
+                password: JSON.parse(localStorage.getItem('user'))['password'],
+                db_name: rootGetters['core/getDatabase']
+            }
+
+            client.get('/api_dashboard/res.users', {params: data})
+                    .then(res => {
+                        resolve(res.data['results'])
+                    })
+                    .catch(err => {
+                        reject(err.response)
+                    })
+        })
+    },
+
     filterData({ commit, dispatch, getters, rootGetters }, filter) {
         return new Promise((resolve, reject) => {
             let model = rootGetters['rows/getModel']
