@@ -49,7 +49,8 @@
                         titles: [],
                         columns: [],
                         datas: [],
-                        filters_data: []
+                        filters_data: [],
+                        filters_list: []
                     }
 
                 if(this.maxWidth != 0)

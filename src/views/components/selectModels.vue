@@ -47,7 +47,7 @@
                         this.$store.dispatch('rows/save', false)
                     })
 
-                this.$store.dispatch('data/getDatas', model)
+                this.$store.dispatch('data/getDatas', {'model': model})
                     .then(res => {
                         this.$store.dispatch('data/selectData', {model, res})
                         this.$store.dispatch('rows/setDataRow', res)

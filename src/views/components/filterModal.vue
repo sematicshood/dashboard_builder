@@ -7,7 +7,7 @@
                  @ok="submitFilter"
                  @cancel="cancel">
             <ul>
-                <li v-for="(fil, i) in filters_data"><span>{{ fil['name'] }}</span> <button @click="deleteFilter(i)">x</button></li>
+                <li v-for="(fil, i) in filters_list"><span>{{ fil['name'] }}</span> <button @click="deleteFilter(i)">x</button></li>
             </ul>
 
             <select v-model="filter['value']" class="form-control" @change="change">
@@ -129,7 +129,8 @@
                 colOp: 'getColOp',
                 colOptionShow: 'getColOptionShow',
                 columns: 'getColumns',
-                filters_data: 'getColumnFilters'
+                filters_data: 'getColumnFilters',
+                filters_list: 'getColumnFiltersList',
             }),
         },
 
@@ -158,6 +159,18 @@
 
             deleteFilter(i) {
                 this.$store.dispatch('rows/removeFilters', i)
+
+                let content = ''
+
+                this.filters_list.forEach((element, i) => {
+                    Object.keys(element['content']).forEach((el, x) => {
+                        content += `('${ element['value'].split('-')[0] }', '${ element['option'].split(',')[x] }', '${ element['content'][el] }'),`
+                    })
+                });
+
+                let final = `[${ content }]`
+
+                this.$store.dispatch('rows/addFilters', final)
             },
 
             submitFilter() {
@@ -184,18 +197,21 @@
                     })
 
                     this.$data.filter['name'] = this.$data.filter['value'].split('-')[2] + ' ' + name[0].text + judul
+
+                    this.$store.dispatch('rows/addFiltersList', this.$data.filter)
+                    console.log('masuk')
                 } catch (error) {
-                    
+                    console.log(error)
                 }
 
                 this.actionFilter()
             },
 
             actionFilter() {
-                if(this.filters_data != undefined) {
+                if(this.filters_list != undefined) {
                     let content = ''
 
-                    this.filters_data.forEach((element, i) => {
+                    this.filters_list.forEach((element, i) => {
                         Object.keys(element['content']).forEach((el, x) => {
                             content += `('${ element['value'].split('-')[0] }', '${ element['option'].split(',')[x] }', '${ element['content'][el] }'),`
                         })
