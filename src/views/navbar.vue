@@ -7,6 +7,7 @@
                 </div>
             </div>
             <div class="content col-md-6">
+                <button-sync/>
                 <button-add-row/>  
                 <button-save/>
                 <button-cancel/>
@@ -23,11 +24,12 @@
     import buttonAddRow from './components/buttonAddRow.vue'
     import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
     import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
+    import buttonSync from './components/row/buttonSync.vue'
 
     export default {
         name: 'navbar',
         components: {
-            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton
+            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton, buttonSync
         }      
     }
 </script>

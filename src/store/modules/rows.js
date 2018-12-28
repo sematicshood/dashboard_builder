@@ -1,3 +1,6 @@
+import { client } from './client'
+import qs from 'qs';
+
 const state = {
     rows: [],
     height: '',
@@ -274,6 +277,16 @@ const actions = {
             template    = JSON.parse(localStorage.getItem(name))
 
         template['rows'] = getters.getRows
+
+        for(let t in template['rows']) {
+            for(let a in template['rows'][t]) {
+                if(a != 0) {
+                    if(template['rows'][t][a].hasOwnProperty('data')) {
+                        delete template['rows'][t][a]['data']
+                    }
+                }
+            }
+        }
         
         localStorage.setItem(name, JSON.stringify(template))
 
@@ -307,6 +320,55 @@ const actions = {
         commit('SET_ROWS', rows)
 
         dispatch('reset')
+    },
+
+    syncDatabase({ rootGetters }) {
+        let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
+            rows        = localStorage.getItem(name) || []
+
+        const data      = {
+            username: JSON.parse(localStorage.getItem('user'))['username'],
+            password: JSON.parse(localStorage.getItem('user'))['password'],
+            db_name: rootGetters['core/getDatabase']
+        }
+
+        let payload = {
+            name: name,
+            user_id: JSON.parse(localStorage.getItem('login'))['uid'],
+            template: rows
+        }
+
+        data['filters'] = `[('name', '=', '${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
+
+        console.log(data)
+
+        client.get('/api_dashboard/dashboard', { params: data })
+              .then(res => {
+                  delete data['filters']
+
+                  payload['id'] = res.data.results[0].id
+
+                  client.post('/api_dashboard/dashboard/' + payload['id'], qs.stringify(payload), {params: data})
+                            .then(re => {
+                                console.log(re)
+                            })
+                            .catch(er => {
+                                console.log(er)
+                            })
+              })
+              .catch(err => {
+                  delete data['filters']
+                  
+                  if(err.response.status) {
+                      client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                            .then(re => {
+                                console.log(re)
+                            })
+                            .catch(er => {
+                                console.log(er)
+                            })
+                  }
+              })
     },
 
     setTitle({commit}, title) {
