@@ -7,14 +7,6 @@
                 </div>
             </div>
             <div class="content col-md-6">
-
-                <button-sync/>
-                <button-add-row/>  
-                <button-save/>
-                <button-cancel/>
-                <button-changed></button-changed>
-                <logout-button/>
-
                 <a href="#">
                     <button-add-row/> 
                 </a>
@@ -34,7 +26,6 @@
                 <a href="#">
                     <logout-button/>
                 </a>                
-
             </div>
         </div>
     </div>
@@ -47,11 +38,12 @@
     import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
     import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
     import buttonSync from './components/row/buttonSync.vue'
+    import buttonShare from './components/row/buttonShare.vue'
 
     export default {
         name: 'navbar',
         components: {
-            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton, buttonSync
+            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton, buttonSync, buttonShare
         }      
     }
 </script>

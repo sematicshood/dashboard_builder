@@ -92,6 +92,7 @@
     min-height: 250px;
     height: auto;
     overflow: hidden; 
+    margin-bottom:10px;
 }
 
 #selectModels ul, #titles {
