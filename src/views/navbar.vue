@@ -7,13 +7,25 @@
                 </div>
             </div>
             <div class="content col-md-6">
-                <button-share/>
-                <button-sync/>
-                <button-add-row/>  
-                <button-save/>
-                <button-cancel/>
-                <button-changed></button-changed>
-                <logout-button/>
+                <a href="#">
+                    <button-add-row/> 
+                </a>
+                <a href="#">
+                    <font-awesome-icon icon="sync" class="icon-badge-navbar"/>
+                    <b-badge pill variant="danger" class="badge-navbar">1</b-badge>
+                </a>
+                <a href="#">
+                    <button-save/>
+                </a>
+                <a href="#">
+                    <button-cancel/>
+                </a>
+                <a href="#">
+                    <button-changed></button-changed>
+                </a>
+                <a href="#">
+                    <logout-button/>
+                </a>                
             </div>
         </div>
     </div>
