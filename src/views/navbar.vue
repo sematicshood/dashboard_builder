@@ -7,14 +7,14 @@
                 </div>
             </div>
             <div class="content col-md-6">
-<<<<<<< HEAD
+
                 <button-sync/>
                 <button-add-row/>  
                 <button-save/>
                 <button-cancel/>
                 <button-changed></button-changed>
                 <logout-button/>
-=======
+
                 <a href="#">
                     <button-add-row/> 
                 </a>
@@ -34,7 +34,7 @@
                 <a href="#">
                     <logout-button/>
                 </a>                
->>>>>>> origin/rosyid
+
             </div>
         </div>
     </div>
