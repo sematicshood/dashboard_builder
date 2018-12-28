@@ -111,6 +111,13 @@ const getters = {
         return state.rows[row][column]['filters_data']
     },
 
+    getColumnFiltersList(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 1
+        
+        return state.rows[row][column]['filters_list']
+    },
+
     // getColumnDetail(state) {
     //     console.log(state.rows[0][1])
     //     return state.rows[0][1]
@@ -245,11 +252,16 @@ const mutations = {
     },
 
     REMOVE_FILTERS(state, i) {
-        state.rows[state.rowOp][state.colOp]['filters_data'].splice(i, 1)
+        state.rows[state.rowOp][state.colOp]['filters_list'].splice(i, 1)
     },
 
     ADD_FILTERS(state, filter) {
         state.rows[state.rowOp][state.colOp]['filters_data'] = filter
+    },
+
+    ADD_FILTERS_LIST(state, filter) {
+        console.log(state.rows[state.rowOp][state.colOp])
+        state.rows[state.rowOp][state.colOp]['filters_list'].push(filter)
     }
 }
 
@@ -536,20 +548,26 @@ const actions = {
     setFilters({ commit, dispatch }, filters) {
         commit('SET_FILTERS', filters)
 
-        dispatch('save')
+        dispatch('save', false)
     },
 
     removeFilters({ commit, dispatch }, i) {
         commit('REMOVE_FILTERS', i)
 
-        dispatch('save')
+        dispatch('save', false)
     },
 
     addFilters({ commit, dispatch }, filter) {
         commit('ADD_FILTERS', filter)
 
-        dispatch('save')
-    }
+        dispatch('save', false)
+    },
+
+    addFiltersList({ commit, dispatch }, filter) {
+        commit('ADD_FILTERS_LIST', filter)
+
+        dispatch('save', false)
+    },
 }
 
 export default {
