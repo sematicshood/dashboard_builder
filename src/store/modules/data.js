@@ -124,49 +124,17 @@ const actions = {
     loadData({ getters, state, commit, dispatch, rootGetters }) {
         let models = getters.getModels
 
-        // commit('DEFAULT_DATA', JSON.parse(localStorage.getItem('data')))
-
-        // if(rootGetters['rows/getRows'] != undefined) {
-        //     rootGetters['rows/getRows'].forEach(element => {
-        //         for (let index = 0; index < element.length; index++) {
-        //             if(index != 0) {
-        //                 let model = element[index]['model']
-        //                 console.log(element)
-
-        //                 if(model != undefined) {
-        //                     dispatch('inArray', {model, models}).then(res => {
-        //                         commit('ADD_MODELS', model)
-
-        //                         dispatch('getDatas', model)
-        //                             .then(res => {
-        //                                 console.log('done')
-        //                                 commit('SET_DATA', {model, res})
-
-        //                                 // dispatch('saveData')
-        //                             })
-        //                             .catch(err => {
-        //                                 console.log(err)
-        //                             })
-        //                     }).catch(err => {
-        //                         console.log(err)
-        //                         // commit('SET_DATA', {model, []})
-        //                     })
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
-
         if(rootGetters['rows/getRows'] != undefined) {
             rootGetters['rows/getRows'].forEach((element, row) => {
                 element.forEach((el, col) => {
                     if(el['model'] != undefined) {
-                        dispatch('getDatas', el['model'])
+                        dispatch('getDatas', {'model': el['model'], 'filters': el['filters_data']})
                             .then(res => {
                                 dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
                             })
                             .catch(err => {
-                                console.log(err)
+                                let res = []
+                                dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
                             })
                     }
                 })
@@ -174,27 +142,26 @@ const actions = {
         }
     },
 
-    getDatas({ commit, dispatch, getters, rootGetters }, model) {
-        var d       =  new Date(),
-            from    = `${d.getFullYear()}-${d.getMonth()}-1`,
-            to      = `${d.getFullYear()}-${d.getMonth()+1}-1`
-        
+    getDatas({ commit, dispatch, getters, rootGetters }, datas) {
         return new Promise((resolve, reject) => {
             const data      = {
                 order: "id desc",
-                // filters: `[('create_date','>=','${ from }'), ('create_date','<','${ to }')]`,
                 username: JSON.parse(localStorage.getItem('user'))['username'],
                 password: JSON.parse(localStorage.getItem('user'))['password'],
                 db_name: rootGetters['core/getDatabase']
             }
 
-            client.get('/api_dashboard/' + model, {params: data})
+            if(datas['filters'] != undefined) {
+                data['filters'] = datas['filters']
+            }
+
+            client.get('/api_dashboard/' + datas['model'], {params: data})
                     .then(res => {
                         let data          =   {}
 
-                        data[`${model}`]  =   res.data['results']
+                        data[`${datas['model']}`]  =   res.data['results']
 
-                        commit('setDatas', {data: res.data['results'], model: model})
+                        commit('setDatas', {data: res.data['results'], model: datas['model']})
                         
                         resolve(res.data['results'])
                     })
