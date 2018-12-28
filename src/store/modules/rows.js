@@ -104,6 +104,13 @@ const getters = {
         return state.rows[row][column]['width']
     },
 
+    getColumnFilters(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 1
+        
+        return state.rows[row][column]['filters_data']
+    },
+
     // getColumnDetail(state) {
     //     console.log(state.rows[0][1])
     //     return state.rows[0][1]
@@ -114,7 +121,6 @@ const getters = {
     },
 
     getEdited(state) {
-        console.log(state.edited)
         return state.edited
     }
 }
@@ -232,6 +238,18 @@ const mutations = {
 
     SET_DATA_DEFAULT_ROW(state, params) {
         state.rows[params.row][params.col]['datas'] = params.res
+    },
+
+    SET_FILTERS(state, filters) {
+        state.rows[state.rowOp][state.colOp]['filters_data'] = filters
+    },
+
+    REMOVE_FILTERS(state, i) {
+        state.rows[state.rowOp][state.colOp]['filters_data'].splice(i, 1)
+    },
+
+    ADD_FILTERS(state, filter) {
+        state.rows[state.rowOp][state.colOp]['filters_data'] = filter
     }
 }
 
@@ -286,7 +304,7 @@ const actions = {
         dispatch('save')
     },
 
-    save({getters, dispatch,commit, rootGetters}, all = true, edited = true) {
+    save({getters, dispatch,commit, rootGetters}, all = true) {
         let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
             template    = JSON.parse(localStorage.getItem(name))
 
@@ -513,6 +531,24 @@ const actions = {
 
     setDataDefaultRow({ commit }, params) {
         commit('SET_DATA_DEFAULT_ROW', params)
+    },
+
+    setFilters({ commit, dispatch }, filters) {
+        commit('SET_FILTERS', filters)
+
+        dispatch('save')
+    },
+
+    removeFilters({ commit, dispatch }, i) {
+        commit('REMOVE_FILTERS', i)
+
+        dispatch('save')
+    },
+
+    addFilters({ commit, dispatch }, filter) {
+        commit('ADD_FILTERS', filter)
+
+        dispatch('save')
     }
 }
 

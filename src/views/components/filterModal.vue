@@ -7,7 +7,7 @@
                  @ok="submitFilter"
                  @cancel="cancel">
             <ul>
-                <li v-for="(fil, i) in filters"><span>{{ fil['name'] }}</span> <button @click="deleteFilter(i)">x</button></li>
+                <li v-for="(fil, i) in filters_data"><span>{{ fil['name'] }}</span> <button @click="deleteFilter(i)">x</button></li>
             </ul>
 
             <select v-model="filter['value']" class="form-control" @change="change">
@@ -41,7 +41,6 @@
                 // columns: '',
                 options: '',
                 type: '',
-                filters: [],
                 filter: {
                     value: {},
                     content: {}
@@ -129,7 +128,8 @@
                 rowOp: 'getRowOp',
                 colOp: 'getColOp',
                 colOptionShow: 'getColOptionShow',
-                columns: 'getColumns'
+                columns: 'getColumns',
+                filters_data: 'getColumnFilters'
             }),
         },
 
@@ -139,8 +139,6 @@
 
                 data['ttype'] = this.$data.filter['value'].split('-')[1]
                 data['name']  = this.$data.filter['value'].split('-')[0]
-
-                console.log(data['ttype'])
                 
                 this.$data.options = this.$data.dataOp[data['ttype']]
                 this.$data.type    = data['ttype']
@@ -159,7 +157,7 @@
             },
 
             deleteFilter(i) {
-                this.$data.filters.splice(i, 1)
+                this.$store.dispatch('rows/removeFilters', i)
             },
 
             submitFilter() {
@@ -186,8 +184,6 @@
                     })
 
                     this.$data.filter['name'] = this.$data.filter['value'].split('-')[2] + ' ' + name[0].text + judul
-
-                    this.$data.filters.push(this.$data.filter)
                 } catch (error) {
                     
                 }
@@ -196,29 +192,33 @@
             },
 
             actionFilter() {
-                let content = ''
+                if(this.filters_data != undefined) {
+                    let content = ''
 
-                this.$data.filters.forEach((element, i) => {
-                    Object.keys(element['content']).forEach((el, x) => {
-                        content += `('${ element['value'].split('-')[0] }', '${ element['option'].split(',')[x] }', '${ element['content'][el] }'),`
-                    })
-                });
+                    this.filters_data.forEach((element, i) => {
+                        Object.keys(element['content']).forEach((el, x) => {
+                            content += `('${ element['value'].split('-')[0] }', '${ element['option'].split(',')[x] }', '${ element['content'][el] }'),`
+                        })
+                    });
 
-                let final = `[${ content }]`
+                    let final = `[${ content }]`
 
-                this.$store.dispatch('data/filterData', final)
-                    .then(res => {
-                        this.$store.dispatch('rows/setDataRow', res)
-                    })
-                    .catch(err => {
-                        this.$store.dispatch('rows/setDataRow', [])
-                    })
+                    this.$store.dispatch('rows/addFilters', final)
 
-                this.$data.type = ''
+                    this.$store.dispatch('data/filterData', final)
+                        .then(res => {
+                            this.$store.dispatch('rows/setDataRow', res)
+                        })
+                        .catch(err => {
+                            this.$store.dispatch('rows/setDataRow', [])
+                        })
 
-                this.$data.filter = {
-                    value: {},
-                    content: {}
+                    this.$data.type = ''
+
+                    this.$data.filter = {
+                        value: {},
+                        content: {}
+                    }
                 }
             },
 
