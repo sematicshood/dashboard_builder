@@ -52,6 +52,10 @@
                         this.$store.dispatch('rows/setDataRow', res)
                         this.$store.dispatch('rows/resetTitles')
                     })
+                    .catch(err => {
+                        this.$store.dispatch('rows/resetTitles')
+                        this.$store.dispatch('rows/setDataRow', [])
+                    })
 
                 this.$store.dispatch('rows/selectModel', model)
             },
