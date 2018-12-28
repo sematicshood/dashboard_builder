@@ -48,7 +48,7 @@
                         type: this.$data.selected,
                         titles: [],
                         columns: [],
-                        data: []
+                        datas: []
                     }
 
                 if(this.maxWidth != 0)

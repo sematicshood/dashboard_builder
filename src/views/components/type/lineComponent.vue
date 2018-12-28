@@ -61,7 +61,7 @@
             datas: {
                 get() {
                     // return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']]
-                    return this.rows.rows[this.vuerow][this.vuecolumn]['data']
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
                 }
             }
         },

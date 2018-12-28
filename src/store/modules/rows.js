@@ -23,6 +23,7 @@ const state = {
         { value: 'horizontal', text: 'horizontal' },
         { value: 'polar', text: 'polar' },
     ],
+    edited: false
 }
 
 const getters = {
@@ -110,6 +111,11 @@ const getters = {
 
     getHeightRow: (state) => (data) => {
         return state.rows[data][0]['height']
+    },
+
+    getEdited(state) {
+        console.log(state.edited)
+        return state.edited
     }
 }
 
@@ -209,7 +215,7 @@ const mutations = {
     },
 
     SET_DATA_ROW(state, data) {
-        state.rows[state.rowOp][state.colOp]['data'] = data
+        state.rows[state.rowOp][state.colOp]['datas'] = data
     },
 
     REMOVE_TITLE(state, index) {
@@ -218,6 +224,14 @@ const mutations = {
 
     RESET_TITLES(state) {
         state.rows[state.rowOp][state.colOp]['titles'] = []
+    },
+
+    SET_EDITED(state, edited) {
+        state.edited = edited
+    },
+
+    SET_DATA_DEFAULT_ROW(state, params) {
+        state.rows[params.row][params.col]['datas'] = params.res
     }
 }
 
@@ -272,7 +286,7 @@ const actions = {
         dispatch('save')
     },
 
-    save({getters, dispatch, rootGetters}, all = true) {
+    save({getters, dispatch,commit, rootGetters}, all = true, edited = true) {
         let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
             template    = JSON.parse(localStorage.getItem(name))
 
@@ -287,6 +301,34 @@ const actions = {
                 }
             }
         }
+        
+        commit('SET_EDITED', true)
+
+        template['edited'] = true
+        
+        localStorage.setItem(name, JSON.stringify(template))
+
+        dispatch('reset', all)
+    },
+
+    editedFalse({getters, dispatch,commit, rootGetters}, all = true) {
+        let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
+            template    = JSON.parse(localStorage.getItem(name))
+
+        template['rows'] = getters.getRows
+
+        for(let t in template['rows']) {
+            for(let a in template['rows'][t]) {
+                if(a != 0) {
+                    if(template['rows'][t][a].hasOwnProperty('data')) {
+                        delete template['rows'][t][a]['data']
+                    }
+                }
+            }
+        }
+        commit('SET_EDITED', false)
+
+        template['edited'] = false
         
         localStorage.setItem(name, JSON.stringify(template))
 
@@ -322,7 +364,7 @@ const actions = {
         dispatch('reset')
     },
 
-    syncDatabase({ rootGetters }, id = false) {
+    syncDatabase({ rootGetters, dispatch }, id = false) {
         let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
             rows        = localStorage.getItem(name) || []
 
@@ -337,6 +379,8 @@ const actions = {
             user_id: JSON.parse(localStorage.getItem('login'))['uid'],
             template: rows
         }
+
+        dispatch('editedFalse')
 
         data['filters'] = `[('name', '=', '${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
 
@@ -459,6 +503,17 @@ const actions = {
     resetTitles({ commit }, data) {
         commit('RESET_TITLES', data)
     },
+
+    setEdited({ commit, rootGetters }) {
+        let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
+            edited      = JSON.parse(localStorage.getItem(name))['edited']
+        
+        commit('SET_EDITED', edited)
+    },
+
+    setDataDefaultRow({ commit }, params) {
+        commit('SET_DATA_DEFAULT_ROW', params)
+    }
 }
 
 export default {

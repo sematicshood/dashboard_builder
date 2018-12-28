@@ -126,33 +126,50 @@ const actions = {
 
         // commit('DEFAULT_DATA', JSON.parse(localStorage.getItem('data')))
 
+        // if(rootGetters['rows/getRows'] != undefined) {
+        //     rootGetters['rows/getRows'].forEach(element => {
+        //         for (let index = 0; index < element.length; index++) {
+        //             if(index != 0) {
+        //                 let model = element[index]['model']
+        //                 console.log(element)
+
+        //                 if(model != undefined) {
+        //                     dispatch('inArray', {model, models}).then(res => {
+        //                         commit('ADD_MODELS', model)
+
+        //                         dispatch('getDatas', model)
+        //                             .then(res => {
+        //                                 console.log('done')
+        //                                 commit('SET_DATA', {model, res})
+
+        //                                 // dispatch('saveData')
+        //                             })
+        //                             .catch(err => {
+        //                                 console.log(err)
+        //                             })
+        //                     }).catch(err => {
+        //                         console.log(err)
+        //                         // commit('SET_DATA', {model, []})
+        //                     })
+        //                 }
+        //             }
+        //         }
+        //     });
+        // }
+
         if(rootGetters['rows/getRows'] != undefined) {
-            rootGetters['rows/getRows'].forEach(element => {
-                for (let index = 0; index < element.length; index++) {
-                    if(index != 0) {
-                        let model = element[index]['model']
-
-                        if(model != undefined) {
-                            dispatch('inArray', {model, models}).then(res => {
-                                commit('ADD_MODELS', model)
-
-                                dispatch('getDatas', model)
-                                    .then(res => {
-                                        console.log('done')
-                                        commit('SET_DATA', {model, res})
-
-                                        // dispatch('saveData')
-                                    })
-                                    .catch(err => {
-                                        console.log(err)
-                                    })
-                            }).catch(err => {
-                                console.log(err)
-                                // commit('SET_DATA', {model, []})
+            rootGetters['rows/getRows'].forEach((element, row) => {
+                element.forEach((el, col) => {
+                    if(el['model'] != undefined) {
+                        dispatch('getDatas', el['model'])
+                            .then(res => {
+                                dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
                             })
-                        }
+                            .catch(err => {
+                                console.log(err)
+                            })
                     }
-                }
+                })
             });
         }
     },

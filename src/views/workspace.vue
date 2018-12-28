@@ -19,6 +19,10 @@
             ...mapGetters('style', {
                 sidebar: 'getSidebar'
             })
+        },
+
+        created() {
+            
         }
     }
 </script>
