@@ -231,6 +231,36 @@ const mutations = {
         state.rows[state.rowOp][state.colOp]['datas'] = data
     },
 
+    SET_COLUMN_WIDTH(state, width) {
+        let totalWidth       = 100,
+            before           = state.rows[state.rowOp][state.colOp]['width']
+
+        state.rows[state.rowOp].forEach((val, i) => {
+            if(parseInt(val['width'])) {
+                if(i != state.colOp)
+                    totalWidth -= parseInt(val['width'])
+            }
+        });
+
+        if(width > totalWidth)
+            width = totalWidth
+
+        state.rows[state.rowOp][state.colOp]['width'] = width
+
+        state.rows[state.rowOp].forEach((val, i) => {
+            let total = 0
+
+            for(let a=1; a < i; a++) {
+                if(state.rows[state.rowOp][i]['width'])
+                    total += parseInt(state.rows[state.rowOp][a]['width'])
+            }
+
+            if(i != 0) {
+                state.rows[state.rowOp][i]['left'] = total
+            }
+        });
+    },
+
     REMOVE_TITLE(state, index) {
         state.rows[state.rowOp][state.colOp]['titles'].splice(index, 1)
     },
@@ -260,8 +290,11 @@ const mutations = {
     },
 
     ADD_FILTERS_LIST(state, filter) {
-        console.log(state.rows[state.rowOp][state.colOp])
         state.rows[state.rowOp][state.colOp]['filters_list'].push(filter)
+    },
+
+    SET_EDITED_DEFAULT(state, defaulted) {
+        state.edited = defaulted
     }
 }
 
@@ -361,6 +394,7 @@ const actions = {
         template['edited'] = false
         
         localStorage.setItem(name, JSON.stringify(template))
+        console.log('masuk sini')
 
         dispatch('reset', all)
     },
@@ -568,6 +602,19 @@ const actions = {
 
         dispatch('save', false)
     },
+
+    setColumnWidth({ commit, dispatch }, width) {
+        commit('SET_COLUMN_WIDTH', width)
+
+        dispatch('save', false)   
+    },
+
+    setEdited({ commit, rootGetters }) {
+        let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
+            template    = JSON.parse(localStorage.getItem(name))['edited'] || false
+
+        commit('SET_EDITED_DEFAULT', template)
+    }
 }
 
 export default {

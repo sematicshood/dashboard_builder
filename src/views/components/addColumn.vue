@@ -50,7 +50,19 @@
                         columns: [],
                         datas: [],
                         filters_data: [],
-                        filters_list: []
+                        filters_list: [],
+                        options_chart: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            legend: {},
+                            layout: {},
+                            title: {},
+                            tooltip: {},
+                            scales: {
+                                yAxes: [{}],
+                                xAxes: [{}],
+                            }
+                        }
                     }
 
                 if(this.maxWidth != 0)
