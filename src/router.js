@@ -14,7 +14,8 @@ const routes = [
         component: Gallery,
         meta: {
             requiresAuth: true
-        }
+        },
+        name: 'gallery'
     },
     {
         path: '/dashboard/:name/:type',

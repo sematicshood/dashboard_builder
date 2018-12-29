@@ -7,10 +7,11 @@
                 </div>
             </div>
             <div class="content col-md-6">
+                <button-sync/>
+                <button-share/>
                 <a href="#">
                     <button-add-row/> 
                 </a>
-                <button-sync/>
                 <a href="#">
                     <button-save/>
                 </a>

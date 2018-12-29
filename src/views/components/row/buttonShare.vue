@@ -1,6 +1,8 @@
 <template>
     <div id="shareButton">
-        <font-awesome-icon v-b-modal.modalShare icon="sync"/>
+        <a href="#">
+            <font-awesome-icon v-b-modal.modalShare icon="share-square"/>
+        </a>
     </div>
 </template>
 
