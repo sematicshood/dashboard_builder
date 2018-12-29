@@ -568,13 +568,6 @@ const actions = {
         commit('RESET_TITLES', data)
     },
 
-    setEdited({ commit, rootGetters }) {
-        let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
-            edited      = JSON.parse(localStorage.getItem(name))['edited']
-        
-        commit('SET_EDITED', edited)
-    },
-
     setDataDefaultRow({ commit }, params) {
         commit('SET_DATA_DEFAULT_ROW', params)
     },
@@ -614,6 +607,7 @@ const actions = {
             template    = JSON.parse(localStorage.getItem(name))['edited'] || false
 
         commit('SET_EDITED_DEFAULT', template)
+        commit('SET_EDITED', template)
     }
 }
 
