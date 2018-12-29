@@ -25,5 +25,9 @@
                 edited: 'getEdited'
             })
         },
+
+        created() {
+            this.$store.dispatch('rows/setEdited')
+        }
     }
 </script>

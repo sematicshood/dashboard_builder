@@ -1,6 +1,6 @@
 <template>
     <div id="pieComponent">
-        <pie-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="chartOptions"></pie-chart>
+        <pie-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="options"></pie-chart>
     </div>
 </template>
 
@@ -20,10 +20,6 @@
         data () {
             return {
                 datacollection: null,
-                chartOptions: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                },
             }
         },
         mounted() {
@@ -51,6 +47,11 @@
             titles: {
                 get() {
                     return this.rows.rows[this.vuerow][this.vuecolumn]['titles']
+                }
+            },
+            options: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['options_chart']
                 }
             },
             datas: {

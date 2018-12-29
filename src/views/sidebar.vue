@@ -48,6 +48,8 @@
                         <div class="style-content-sidebar">
                             <judul-column/>
                             <jenis-column/>
+                            <width-column/>
+                            <collapse-option/>
                         </div>                    
                     </div>
 
@@ -76,12 +78,13 @@
     import rowOption from './components/rowOption.vue'
     import widthColumn from './components/column/widthColumn.vue'
     import categoryComponent from './components/categoryComponent.vue'
+    import collapseOption from './components/column/collapseOption.vue'
 
     export default {
         name: 'sidebar',
 
         components: {
-            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption, categoryComponent, heightRow
+            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption, categoryComponent, heightRow, widthColumn, collapseOption
         },
         
         computed: {

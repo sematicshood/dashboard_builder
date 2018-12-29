@@ -1,7 +1,10 @@
 <template>
-    <div id="widthColumn">
-        {{ width }}
-        <input class="form-control" type="number" v-model="width" placeholder="Width column"/>
+    <div id="widthColumn" v-if="colOptionShow && type == 'edit'">
+        <b-form-group>
+            <label class="label-form">Width Chart</label>
+            <b-form-input size="sm" type="number" v-model="width"
+                        placeholder="Width Column"/>    
+        </b-form-group>
     </div>
 </template>
 
@@ -15,16 +18,22 @@
             ...mapState(['rows']),
 
             ...mapGetters('rows', {
-                row: 'getRowOp',
-                col: 'getColOp'
+                rowOp: 'getRowOp',
+                colOp: 'getColOp',
+                colOptionShow: 'getColOptionShow'
+            }),
+
+            ...mapGetters('workspace', {
+                type: 'getType'
             }),
 
             width: {
                 get() {
-                    let row     = (state.rowOp != '') ? state.rowOp : 0,
-                        column  = (state.colOp != '') ? state.colOp : 1
+                    return this.rows.rows[this.rowOp][this.colOp]['width']
+                },
 
-                    this.rows.rows[row][col]['width']
+                set(width) {
+                    this.$store.dispatch('rows/setColumnWidth', width)
                 }
             }
         }
