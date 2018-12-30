@@ -142,10 +142,26 @@ const actions = {
         }
     },
 
+    getUserData(rootGetters) {
+        return new Promise((resolve, reject) => {
+            const data      = {
+                username: JSON.parse(localStorage.getItem('user'))['username'],
+                password: JSON.parse(localStorage.getItem('user'))['password'],
+                db_name: rootGetters['core/getDatabase'],
+            }
+
+            client.get('/api_dashboard/res.users/' + JSON.parse(localStorage.getItem('login'))['uid'], {params: data})
+                  .then(res => {
+                      resolve(res.data)
+                  })
+        })
+    },  
+
     getDatas({ commit, dispatch, getters, rootGetters }, datas) {
         var d       =  new Date(),
             from    = `${d.getFullYear()}-${d.getMonth()}-1`,
-            to      = `${d.getFullYear()}-${d.getMonth()+1}-1`
+            to      = `${d.getFullYear()}-${d.getMonth()+1}-1`,
+            filters = ''
 
         return new Promise((resolve, reject) => {
             const data      = {
@@ -155,12 +171,15 @@ const actions = {
                 db_name: rootGetters['core/getDatabase']
             }
 
-            if(datas['filters'] != undefined) {
-                data['filters'] = datas['filters']
+            if(datas['filters'] != undefined) filters += `${datas['filters']}`
 
-                let t = data['filters'].split(',')
-                console.log(data['filters'][t.length])
+            if(datas['date'] != undefined) {
+                filters += datas['date']
+            } else {
+                filters += `('write_date','>=','${ from }'),('write_date','<','${ to }')`
             }
+
+            data['filters'] = `[${filters}]`
 
             client.get('/api_dashboard/' + datas['model'], {params: data})
                     .then(res => {

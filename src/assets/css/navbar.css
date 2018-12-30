@@ -21,6 +21,8 @@
 .logo-nav {
     width: 20px;
     height: 30px;
+    display: inline-block;
+    margin-right: 30px;
 }
 
 .logo-nav img {

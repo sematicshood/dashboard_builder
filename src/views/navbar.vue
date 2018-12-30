@@ -5,6 +5,7 @@
                 <div class="logo-nav">
                     <img src="../assets/logo.jpg" alt="Logo Sematics">
                 </div>
+                <span v-text="greeting"></span>
             </div>
             <div class="content col-md-6">
                 <button-sync/>
@@ -40,9 +41,45 @@
 
     export default {
         name: 'navbar',
+
+        data() {
+            return {
+                greeting: 'Selamat datang'
+            }
+        },
+
         components: {
             buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton, buttonSync, buttonShare
-        }      
+        },
+
+        methods: {
+            getDataUser() {
+                this.$store.dispatch('data/getUserData')
+                    .then(res => {
+                        this.setGreeting(res[0].display_name)
+                    })
+            },
+
+            setGreeting(name) {
+                var today = new Date()
+                var curHr = today.getHours()
+                let greeting = ''
+
+                if (curHr < 12) {
+                    greeting = 'Selamat pagi ' + name
+                } else if (curHr < 18) {
+                    greeting = 'Selamat siang ' + name
+                } else {
+                    greeting = 'Selamat sore ' + name
+                }
+
+                this.$data.greeting = greeting
+            }
+        },
+
+        created() {
+            this.getDataUser()
+        }
     }
 </script>
 
