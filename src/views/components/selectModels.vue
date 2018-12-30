@@ -54,6 +54,7 @@
                         this.$store.dispatch('rows/resetTitles')
                     })
                     .catch(err => {
+                        console.log(err)
                         this.$store.dispatch('rows/resetTitles')
                         this.$store.dispatch('rows/setDataRow', [])
                     })

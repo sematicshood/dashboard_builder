@@ -157,10 +157,10 @@ const actions = {
 
             if(datas['filters'] != undefined) {
                 data['filters'] = datas['filters']
-            }
 
-            let t = data['filters'].split(',')
-            console.log(data['filters'][t.length])
+                let t = data['filters'].split(',')
+                console.log(data['filters'][t.length])
+            }
 
             client.get('/api_dashboard/' + datas['model'], {params: data})
                     .then(res => {
