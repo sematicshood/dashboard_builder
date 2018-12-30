@@ -219,7 +219,7 @@
 
                     let final = `[${ content }]`
 
-                    this.$store.dispatch('rows/addFilters', final)
+                    this.$store.dispatch('rows/addFilters', content)
 
                     this.$store.dispatch('data/filterData', final)
                         .then(res => {

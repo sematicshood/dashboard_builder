@@ -20,6 +20,8 @@
 
                     <b-btn class="btn-filter-dashboard" v-if="type == 'edit'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
 
+                    <filter-date/>
+
                     <h5 v-text="column['title']"></h5>
                     
                     <table-component v-if="column['type'] == 'table'"
@@ -67,6 +69,7 @@
     import doughnutComponent from './type/doughnutComponent.vue'
     import horizontalComponent from './type/horizontalComponent.vue'
     import filterModal from './filterModal.vue'
+    import filterDate from './column/filterDate.vue'
     import { mapGetters } from 'vuex'
 
     export default {
@@ -80,7 +83,7 @@
         },
 
         components: {
-            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow
+            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow, filterDate
         },
 
         methods: {
