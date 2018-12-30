@@ -159,8 +159,8 @@ const actions = {
 
     getDatas({ commit, dispatch, getters, rootGetters }, datas) {
         var d       =  new Date(),
-            from    = `${d.getFullYear()}-${d.getMonth()}-1`,
-            to      = `${d.getFullYear()}-${d.getMonth()+1}-1`,
+            from    = `${d.getFullYear()}-${d.getMonth()+1}-1`,
+            to      = `${d.getFullYear()}-${d.getMonth()+2}-1`,
             filters = ''
 
         return new Promise((resolve, reject) => {
@@ -176,7 +176,7 @@ const actions = {
             if(datas['date'] != undefined) {
                 filters += datas['date']
             } else {
-                filters += `('write_date','>=','${ from }'),('write_date','<','${ to }')`
+                // filters += `('write_date','>=','${ from }'),('write_date','<','${ to }')`
             }
 
             data['filters'] = `[${filters}]`

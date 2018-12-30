@@ -20,7 +20,7 @@
 
                     <b-btn class="btn-filter-dashboard" v-if="type == 'edit'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
 
-                    <filter-date/>
+                    <filter-date v-if="type == 'view'"/>
 
                     <h5 v-text="column['title']"></h5>
                     
