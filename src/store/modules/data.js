@@ -163,6 +163,14 @@ const actions = {
             to      = `${d.getFullYear()}-${d.getMonth()+2}-1`,
             filters = ''
 
+        if(d.getMonth()+1 > 12) {
+            from    = `${d.getFullYear() + 1}-1-1`
+        }
+
+        if(d.getMonth()+2 > 12) {
+            to    = `${d.getFullYear() + 1}-1-1`
+        }
+
         return new Promise((resolve, reject) => {
             const data      = {
                 order: "id desc",
@@ -176,7 +184,11 @@ const actions = {
             if(datas['date'] != undefined) {
                 filters += datas['date']
             } else {
-                // filters += `('write_date','>=','${ from }'),('write_date','<','${ to }')`
+                filters += `('write_date','>=','${ from }'),('write_date','<','${ to }')`
+            }
+
+            if(datas['model'] == undefined) {
+                datas['model'] = rootGetters['rows/getModel']
             }
 
             data['filters'] = `[${filters}]`

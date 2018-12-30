@@ -38,7 +38,22 @@
             },
 
             onDateSelected: function (daterange) {
+                let start = daterange.start,
+                    end   = daterange.end,
+                    from  = `${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()}`,
+                    to    = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`
+
                 this.selectedDate = daterange
+
+                let date = `('write_date','>','${ from }'),('write_date','<','${ to }')`
+
+                this.$store.dispatch('data/getDatas', {'date': date})
+                    .then(res => {
+                        this.$store.dispatch('rows/setDataRow', res)
+                    })
+                    .catch(err => {
+                        this.$store.dispatch('rows/setDataRow', [])
+                    })
             }
         },
 
