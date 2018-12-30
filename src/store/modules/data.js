@@ -143,6 +143,10 @@ const actions = {
     },
 
     getDatas({ commit, dispatch, getters, rootGetters }, datas) {
+        var d       =  new Date(),
+            from    = `${d.getFullYear()}-${d.getMonth()}-1`,
+            to      = `${d.getFullYear()}-${d.getMonth()+1}-1`
+
         return new Promise((resolve, reject) => {
             const data      = {
                 order: "id desc",
@@ -154,6 +158,9 @@ const actions = {
             if(datas['filters'] != undefined) {
                 data['filters'] = datas['filters']
             }
+
+            let t = data['filters'].split(',')
+            console.log(data['filters'][t.length])
 
             client.get('/api_dashboard/' + datas['model'], {params: data})
                     .then(res => {

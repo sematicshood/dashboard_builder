@@ -76,75 +76,79 @@
                 return false;
             },
             fillData () {
-                try {
-                    let xaxis       = this.titles[0]['prop'] || [],
-                        key         = this.titles[1]['prop'] || [],
-                        value       = this.titles[2]['prop'] || [],
-                        labels      = [],
-                        datasets    = [],
-                        keys        = [],
-                        values      = {}
+                let xaxis       = this.titles[0]['prop'] || [],
+                    key         = this.titles[1]['prop'] || [],
+                    value       = this.titles[2]['prop'] || [],
+                    labels      = [],
+                    datasets    = [],
+                    keys        = [],
+                    values      = {}
 
-                    this.datas.forEach(el => {
+                this.datas.forEach(el => {
+                    if(el[xaxis].length == 2) {
+                        if(this.inArray(labels, el[xaxis][1]) == false)
+                            labels.push(el[xaxis][1])
+                    } else {
                         if(this.inArray(labels, el[xaxis]) == false)
                             labels.push(el[xaxis])
+                    }
+                })
+
+                labels.forEach(el => {
+                    let datas = this.datas.filter((data) => {
+                        if(data[xaxis].length == 2)
+                            return data[xaxis][1] == el
+                        else
+                            return data[xaxis] == el
                     })
 
-                    labels.forEach(el => {
-                        let datas = this.datas.filter((data) => {
-                            return data[xaxis] == el
-                        })
-
-                        datas.forEach(e => {
-                            if(e[key].length == 2) {
-                                if(this.inArray(keys, e[key][1]) == false)
-                                    keys.push(e[key][1])
-                            } else {
-                                if(this.inArray(keys, e[key]) == false)
-                                    keys.push(e[key])
-                            }
-                        })
-
-                        keys.forEach(e => {
-                            let amount = 0
-
-                            let list_amount = datas.filter(dat => {
-                                if(dat[key].length == 2)
-                                    return dat[key][1] == e
-                                else
-                                    return dat[key] == e
-                            })
-
-                            try {
-                                list_amount.forEach(li => {
-                                    amount += li[value]
-                                })
-                            } catch (error) {
-                                amount = 0   
-                            }
-
-                            if(values[e] == undefined) {
-                                values[e] = [amount]
-                            } else {
-                                values[e].push(amount)
-                            }
-                        })
+                    datas.forEach(e => {
+                        if(e[key].length == 2) {
+                            if(this.inArray(keys, e[key][1]) == false)
+                                keys.push(e[key][1])
+                        } else {
+                            if(this.inArray(keys, e[key]) == false)
+                                keys.push(e[key])
+                        }
                     })
 
                     keys.forEach(e => {
-                        datasets.push({
-                            label: e,
-                            backgroundColor: this.getRandomColor(),
-                            data: values[e]
-                        })
-                    })
+                        let amount = 0
 
-                    this.datacollection = {
-                        labels: labels,
-                        datasets: datasets
-                    }
-                } catch (error) {
-                    
+                        let list_amount = datas.filter(dat => {
+                            if(dat[key].length == 2)
+                                return dat[key][1] == e
+                            else
+                                return dat[key] == e
+                        })
+
+                        try {
+                            list_amount.forEach(li => {
+                                amount += li[value]
+                            })
+                        } catch (error) {
+                            amount = 0   
+                        }
+
+                        if(values[e] == undefined) {
+                            values[e] = [amount]
+                        } else {
+                            values[e].push(amount)
+                        }
+                    })
+                })
+
+                keys.forEach(e => {
+                    datasets.push({
+                        label: e,
+                        backgroundColor: this.getRandomColor(),
+                        data: values[e]
+                    })
+                })
+
+                this.datacollection = {
+                    labels: labels,
+                    datasets: datasets
                 }
             },
 

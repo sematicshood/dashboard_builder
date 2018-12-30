@@ -18,7 +18,7 @@
                     :style="`width: ${column['width']}%; left: ${column['left']}%;`"
                     @click="colOption(index, indexes)" v-if="indexes != 0">
 
-                    <b-btn class="btn-filter-dashboard" v-if="type == 'view'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
+                    <b-btn class="btn-filter-dashboard" v-if="type == 'edit'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
 
                     <h5 v-text="column['title']"></h5>
                     
@@ -67,8 +67,7 @@
     import doughnutComponent from './type/doughnutComponent.vue'
     import horizontalComponent from './type/horizontalComponent.vue'
     import filterModal from './filterModal.vue'
-    import { Event } from '../../event.js'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'row-canvas',
@@ -160,8 +159,9 @@
     }
 
     .btn-filter-dashboard{
-        float: left;
-        margin-bottom: 10px;
+        top: 9px;
+        position: absolute;
+        left: 85px;
     }
 
 </style>
