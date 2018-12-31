@@ -31,8 +31,11 @@
             onDateSelected: function (daterange) {
                 let start = daterange.start,
                     end   = daterange.end,
-                    from  = `${start.getFullYear()}-${start.getMonth()}-${start.getDate()}`,
-                    to    = `${end.getFullYear()}-${end.getMonth()}-${end.getDate()}`
+                    from  = `${start.getUTCFullYear()}-${start.getUTCMonth() + 1}-${start.getUTCDate()}`,
+                    to    = `${end.getUTCFullYear()}-${end.getUTCMonth() + 1}-${end.getUTCDate()}`
+
+                console.log(end.getDate())
+                console.log(end.getUTCDate())
                 
                 this.$store.commit('rows/SET_DATE', { 'type': 'start', 'value': from })
                 this.$store.commit('rows/SET_DATE', { 'type': 'end', 'value': to })
