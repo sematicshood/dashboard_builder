@@ -22,12 +22,12 @@ import Datatable from 'vue2-datatable-component'
 import VueRangedatePicker from 'vue-rangedate-picker'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare} from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare, faCog, faLongArrowAltUp, faLongArrowAltDown} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 require('vue2-animate/dist/vue2-animate.min.css')
 
-library.add(faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare)
+library.add(faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare, faCog, faLongArrowAltUp, faLongArrowAltDown)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 locale.use(lang)
