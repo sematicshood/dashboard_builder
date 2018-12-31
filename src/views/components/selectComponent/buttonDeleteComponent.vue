@@ -1,6 +1,7 @@
 <template>
     <div class="buttonDelete" v-if="colOptionShow && type == 'edit'">
         <b-btn size="sm" 
+                class="form-control"
                 variant="danger" 
                 @click="deleteColumn()">Delete Column</b-btn>
     </div>

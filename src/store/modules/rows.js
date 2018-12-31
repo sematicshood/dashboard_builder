@@ -321,19 +321,13 @@ const mutations = {
         })
     },
 
-    CEK_DATE_PROPERTY(state) {
+    CEK_DATE_PROPERTY(state, options) {
         var d       =  new Date(),
             from    =  new Date(d.getFullYear(), d.getMonth(), 1),
             to      =  new Date(d.getFullYear(), d.getMonth() + 1, 1)
 
-        state.rows.forEach((el, o) => {
-            el.forEach((e, i) => {
-                if(i != 0) {
-                    if(state.rows[o][i]['filter_date'] == undefined)
-                        state.rows[o][i]['filter_date'] = { start: from, end: to }
-                }
-            })
-        })
+        if(state.rows[options.row][options.column]['filter_date'] == undefined)
+            state.rows[options.row][options.column]['filter_date'] = { start: from, end: to }
     },
 
     SET_DATE(state, option) {
@@ -349,8 +343,8 @@ const mutations = {
             state.rows[options.row][options.column]['group_data'] = 'Bulan'
     },
 
-    SET_GROUP_DATA(state, group) {
-        state.rows[state.rowOp][state.colOp]['group_data'] = group
+    SET_GROUP_DATA(state, options) {
+        state.rows[options.row][options.column]['group_data'] = options.group
     }
 }
 
@@ -672,8 +666,9 @@ const actions = {
         dispatch('save', false)
     },
 
-    cekDateProperty({ commit, dispatch }) {
-        commit('CEK_DATE_PROPERTY')
+    cekDateProperty({ commit, dispatch }, options) {
+        console.log('------------------')
+        commit('CEK_DATE_PROPERTY', options)
 
         dispatch('save', false)
     },

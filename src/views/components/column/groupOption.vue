@@ -22,8 +22,9 @@
 
         methods: {
             changeGroup(group) {
-                this.$store.dispatch('rows/setGroupData', group)
                 console.log(group)
+                console.log(this.select)
+                this.$store.dispatch('rows/setGroupData', {'group': group, 'row': this.vuerow, 'column': this.vuecolumn})
             },
 
             removeGroup() {
@@ -37,6 +38,10 @@
             select: {
                 get() {
                     return this.rows.rows[this.vuerow][this.vuecolumn]['group_data']
+                },
+
+                set() {
+                    this.$store.dispatch('rows/setGroupData', select)
                 }
             }
         },

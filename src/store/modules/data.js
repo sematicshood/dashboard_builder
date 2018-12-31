@@ -186,8 +186,6 @@ const actions = {
                     let st = datas['date'].start.split('T')[0].split('-'),
                         en = datas['date'].end.split('T')[0].split('-')
 
-                    console.log(st)
-
                     let from = `${ st[0] }-${ st[1] }-${ st[2] }`,
                         to   = `${ en[0] }-${ en[1] }-${ en[2] }`
 
@@ -208,8 +206,6 @@ const actions = {
             }
 
             data['filters'] = `[${filters}]`
-
-            console.log(data['filters'])
 
             client.get('/api_dashboard/' + datas['model'], {params: data})
                     .then(res => {

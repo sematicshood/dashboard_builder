@@ -72,7 +72,7 @@
         },
 
         created() {
-            this.$store.dispatch('rows/cekDateProperty')
+            this.$store.dispatch('rows/cekDateProperty', {'row': this.vuerow, 'column': this.vuecolumn})
         },
     }
 </script>

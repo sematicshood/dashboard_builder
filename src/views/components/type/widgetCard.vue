@@ -4,7 +4,10 @@
             <b-card-body class="pb-0">
                 <!-- <p>Members online</p> -->
                 <h4 class="mb-0">Rp. {{ sum | rupiah }}</h4>
-                <p class="span-widget"><font-awesome-icon icon="long-arrow-alt-up"/> {{ percentage | rupiah }} %</p>
+                <p class="span-widget">
+                    <font-awesome-icon v-if="percentage > 0" icon="long-arrow-alt-up"/> 
+                    <font-awesome-icon v-if="percentage < 0" icon="long-arrow-alt-down"/> 
+                    {{ percentage | rupiah }} %</p>
                 <p class="span-widget">Rp. {{ last | rupiah }}</p>
             </b-card-body>
         </b-card>
@@ -31,7 +34,6 @@
         watch: {
             date: {
                 handler(val){
-                    console.log('update')
                     this.fillData()
                 },
                 deep: true
@@ -89,12 +91,19 @@
         methods: {
             getDays(date1, date2) {
                 var ONE_DAY = 1000 * 60 * 60 * 24;
-                let dated1 = date1.split('T')[0].split('-')
-                let dated2 = date2.split('T')[0].split('-')
+                
+                if(typeof date1 == 'object') {
+                    // Convert both dates to milliseconds
+                    var date1_ms = new Date(date1.getUTCFullYear(), date1.getUTCMonth(), date1.getUTCDate());
+                    var date2_ms = new Date(date2.getUTCFullYear(), date2.getUTCMonth(), date2.getUTCDate());
+                } else {
+                    let dated1 = date1.split('T')[0].split('-')
+                    let dated2 = date2.split('T')[0].split('-')
 
-                // Convert both dates to milliseconds
-                var date1_ms = new Date(dated1[0], dated1[1], dated1[2]);
-                var date2_ms = new Date(dated2[0], dated2[1], dated2[2]);
+                    // Convert both dates to milliseconds
+                    var date1_ms = new Date(dated1[0], dated1[1], dated1[2]);
+                    var date2_ms = new Date(dated2[0], dated2[1], dated2[2]);
+                }
 
                 // Calculate the difference in milliseconds
                 var difference_ms = Math.abs(date1_ms - date2_ms);
@@ -130,11 +139,8 @@
                         res.forEach(el => {
                             this.$data.last += Math.floor(el[key])
                         })
-
-                        console.log(this.$data.sum)
-                        console.log(this.$data.last)
                         
-                        this.$data.percentage = Math.floor((Math.floor(this.$data.last) / 100) * Math.floor(this.$data.sum))
+                        this.$data.percentage = (((this.$data.sum - this.$data.last) / this.$data.sum) * 100).toFixed(2)
                     })
                     .catch(err => {
                         this.$data.last = 0

@@ -22,11 +22,11 @@
 
                     <filter-date :vuerow="index"
                            :vuecolumn="indexes" 
-                           v-if="type == 'view'"/>
+                           v-show="type == 'view'"/>
 
                     <group-option :vuerow="index"
                         :vuecolumn="indexes" 
-                        v-if="type == 'view' && column['type'] != 'widget-card'"/>
+                        v-if="type == 'view' && column['type'] == 'bar' || column['type'] == 'line'"/>
 
                     <h5 v-text="column['title']"></h5>
                     
@@ -181,6 +181,7 @@
         top: 9px;
         position: absolute;
         left: 85px;
+        z-index: 9999;;
     }
 
 </style>

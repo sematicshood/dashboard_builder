@@ -84,5 +84,5 @@
 </script>
 
 <style>
-    @import '../assets/css/navbar.css';
+    @import '../../public/style/navbar.css';
 </style>

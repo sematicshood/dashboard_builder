@@ -50,5 +50,5 @@
 </script>
 
 <style>
-    @import '../assets/css/breadcumb.css'
+    @import '../../public/style/breadcumb.css'
 </style>

@@ -49,7 +49,8 @@
                             <judul-column/>
                             <jenis-column/>
                             <width-column/>
-                            <collapse-option/>
+                            <button-delete-component/>
+                            <!-- <collapse-option/> -->
                         </div>                    
                     </div>
 
@@ -79,12 +80,13 @@
     import widthColumn from './components/column/widthColumn.vue'
     import categoryComponent from './components/categoryComponent.vue'
     import collapseOption from './components/column/collapseOption.vue'
+    import buttonDeleteComponent from './components/selectComponent/buttonDeleteComponent.vue'
 
     export default {
         name: 'sidebar',
 
         components: {
-            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption, categoryComponent, heightRow, widthColumn, collapseOption
+            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption, categoryComponent, heightRow, widthColumn, collapseOption, buttonDeleteComponent
         },
         
         computed: {
@@ -106,5 +108,5 @@
 </script>
 
 <style>
-    @import '../assets/css/sidebar.css';
+    @import '../../public/style/sidebar.css';
 </style>
