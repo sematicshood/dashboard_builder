@@ -128,7 +128,7 @@ const actions = {
             rootGetters['rows/getRows'].forEach((element, row) => {
                 element.forEach((el, col) => {
                     if(el['model'] != undefined) {
-                        dispatch('getDatas', {'model': el['model'], 'filters': el['filters_data']})
+                        dispatch('getDatas', {'model': el['model'], 'filters': el['filters_data'], 'date': el['filter_date']})
                             .then(res => {
                                 dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
                             })
@@ -173,16 +173,27 @@ const actions = {
 
         return new Promise((resolve, reject) => {
             const data      = {
-                order: "id desc",
+                order: "write_date asc",
                 username: JSON.parse(localStorage.getItem('user'))['username'],
                 password: JSON.parse(localStorage.getItem('user'))['password'],
                 db_name: rootGetters['core/getDatabase']
             }
 
             if(datas['filters'] != undefined) filters += `${datas['filters']}`
-
+            
             if(datas['date'] != undefined) {
-                filters += datas['date']
+                if(typeof datas['date'] == 'object') {
+                    let from = datas['date'].start,
+                        to   = datas['date'].end
+
+                    if(from == to) {
+                        filters += `('write_date','=','${ from }')`
+                    } else {
+                        filters += `('write_date','>=','${ from }'),('write_date','<','${ to }')`
+                    }
+                } else {
+                    filters += datas['date']
+                }
             } else {
                 filters += `('write_date','>=','${ from }'),('write_date','<','${ to }')`
             }
@@ -234,7 +245,7 @@ const actions = {
             let model = rootGetters['rows/getModel']
 
             const data      = {
-                order: "id desc",
+                order: "write_date asc",
                 filters: filter,
                 'username': JSON.parse(localStorage.getItem('user'))['username'],
                 'password': JSON.parse(localStorage.getItem('user'))['password'],

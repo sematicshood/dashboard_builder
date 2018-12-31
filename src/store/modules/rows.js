@@ -129,7 +129,7 @@ const getters = {
 
     getEdited(state) {
         return state.edited
-    }
+    },
 }
 
 const mutations = {
@@ -295,6 +295,61 @@ const mutations = {
 
     SET_EDITED_DEFAULT(state, defaulted) {
         state.edited = defaulted
+    },
+
+    CEK_LEGEND(state) {
+        let legends = [
+            {
+                name:'display',
+                value: true
+            }
+        ]
+
+        state.rows.forEach((el, o) => {
+            el.forEach((e, i) => {
+                if(i != 0) {
+                    if(state.rows[o][i]['options_chart']['legend'] == undefined)
+                        state.rows[o][i]['options_chart']['legend'] =   {}
+
+                    legends.forEach(el => {
+                        if(state.rows[o][i]['options_chart']['legend'][el.name] == undefined)
+                            state.rows[o][i]['options_chart']['legend'][el.name] = el.value
+                    })
+                }
+            })
+        })
+    },
+
+    CEK_DATE_PROPERTY(state) {
+        var d       =  new Date(),
+            from    =  new Date(d.getFullYear(), d.getMonth(), 1),
+            to      =  new Date(d.getFullYear(), d.getMonth() + 1, 1)
+
+        state.rows.forEach((el, o) => {
+            el.forEach((e, i) => {
+                if(i != 0) {
+                    if(state.rows[o][i]['filter_date'] == undefined)
+                        state.rows[o][i]['filter_date'] = { start: from, end: to }
+                }
+            })
+        })
+    },
+
+    SET_DATE(state, option) {
+        state.rows[state.rowOp][state.colOp]['filter_date'][option.type] = option.value
+    },
+
+    SET_DISPLAY(state, display) {
+        state.rows[state.rowOp][state.colOp]['options_chart']['legend']['display'] = display
+    },
+
+    CEK_GROUP_OPTION(state, options) {
+        if(state.rows[options.row][options.column]['group_data'] == undefined)
+            state.rows[options.row][options.column]['group_data'] = ''
+    },
+
+    SET_GROUP_DATA(state, group) {
+        state.rows[state.rowOp][state.colOp]['group_data'] = group
     }
 }
 
@@ -608,6 +663,30 @@ const actions = {
 
         commit('SET_EDITED_DEFAULT', template)
         commit('SET_EDITED', template)
+    },
+
+    cekLegend({ commit, dispatch }) {
+        commit('CEK_LEGEND')
+
+        dispatch('save', false)
+    },
+
+    cekDateProperty({ commit, dispatch }) {
+        commit('CEK_DATE_PROPERTY')
+
+        dispatch('save', false)
+    },
+
+    cekGroupOption({ commit, dispatch }, options) {
+        commit('CEK_GROUP_OPTION', options)
+
+        dispatch('save', false)
+    },
+
+    setGroupData({ commit, dispatch }, group) {
+        commit('SET_GROUP_DATA', group)
+
+        dispatch('save', false)
     }
 }
 

@@ -51,7 +51,16 @@
             },
             options: {
                 get() {
-                    return this.rows.rows[this.vuerow][this.vuecolumn]['options_chart']
+                    let hello  = this.rows.rows[this.vuerow][this.vuecolumn]['options_chart']
+                    let option = {
+                        responsive: true, 
+                        maintainAspectRatio: false,
+                        legend: { 
+                            display: hello.legend.display
+                        }
+                    }
+
+                    return option
                 }
             },
             datas: {
@@ -67,10 +76,12 @@
                 this.fillData()
             },
 
-            row() {
-                console.log('change')
-                this.fillData()
-            }
+            row: {
+                handler(val){
+                    this.fillData()
+                },
+                deep: true
+            },
         },
 
         methods: {

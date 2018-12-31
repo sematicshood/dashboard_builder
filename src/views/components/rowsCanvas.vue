@@ -20,7 +20,13 @@
 
                     <b-btn class="btn-filter-dashboard" v-if="type == 'edit'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
 
-                    <filter-date v-if="type == 'view'"/>
+                    <filter-date :vuerow="index"
+                           :vuecolumn="indexes" 
+                           v-if="type == 'view'"/>
+
+                    <group-option :vuerow="index"
+                        :vuecolumn="indexes" 
+                        v-if="type == 'view'"/>
 
                     <h5 v-text="column['title']"></h5>
                     
@@ -70,6 +76,7 @@
     import horizontalComponent from './type/horizontalComponent.vue'
     import filterModal from './filterModal.vue'
     import filterDate from './column/filterDate.vue'
+    import groupOption from './column/groupOption.vue'
     import { mapGetters } from 'vuex'
 
     export default {
@@ -83,7 +90,7 @@
         },
 
         components: {
-            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow, filterDate
+            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow, filterDate, groupOption
         },
 
         methods: {
