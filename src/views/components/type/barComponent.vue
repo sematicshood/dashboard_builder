@@ -27,7 +27,6 @@
             }
         },
         mounted() {
-            console.log(this.datas),
             this.fillData()
         },
 
@@ -59,6 +58,11 @@
                     // return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']]
                     return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
                 }
+            },
+            group: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['group_data']
+                }
             }
         },
 
@@ -68,7 +72,13 @@
             },
             datas(newv, oldv) {
                 this.fillData()
-            }
+            },
+            row: {
+                handler(val){
+                    this.fillData()
+                },
+                deep: true
+            },
         },
 
         methods: {
@@ -79,8 +89,38 @@
                 }
                 return false;
             },
+
+            cekWeek(date) { 
+                // Copy date so don't modify original
+                // d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+                // // Set to nearest Thursday: current date + 4 - current day number
+                // // Make Sunday's day number 7
+                // d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+                // // Get first day of year
+                // var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+                // // Calculate full weeks to nearest Thursday
+                // var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+                // // Return array of year and week number
+                // return [d.getUTCFullYear(), weekNo];
+                console.log(date)
+                var target = new Date(date.valueOf()),
+                    dayNumber = (date.getUTCDay() + 6) % 7,
+                    firstThursday;
+
+                target.setUTCDate(target.getUTCDate() - dayNumber + 3);
+                firstThursday = target.valueOf();
+                target.setUTCMonth(0, 1);
+
+                if (target.getUTCDay() !== 4) {
+                    target.setUTCMonth(0, 1 + ((4 - target.getUTCDay()) + 7) % 7);
+                }
+
+                return [date.getFullYear(), Math.ceil((firstThursday - target) /  (7 * 24 * 3600 * 1000)) + 1];
+            },
+
             fillData () {
                 let xaxis       = this.titles[0]['prop'] || [],
+                    type        = this.titles[0]['type'] || [],
                     key         = this.titles[1]['prop'] || [],
                     value       = this.titles[2]['prop'] || [],
                     labels      = [],
@@ -93,17 +133,74 @@
                         if(this.inArray(labels, el[xaxis][1]) == false)
                             labels.push(el[xaxis][1])
                     } else {
-                        if(this.inArray(labels, el[xaxis]) == false)
-                            labels.push(el[xaxis])
+                        let dat  = el[xaxis].split(' ')[0],
+                            x    = el[xaxis]
+
+                        if (type == 'datetime') {
+                            x    = dat
+                        }
+
+                        if(this.inArray(labels, x) == false)
+                            labels.push(x)
                     }
                 })
 
+                if(this.group != '' && this.group != 'Hari') {
+                    let newl = []
+
+                    labels.forEach(la => {
+                        let dat  = la.split(' ')[0].split('-')
+                        
+                        if(this.group == 'Tahun') {
+                            if(this.inArray(newl, dat[0]) == false)
+                                newl.push(dat[0])
+                        } else if(this.group == 'Bulan') {
+                            let bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+
+                            if(this.inArray(newl, `${bulan[parseInt(dat[1]) - 1]} #${dat[0]}`) == false)
+                                newl.push(`${bulan[parseInt(dat[1]) - 1]} #${dat[0]}`)
+                        } else if(this.group == 'Minggu') {
+                            let minggu = this.cekWeek(new Date(dat[0],parseInt(dat[1]) - 1,dat[2]))
+
+                            if(this.inArray(newl, `Minggu #${minggu[1]} - ${minggu[0]}`) == false)
+                                newl.push(`Minggu #${minggu[1]} - ${minggu[0]}`)
+                        }
+                    })
+
+                    labels = newl
+                }
+
                 labels.forEach(el => {
                     let datas = this.datas.filter((data) => {
-                        if(data[xaxis].length == 2)
+                        if(data[xaxis].length == 2) {
                             return data[xaxis][1] == el
-                        else
-                            return data[xaxis] == el
+                        } else {
+                            if(this.group != '' && this.group != 'Hari') {
+                                let dat  = data[xaxis].split(' ')[0].split('-')
+
+                                if(this.group == 'Tahun') {
+                                    return dat[0] == el
+                                } else if(this.group == 'Bulan') {
+                                    let bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+
+                                    return `${bulan[parseInt(dat[1]) - 1]} #${dat[0]}` == el
+                                } else if(this.group == 'Minggu') {
+                                    let minggu = this.cekWeek(new Date(dat[0],parseInt(dat[1]) - 1,dat[2]))
+                                    console.log(minggu)
+
+                                    return `Minggu #${minggu[1]} - ${minggu[0]}` == el
+                                }
+                            } else {
+                                let dat  = data[xaxis].split(' ')[0],
+                                    x    = data[xaxis]
+
+                                if (type == 'datetime') {
+                                    x    = dat
+                                }
+
+                                return x == el
+                            }
+                        }
                     })
 
                     datas.forEach(e => {
