@@ -5,15 +5,14 @@
                 <div class="logo-nav">
                     <img src="../assets/logo.jpg" alt="Logo Sematics">
                 </div>
+                <span v-text="greeting"></span>
             </div>
             <div class="content col-md-6">
+                <button-sync/>
+                <button-share/>
                 <a href="#">
                     <button-add-row/> 
                 </a>
-                <a href="#">
-                    <font-awesome-icon icon="sync" class="icon-badge-navbar"/>
-                </a>
-                <b-badge pill variant="danger" class="badge-navbar">1</b-badge>
                 <a href="#">
                     <button-save/>
                 </a>
@@ -37,12 +36,50 @@
     import buttonAddRow from './components/buttonAddRow.vue'
     import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
     import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
+    import buttonSync from './components/row/buttonSync.vue'
+    import buttonShare from './components/row/buttonShare.vue'
 
     export default {
         name: 'navbar',
+
+        data() {
+            return {
+                greeting: 'Selamat datang'
+            }
+        },
+
         components: {
-            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton
-        }      
+            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton, buttonSync, buttonShare
+        },
+
+        methods: {
+            getDataUser() {
+                this.$store.dispatch('data/getUserData')
+                    .then(res => {
+                        this.setGreeting(res[0].display_name)
+                    })
+            },
+
+            setGreeting(name) {
+                var today = new Date()
+                var curHr = today.getHours()
+                let greeting = ''
+
+                if (curHr < 12) {
+                    greeting = 'Selamat pagi ' + name
+                } else if (curHr < 18) {
+                    greeting = 'Selamat siang ' + name
+                } else {
+                    greeting = 'Selamat sore ' + name
+                }
+
+                this.$data.greeting = greeting
+            }
+        },
+
+        created() {
+            this.getDataUser()
+        }
     }
 </script>
 

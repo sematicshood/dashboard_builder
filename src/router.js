@@ -14,7 +14,8 @@ const routes = [
         component: Gallery,
         meta: {
             requiresAuth: true
-        }
+        },
+        name: 'gallery'
     },
     {
         path: '/dashboard/:name/:type',
@@ -36,10 +37,6 @@ router.beforeEach((to, from, next) => {
     const token   =   JSON.parse(localStorage.getItem('login')),
           acc     =   JSON.parse(localStorage.getItem('user'))
 
-          to.matched.some(record => {
-            console.log(record.meta.breadcumb)
-          })
-    
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if(token && acc) {
             if(token['access_token'])

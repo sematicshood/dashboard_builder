@@ -1,6 +1,6 @@
 <template>
     <div id="pieComponent">
-        <pie-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="chartOptions"></pie-chart>
+        <pie-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="options"></pie-chart>
     </div>
 </template>
 
@@ -20,10 +20,6 @@
         data () {
             return {
                 datacollection: null,
-                chartOptions: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                },
             }
         },
         mounted() {
@@ -53,10 +49,15 @@
                     return this.rows.rows[this.vuerow][this.vuecolumn]['titles']
                 }
             },
+            options: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['options_chart']
+                }
+            },
             datas: {
                 get() {
                     // return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']] || []
-                    return this.rows.rows[this.vuerow][this.vuecolumn]['data']
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
                 }
             }
         },
@@ -81,41 +82,72 @@
                 return false;
             },
             fillData () {
-                let xaxis           = this.titles[0]['prop'] || [],
-                    value           = this.titles[1]['prop'] || [],
-                    labels          = [],
+                let labels          = [],
                     datasets        = [],
                     values          = [],
-                    backgroundColor = []
+                    backgroundColor = [],
+                    counts          = {}
 
-                this.datas.forEach(el => {
-                    if(el[xaxis].length == 2) {
-                        if(this.inArray(labels, el[xaxis][1]) == false)
-                            labels.push(el[xaxis][1])
-                    } else {
-                        if(this.inArray(labels, el[xaxis]) == false)
-                            labels.push(el[xaxis])
-                    }
-                })
+                if(this.titles.length > 1) {
+                    let xaxis           = this.titles[0]['prop'] || [],
+                        value           = this.titles[1]['prop'] || []
 
-                labels.forEach(el => {
-                    let amount = 0
-
-                    let datas = this.datas.filter((data) => {
-                        if(data[xaxis].length == 2)
-                            return data[xaxis][1] == el
-                        else
-                            return data[xaxis] == el
+                    this.datas.forEach(el => {
+                        if(el[xaxis].length == 2) {
+                            if(this.inArray(labels, el[xaxis][1]) == false)
+                                labels.push(el[xaxis][1])
+                        } else {
+                            if(this.inArray(labels, el[xaxis]) == false)
+                                labels.push(el[xaxis])
+                        }
                     })
 
-                    datas.forEach(e => {    
-                        amount += e[value]   
+                    labels.forEach(el => {
+                        let amount = 0
+
+                        let datas = this.datas.filter((data) => {
+                            if(data[xaxis].length == 2)
+                                return data[xaxis][1] == el
+                            else
+                                return data[xaxis] == el
+                        })
+
+                        datas.forEach(e => {    
+                            amount += e[value]   
+                        })
+
+                        values.push(amount)
+
+                        backgroundColor.push(this.getRandomColor())
+                    })
+                } else {
+                    let xaxis           = this.titles[0]['prop'] || [],
+                        alls            = []
+
+                    this.datas.forEach(el => {
+                        if(el[xaxis].length == 2) {
+                            if(this.inArray(labels, el[xaxis][1]) == false)
+                                labels.push(el[xaxis][1])
+
+                            alls.push(el[xaxis][1])
+                        } else {
+                            if(this.inArray(labels, el[xaxis]) == false)
+                                labels.push(el[xaxis])
+
+                            alls.push(el[xaxis])
+                        }
                     })
 
-                    values.push(amount)
+                    alls.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
 
-                    backgroundColor.push(this.getRandomColor())
-                })
+                    labels.forEach(el => {
+                        let amount = 0
+
+                        values.push(counts[el])
+
+                        backgroundColor.push(this.getRandomColor())
+                    })
+                }
 
                 datasets.push({
                     label: 'hello',

@@ -27,7 +27,8 @@
                     height = 300
 
                 let row = [{
-                    height: height
+                    height: height,
+                    edited: false
                 }]
 
                 this.$store.dispatch('rows/addRows', row)

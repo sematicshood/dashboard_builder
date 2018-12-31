@@ -18,7 +18,9 @@
                     :style="`width: ${column['width']}%; left: ${column['left']}%;`"
                     @click="colOption(index, indexes)" v-if="indexes != 0">
 
-                    <b-btn class="btn-filter-dashboard" v-if="type == 'view'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
+                    <b-btn class="btn-filter-dashboard" v-if="type == 'edit'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
+
+                    <filter-date v-if="type == 'view'"/>
 
                     <h5 v-text="column['title']"></h5>
                     
@@ -67,8 +69,8 @@
     import doughnutComponent from './type/doughnutComponent.vue'
     import horizontalComponent from './type/horizontalComponent.vue'
     import filterModal from './filterModal.vue'
-    import { Event } from '../../event.js'
-    import { mapGetters, mapState } from 'vuex'
+    import filterDate from './column/filterDate.vue'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'row-canvas',
@@ -81,7 +83,7 @@
         },
 
         components: {
-            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow
+            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow, filterDate
         },
 
         methods: {
@@ -160,8 +162,9 @@
     }
 
     .btn-filter-dashboard{
-        float: left;
-        margin-bottom: 10px;
+        top: 9px;
+        position: absolute;
+        left: 85px;
     }
 
 </style>

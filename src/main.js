@@ -19,14 +19,15 @@ import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 import BootstrapVue from 'bootstrap-vue'
 import Datatable from 'vue2-datatable-component'
+import VueRangedatePicker from 'vue-rangedate-picker'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar} from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 require('vue2-animate/dist/vue2-animate.min.css')
 
-library.add(faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar)
+library.add(faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 locale.use(lang)
@@ -38,6 +39,7 @@ Vue.use(ElementUI)
 Vue.use(VueDataTables)
 Vue.use(Datatable)
 Vue.use(BootstrapVue)
+Vue.use(VueRangedatePicker)
 
 sync(store, router)
 

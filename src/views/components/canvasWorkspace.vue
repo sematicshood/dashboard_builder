@@ -1,5 +1,7 @@
 <template>
     <div id="canvas">
+        <modal-share/>
+        
         <row-canvas></row-canvas>
 
         <add-rows></add-rows>
@@ -22,29 +24,16 @@
     import rowOption from './rowOption.vue'
     import addColumn from './addColumn.vue'
     import buttonAddRow from './buttonAddRow.vue'
+    import modalShare from './row/modalShare.vue'
     import { mapGetters } from 'vuex'
 
     export default {
         name: 'canvasWorkspace',
 
         components: {
-            draggable, RowCanvas, addRows, rowOption, addColumn, buttonAddRow, buttonDeleteRow
+            draggable, RowCanvas, addRows, rowOption, addColumn, buttonAddRow, buttonDeleteRow, modalShare
         },
-
-        computed: {
-            ...mapGetters('workspace', {
-                type: 'getType',
-            }),
-
-            ...mapGetters('data', {
-                models: 'getModels',
-            }),
-
-            ...mapGetters('rows', {
-                rows: 'getRows'
-            })
-        },
-
+        
         created() {
             this.$store.dispatch('rows/loadTemplate'),
 

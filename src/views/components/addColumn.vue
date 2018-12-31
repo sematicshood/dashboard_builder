@@ -48,7 +48,21 @@
                         type: this.$data.selected,
                         titles: [],
                         columns: [],
-                        data: []
+                        datas: [],
+                        filters_data: [],
+                        filters_list: [],
+                        options_chart: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            legend: {},
+                            layout: {},
+                            title: {},
+                            tooltip: {},
+                            scales: {
+                                yAxes: [{}],
+                                xAxes: [{}],
+                            }
+                        }
                     }
 
                 if(this.maxWidth != 0)
@@ -62,7 +76,6 @@
             ...mapGetters('rows', {
                 'totalLeft': 'getTotalLeft',
                 'title': 'getTitle',
-                'selected': 'getSelected',
                 'options': 'getOptions',
                 'width': 'getWidth',
                 'maxWidth': 'getMaxWidth',

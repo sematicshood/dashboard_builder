@@ -1,7 +1,11 @@
 <template>
     <div id="breadcumb">
         <div class="container-2">
-            <h6 v-text="breadcumb"></h6>
+            <h6 v-for="(bread, i) in breadcumb" style="display: inline-block;">
+                <router-link style="color: #117a8b !important;" v-if="i == 0" :to="{ name: 'gallery' }">{{ bread }}</router-link>
+                <span v-if="i != 0">{{ bread }}</span>
+                <span v-if="i < breadcumb.length - 1">&nbsp; / &nbsp;</span>
+            </h6>
         </div>
     </div>
 </template>
@@ -27,7 +31,9 @@
                     splits[2] = ' ' + this.$route.params.name
                 }
 
-                this.$data.breadcumb = splits.toString().replace(/,/g, '/')
+                this.$data.breadcumb = splits
+
+                // this.$data.breadcumb = splits.toString().replace(/,/g, '/')
             }
         },
 

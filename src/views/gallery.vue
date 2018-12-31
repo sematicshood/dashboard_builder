@@ -44,16 +44,23 @@
 
         methods: {
             loadTemplate() {
-                let dashboard = Object.keys(localStorage)
+                let dashboard = Object.keys(localStorage),
+                    total     = 0
 
                 for (let index = 0; index < dashboard.length; index++) {
                     let d = dashboard[index].split('-')
                     
                     if(d[0] == 'template' && d[1] == 'dashboard') {
+                        total += 1
+
                         let data = JSON.parse(localStorage.getItem(dashboard[index])) 
 
                         this.$store.dispatch('workspace/addDashboards', data)
                     }
+                }
+
+                if(total == 0) {
+                    this.$store.dispatch('workspace/getDataDashboard')
                 }
             }
         },

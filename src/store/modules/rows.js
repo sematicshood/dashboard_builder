@@ -1,3 +1,6 @@
+import { client } from './client'
+import qs from 'qs';
+
 const state = {
     rows: [],
     height: '',
@@ -20,6 +23,7 @@ const state = {
         { value: 'horizontal', text: 'horizontal' },
         { value: 'polar', text: 'polar' },
     ],
+    edited: false
 }
 
 const getters = {
@@ -93,6 +97,27 @@ const getters = {
         return state.rows[row][column]['model']
     },
 
+    getColumnWidth(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 1
+        
+        return state.rows[row][column]['width']
+    },
+
+    getColumnFilters(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 1
+        
+        return state.rows[row][column]['filters_data']
+    },
+
+    getColumnFiltersList(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 1
+        
+        return state.rows[row][column]['filters_list']
+    },
+
     // getColumnDetail(state) {
     //     console.log(state.rows[0][1])
     //     return state.rows[0][1]
@@ -100,6 +125,10 @@ const getters = {
 
     getHeightRow: (state) => (data) => {
         return state.rows[data][0]['height']
+    },
+
+    getEdited(state) {
+        return state.edited
     }
 }
 
@@ -199,7 +228,37 @@ const mutations = {
     },
 
     SET_DATA_ROW(state, data) {
-        state.rows[state.rowOp][state.colOp]['data'] = data
+        state.rows[state.rowOp][state.colOp]['datas'] = data
+    },
+
+    SET_COLUMN_WIDTH(state, width) {
+        let totalWidth       = 100,
+            before           = state.rows[state.rowOp][state.colOp]['width']
+
+        state.rows[state.rowOp].forEach((val, i) => {
+            if(parseInt(val['width'])) {
+                if(i != state.colOp)
+                    totalWidth -= parseInt(val['width'])
+            }
+        });
+
+        if(width > totalWidth)
+            width = totalWidth
+
+        state.rows[state.rowOp][state.colOp]['width'] = width
+
+        state.rows[state.rowOp].forEach((val, i) => {
+            let total = 0
+
+            for(let a=1; a < i; a++) {
+                if(state.rows[state.rowOp][i]['width'])
+                    total += parseInt(state.rows[state.rowOp][a]['width'])
+            }
+
+            if(i != 0) {
+                state.rows[state.rowOp][i]['left'] = total
+            }
+        });
     },
 
     REMOVE_TITLE(state, index) {
@@ -208,6 +267,34 @@ const mutations = {
 
     RESET_TITLES(state) {
         state.rows[state.rowOp][state.colOp]['titles'] = []
+    },
+
+    SET_EDITED(state, edited) {
+        state.edited = edited
+    },
+
+    SET_DATA_DEFAULT_ROW(state, params) {
+        state.rows[params.row][params.col]['datas'] = params.res
+    },
+
+    SET_FILTERS(state, filters) {
+        state.rows[state.rowOp][state.colOp]['filters_data'] = filters
+    },
+
+    REMOVE_FILTERS(state, i) {
+        state.rows[state.rowOp][state.colOp]['filters_list'].splice(i, 1)
+    },
+
+    ADD_FILTERS(state, filter) {
+        state.rows[state.rowOp][state.colOp]['filters_data'] = filter
+    },
+
+    ADD_FILTERS_LIST(state, filter) {
+        state.rows[state.rowOp][state.colOp]['filters_list'].push(filter)
+    },
+
+    SET_EDITED_DEFAULT(state, defaulted) {
+        state.edited = defaulted
     }
 }
 
@@ -262,13 +349,52 @@ const actions = {
         dispatch('save')
     },
 
-    save({getters, dispatch, rootGetters}, all = true) {
+    save({getters, dispatch,commit, rootGetters}, all = true) {
         let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
             template    = JSON.parse(localStorage.getItem(name))
 
         template['rows'] = getters.getRows
+
+        for(let t in template['rows']) {
+            for(let a in template['rows'][t]) {
+                if(a != 0) {
+                    if(template['rows'][t][a].hasOwnProperty('data')) {
+                        delete template['rows'][t][a]['data']
+                    }
+                }
+            }
+        }
+        
+        commit('SET_EDITED', true)
+
+        template['edited'] = true
         
         localStorage.setItem(name, JSON.stringify(template))
+
+        dispatch('reset', all)
+    },
+
+    editedFalse({getters, dispatch,commit, rootGetters}, all = true) {
+        let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
+            template    = JSON.parse(localStorage.getItem(name))
+
+        template['rows'] = getters.getRows
+
+        for(let t in template['rows']) {
+            for(let a in template['rows'][t]) {
+                if(a != 0) {
+                    if(template['rows'][t][a].hasOwnProperty('data')) {
+                        delete template['rows'][t][a]['data']
+                    }
+                }
+            }
+        }
+        commit('SET_EDITED', false)
+
+        template['edited'] = false
+        
+        localStorage.setItem(name, JSON.stringify(template))
+        console.log('masuk sini')
 
         dispatch('reset', all)
     },
@@ -300,6 +426,96 @@ const actions = {
         commit('SET_ROWS', rows)
 
         dispatch('reset')
+    },
+
+    syncDatabase({ rootGetters, dispatch }, id = false) {
+        let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
+            rows        = localStorage.getItem(name) || []
+
+        const data      = {
+            username: JSON.parse(localStorage.getItem('user'))['username'],
+            password: JSON.parse(localStorage.getItem('user'))['password'],
+            db_name: rootGetters['core/getDatabase']
+        }
+
+        let payload = {
+            name: name,
+            user_id: JSON.parse(localStorage.getItem('login'))['uid'],
+            template: rows
+        }
+
+        dispatch('editedFalse')
+
+        data['filters'] = `[('name', '=', '${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
+
+        client.get('/api_dashboard/dashboard', { params: data })
+              .then(res => {
+                  delete data['filters']
+
+                  payload['id'] = res.data.results[0].id
+
+                  client.post('/api_dashboard/dashboard/' + payload['id'], qs.stringify(payload), {params: data})
+                            .then(re => {
+                                if(id) {
+                                    payload['parent_id'] =   payload['id']
+                                    payload['user_id']   =   id
+                                    delete payload['id']
+
+                                    client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                                    .then(re => {
+                                        console.log(re)
+                                    })
+                                    .catch(er => {
+                                        console.log(er)
+                                    })
+                                }
+
+                                data['filters'] = `[('parent_id', '=', ${ res.data.results[0].id })]`
+                                data['field']   = "['id', 'user_id']"
+
+                                client.get('/api_dashboard/dashboard', { params: data })
+                                      .then(res => {
+                                          delete data['filters']
+                                          delete data['fields']
+
+                                          res.data['results'].forEach(el => {
+                                            payload['user_id'] = el['user_id']
+
+                                            client.post('/api_dashboard/dashboard/' + el['id'], qs.stringify(payload), {params: data})
+                                          })
+                                      })
+                                      .catch(err => {
+                                          console.log(err)
+                                      })
+                            })
+                            .catch(er => {
+                                console.log(er)
+                            })
+              })
+              .catch(err => {
+                  delete data['filters']
+                  
+                  if(err.response.status) {
+                      client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                            .then(re => {
+                                if(id) {
+                                    payload['parent_id'] =   re.data.id
+                                    payload['user_id']   =   id
+
+                                    client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                                    .then(re => {
+                                        console.log(re)
+                                    })
+                                    .catch(er => {
+                                        console.log(er)
+                                    })
+                                }
+                            })
+                            .catch(er => {
+                                console.log(er)
+                            })
+                  }
+              })
     },
 
     setTitle({commit}, title) {
@@ -351,6 +567,48 @@ const actions = {
     resetTitles({ commit }, data) {
         commit('RESET_TITLES', data)
     },
+
+    setDataDefaultRow({ commit }, params) {
+        commit('SET_DATA_DEFAULT_ROW', params)
+    },
+
+    setFilters({ commit, dispatch }, filters) {
+        commit('SET_FILTERS', filters)
+
+        dispatch('save', false)
+    },
+
+    removeFilters({ commit, dispatch }, i) {
+        commit('REMOVE_FILTERS', i)
+
+        dispatch('save', false)
+    },
+
+    addFilters({ commit, dispatch }, filter) {
+        commit('ADD_FILTERS', filter)
+
+        dispatch('save', false)
+    },
+
+    addFiltersList({ commit, dispatch }, filter) {
+        commit('ADD_FILTERS_LIST', filter)
+
+        dispatch('save', false)
+    },
+
+    setColumnWidth({ commit, dispatch }, width) {
+        commit('SET_COLUMN_WIDTH', width)
+
+        dispatch('save', false)   
+    },
+
+    setEdited({ commit, rootGetters }) {
+        let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
+            template    = JSON.parse(localStorage.getItem(name))['edited'] || false
+
+        commit('SET_EDITED_DEFAULT', template)
+        commit('SET_EDITED', template)
+    }
 }
 
 export default {

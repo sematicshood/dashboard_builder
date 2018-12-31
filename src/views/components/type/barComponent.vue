@@ -57,7 +57,7 @@
             datas: {
                 get() {
                     // return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']]
-                    return this.rows.rows[this.vuerow][this.vuecolumn]['data']
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
                 }
             }
         },
@@ -89,13 +89,21 @@
                     values      = {}
 
                 this.datas.forEach(el => {
-                    if(this.inArray(labels, el[xaxis]) == false)
-                        labels.push(el[xaxis])
+                    if(el[xaxis].length == 2) {
+                        if(this.inArray(labels, el[xaxis][1]) == false)
+                            labels.push(el[xaxis][1])
+                    } else {
+                        if(this.inArray(labels, el[xaxis]) == false)
+                            labels.push(el[xaxis])
+                    }
                 })
 
                 labels.forEach(el => {
                     let datas = this.datas.filter((data) => {
-                        return data[xaxis] == el
+                        if(data[xaxis].length == 2)
+                            return data[xaxis][1] == el
+                        else
+                            return data[xaxis] == el
                     })
 
                     datas.forEach(e => {
