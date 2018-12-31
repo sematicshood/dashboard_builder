@@ -57,6 +57,9 @@
                     <polar-component v-if="column['type'] == 'polar'"
                            :vuerow="index"
                            :vuecolumn="indexes"/>
+                    <widget-card/>
+                    <br>
+                    <widget-table/>
                 </div>
             </div>
         </div>
@@ -67,6 +70,8 @@
 
 <script>
     import buttonDeleteRow from './rowComponent/buttonDeleteRow.vue'
+    import widgetCard from './type/widgetCard.vue'
+    import widgetTable from './type/widgetTable.vue'
     import tableComponent from './type/tableComponent.vue'
     import lineComponent from './type/lineComponent.vue'
     import barComponent from './type/barComponent.vue'
@@ -90,7 +95,7 @@
         },
 
         components: {
-            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow, filterDate, groupOption
+            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow, filterDate, widgetTable, widgetCard, groupOption
         },
 
         methods: {

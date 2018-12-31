@@ -36,3 +36,69 @@ body {
 body {
     background: #e4e5e7;
 }
+
+.widget-table{
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: white;
+    font-size: 75%;
+}
+
+.widget-table tfoot, .widget-table thead{
+    background-color: #afeaff;
+}
+
+.widget-table thead, .widget-table tbody, .widget-table tfoot {
+    color: rgb(83, 83, 83);
+    text-align: left;
+    margin-left: 10px !important;
+}
+
+
+.widget-table tbody tr td, .widget-table tfoot tr td{
+    border-bottom: 0.5px solid #c8ced3;
+}
+
+.widget-table tfoot tr td{
+    font-weight: 600;
+}
+
+.dropdown-item.active, .dropdown-item:active, dropdown-item.focus, .dropdown-item:focus {
+    color: #fff;
+    text-decoration: none;
+    background-color: #20a8d8 !important;
+}
+
+.dropdown-item{
+    font-size: 70%;
+    color: #495057 !important;
+}
+
+.btn-white{
+    background-color: whitesmoke !important;
+    color: #495057 !important;
+    font-size: 85% !important;
+    margin: 3px 1% !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.btn-transparent{
+    background-color: white;
+}
+
+#widget-card .card .card-body h4, #widget-card .card .card-body p, #widget-card .card .card-body span{
+    text-align: left;
+}
+
+#widget-card .card .card-body p{
+    margin-bottom: 0px;
+}
+
+.span-widget{
+    margin-bottom: 20px !important;
+    color: rgb(0, 140, 255);
+    font-size: 85%;
+    text-align: left !important;
+}
