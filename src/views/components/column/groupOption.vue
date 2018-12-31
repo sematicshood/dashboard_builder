@@ -23,6 +23,7 @@
         methods: {
             changeGroup(group) {
                 this.$store.dispatch('rows/setGroupData', group)
+                console.log(group)
             },
 
             removeGroup() {

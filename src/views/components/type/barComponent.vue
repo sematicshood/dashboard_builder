@@ -128,13 +128,12 @@
                         if (type == 'datetime') {
                             x    = dat
                         }
-
                         if(this.inArray(labels, x) == false)
                             labels.push(x)
                     }
                 })
 
-                if(this.group != '' && this.group != 'Hari') {
+                if(this.group != '' && this.group != 'Hari' && this.group != undefined) {
                     let newl = []
 
                     labels.forEach(la => {
@@ -164,7 +163,7 @@
                         if(data[xaxis].length == 2) {
                             return data[xaxis][1] == el
                         } else {
-                            if(this.group != '' && this.group != 'Hari') {
+                            if(this.group != '' && this.group != 'Hari' && this.group != undefined) {
                                 let dat  = data[xaxis].split(' ')[0].split('-')
 
                                 if(this.group == 'Tahun') {

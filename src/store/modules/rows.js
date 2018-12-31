@@ -346,7 +346,7 @@ const mutations = {
 
     CEK_GROUP_OPTION(state, options) {
         if(state.rows[options.row][options.column]['group_data'] == undefined)
-            state.rows[options.row][options.column]['group_data'] = ''
+            state.rows[options.row][options.column]['group_data'] = 'Bulan'
     },
 
     SET_GROUP_DATA(state, group) {
