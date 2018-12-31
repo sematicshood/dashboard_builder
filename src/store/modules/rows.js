@@ -22,6 +22,7 @@ const state = {
         { value: 'doughnut', text: 'doughnut' },
         { value: 'horizontal', text: 'horizontal' },
         { value: 'polar', text: 'polar' },
+        { value: 'widget-card', text: 'widget card' },
     ],
     edited: false
 }

@@ -1,7 +1,7 @@
 <template lang="">
     <div id="filterDate" style="position: absolute; z-index: 999;">
         <vue-rangedate-picker :configs="selectedDate" @selected="onDateSelected" :captions="captions" i18n="ID" ></vue-rangedate-picker>
-        {{ selectedDate }}
+        <!-- {{ selectedDate }} -->
     </div>
 </template>
 
@@ -45,7 +45,7 @@
                     date = `('write_date','>=','${ from }'),('write_date','<=','${ to }')`
                 }
 
-                this.$store.dispatch('data/getDatas', {'date': date})
+                this.$store.dispatch('data/getDatas', {'date': date, 'filters': this.filterData})
                     .then(res => {
                         this.$store.dispatch('rows/setDataRow', res)
                     })
@@ -61,6 +61,12 @@
             selectedDate: {
                 get() {
                     return this.rows.rows[this.vuerow][this.vuecolumn]['filter_date']
+                }
+            },
+
+            filterData: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['filters_data']
                 }
             }
         },

@@ -204,6 +204,8 @@ const actions = {
 
             data['filters'] = `[${filters}]`
 
+            console.log(data['filters'])
+
             client.get('/api_dashboard/' + datas['model'], {params: data})
                     .then(res => {
                         let data          =   {}

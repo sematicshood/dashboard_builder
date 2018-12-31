@@ -26,7 +26,7 @@
 
                     <group-option :vuerow="index"
                         :vuecolumn="indexes" 
-                        v-if="type == 'view'"/>
+                        v-if="type == 'view' && column['type'] != 'widget-card'"/>
 
                     <h5 v-text="column['title']"></h5>
                     
@@ -57,9 +57,13 @@
                     <polar-component v-if="column['type'] == 'polar'"
                            :vuerow="index"
                            :vuecolumn="indexes"/>
-                    <widget-card/>
-                    <br>
-                    <widget-table/>
+
+                    <widget-card v-if="column['type'] == 'widget-card'"
+                            :vuerow="index"
+                            :vuecolumn="indexes"/>
+
+                    <!-- <br>
+                    <widget-table/> -->
                 </div>
             </div>
         </div>
