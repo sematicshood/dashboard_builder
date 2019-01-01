@@ -40,6 +40,15 @@
                 this.$store.dispatch('data/removeSelected', i)
             },
             modelClick(id, model) {
+                if(this.rows[this.rowOp][this.colOp]['model']) {
+                    if(confirm('Apakah anda yakin ingin mengganti model data? Pengaturan sebelum nya akan direset')) {
+                        this.actionGan(id, model)    
+                    }
+                } else {
+                    this.actionGan(id, model)
+                }
+            },
+            actionGan(id, model) {
                 this.$store.dispatch('fields/getFields', id)
                     .then(res => {
                         this.$store.dispatch('rows/selectColumns', res)

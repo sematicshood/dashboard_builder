@@ -30,9 +30,9 @@
 
                     <h5 v-text="column['title']"></h5>
                     
-                    <!-- <table-component v-if="column['type'] == 'table'"
+                    <table-component v-if="column['type'] == 'table'"
                            :vuerow="index"
-                           :vuecolumn="indexes"/> -->
+                           :vuecolumn="indexes"/>
 
                     <line-component v-if="column['type'] == 'line'"
                            :vuerow="index"
@@ -62,7 +62,7 @@
                             :vuerow="index"
                             :vuecolumn="indexes"/>
 
-                    <widget-table v-if="column['type'] == 'table'"
+                    <widget-table v-if="column['type'] == 'widget-table'"
                            :vuerow="index"
                            :vuecolumn="indexes"/>
                 </div>
