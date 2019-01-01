@@ -35,7 +35,7 @@
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
-                    <td class="text-center" :colspan="titles.length + 2">Not Found Data</td>
+                    <td class="text-center" :colspan="titles.length + (type == 'edit') ? 2 : 1">Not Found Data</td>
                 </tr>
             </tbody>
             <tfoot>
