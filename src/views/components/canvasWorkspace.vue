@@ -8,10 +8,10 @@
 
         <add-column></add-column>
 
-        <!-- <div id="loading-page">
+        <div id="loading-page" v-show="loading">
             <h5>Loading . . .</h5>
             <p>Sematics© 2018 Dashboard Studio.</p>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -41,6 +41,12 @@
 
             // this.loadData()
         },
+
+        computed: {
+            ...mapGetters('core', {
+                loading: 'getLoading'
+            })
+        }
     }
 </script>
 

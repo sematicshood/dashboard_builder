@@ -1,56 +1,48 @@
 <template>
     <div id="widget-table">
-        <table class="widget-table">
+        <table class="widget-table" :height="height">
             <thead>
                 <tr>
-                    <th>Employee</th>
-                    <th>Apalah</th>
+                    <th>#</th>
+                    <th v-for="title in titles" v-text="title.label"></th>
                     <th v-show="type == 'edit'">Options</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Siti Nur Rohmah</td>
-                    <td>Rp. 2000.000</td>
+                <tr v-for="(data, i) in alls" v-if="alls.length > 0">
+                    <td v-text="i + 1"></td>
+                    <td v-for="title in titles">
+                        {{ magic(data[title.prop], title) }}
+                    </td>
                     <td v-show="type == 'edit'">
                         <b-dropdown left text="Option" size="sm" variant="white">
-                        <b-dropdown-item>Count (+)</b-dropdown-item>
-                        <b-dropdown-item>Count (-)</b-dropdown-item>
-                        <b-dropdown-item>Sum (+)</b-dropdown-item>
-                        <b-dropdown-item>Sum (-)</b-dropdown-item>
+                        <b-dropdown-item @click="set_options(data, 'count', '+')">Count (+)</b-dropdown-item>
+                        <b-dropdown-item @click="set_options(data, 'count', '-')">Count (-)</b-dropdown-item>
+                        <b-dropdown-item @click="set_options(data, 'sum', '+')">Sum (+)</b-dropdown-item>
+                        <b-dropdown-item @click="set_options(data, 'sum', '-')">Sum (-)</b-dropdown-item>
                         </b-dropdown>
+                        <br>
+                        <span v-for="(i, a) in table_options[data[key]]">
+                            <span v-if="a == 'type'">
+                                {{ i }}
+                            </span>
+                            <span v-else>
+                                ({{ i }})
+                            </span>
+                        </span>
                     </td>
                 </tr>
-                <tr>
-                    <td>Jono Sujono</td>
-                    <td>Rp. 2.250.000</td>
-                    <td v-show="type == 'edit'">
-                        <b-dropdown left text="Option" size="sm" variant="white">
-                        <b-dropdown-item>Count (+)</b-dropdown-item>
-                        <b-dropdown-item>Count (-)</b-dropdown-item>
-                        <b-dropdown-item>Sum (+)</b-dropdown-item>
-                        <b-dropdown-item>Sum (-)</b-dropdown-item>
-                        </b-dropdown>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Joko Sutopo</td>
-                    <td>Rp. 10.500.000</td>
-                    <td v-show="type == 'edit'">
-                        <b-dropdown left text="Option" size="sm" variant="white">
-                        <b-dropdown-item>Count (+)</b-dropdown-item>
-                        <b-dropdown-item>Count (-)</b-dropdown-item>
-                        <b-dropdown-item>Sum (+)</b-dropdown-item>
-                        <b-dropdown-item>Sum (-)</b-dropdown-item>
-                        </b-dropdown>
-                    </td>
+                <tr v-if="alls.length == 0">
+                    <td class="text-center" :colspan="titles.length + 2">Not Found Data</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td>Jumlah</td>
-                    <td>Rp. 14.750.000</td>
-                    <td v-show="type == 'edit'">Footer</td>
+                    <td v-for="title in titles">
+                        {{ magicFooter(title) }}
+                    </td>
+                    <td v-show="type == 'edit'">Options</td>
                 </tr>
             </tfoot>
         </table>
@@ -59,15 +51,182 @@
 
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
     name: 'widget-table',
+    props: ['vuecolumn', 'vuerow'],
 
-    computed: {
-            ...mapGetters('workspace', {
-                type: 'getType'
+    data() {
+        return {
+            alls: []
+        }
+    },
+
+    methods: {
+        set_options(data, type, operation) {
+            let keys  = this.titles[0]['prop']
+            
+            let datas = {}
+
+            datas[data[keys]] = {
+                type: type,
+                operation: operation
+            }
+
+            this.$store.dispatch('rows/updateTableOptions', {'data': datas, 'row': this.vuerow, 'col': this.vuecolumn})
+        },
+
+        magic(data, title) {
+            if(typeof data == 'object') {
+                return data[1]
+            } else if(title['type'] == 'monetary' && typeof data == 'number') {
+                return 'Rp. ' + data.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+            }
+
+            return data
+        },
+
+        magicFooter(title) {
+            if(title.type != 'monetary') {
+                return this.$data.alls.length
+            }
+
+            if(title.type == 'monetary') {
+                let duit = 0
+
+                this.$data.alls.forEach(el => {
+                    let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
+
+                    if(option == '+' || option == undefined)
+                        duit += parseInt(el[title.prop])
+                    else
+                        duit -= parseInt(el[title.prop])
+                })
+
+                return duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+            }
+        },
+
+        inArray(all, newed) {
+            var length = all.length;
+            for(var i = 0; i < length; i++) {
+                if(all[i] == newed) return true;
+            }
+            return false;
+        },
+
+        magicBims() {
+            this.$data.alls = []
+
+            let keys  = this.titles[0]['prop'],
+                value = this.titles[1]['prop'],
+                group = []
+
+            this.datas.forEach(e => {
+                if(typeof e[keys] == 'object') {
+                    if(this.inArray(group, e[keys][1]) == false)
+                        group.push(e[keys][1])
+                } else {
+                    if(this.inArray(group, e[keys]) == false)
+                        group.push(e[keys])
+                }
+            })
+
+            group.forEach(el => {
+                let data = this.datas.filter(dat => {
+                    if(typeof dat[keys] == 'object') {
+                        return dat[keys][1] == el
+                    } else {
+                        return dat[keys] == el
+                    }
+                })
+
+                let amount = 0
+                let type   = (this.table_options[el]) ? this.table_options[el].type : undefined
+
+                data.forEach(e => {
+                    if(type == 'sum')
+                        amount += e[value]
+                    else
+                        amount++
+                })
+
+                let anu = {}
+
+                anu[keys]  = el
+
+                if(type == 'sum' || type == undefined)
+                    anu[value] = Math.floor(amount)
+                else
+                    anu[value] = `${Math.floor(amount)}`
+
+                this.$data.alls.push(anu)
             })
         }
+    },
+
+    computed: {
+        ...mapState(['rows', 'data']),
+
+        ...mapGetters('workspace', {
+            type: 'getType'
+        }),
+
+        column: {
+            get() {
+                return this.rows.rows[this.vuerow][this.vuecolumn]
+            }
+        },
+        row: {
+            get() {
+                return this.rows.rows[this.vuerow]
+            }
+        },
+        height: {
+            get() {
+                return this.rows.rows[this.vuerow][0]['height'] - 75
+            }
+        },
+        titles: {
+            get() {
+                return this.rows.rows[this.vuerow][this.vuecolumn]['titles']
+            }
+        },
+        datas: {
+            get() {
+                return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
+            }
+        },
+        table_options: {
+            get() {
+                return this.rows.rows[this.vuerow][this.vuecolumn]['table_options']
+            }
+        },
+        key: {
+            get() {
+                return this.rows.rows[this.vuerow][this.vuecolumn]['titles'][0]['prop']
+            }
+        }
+    },
+
+    watch: {
+        titles(newv, oldv) {
+            this.magicBims()
+        },
+
+        row: {
+            handler(val){
+                this.magicBims()
+            },
+            deep: true
+        },
+    },
+
+    created() {
+        this.magicBims(),
+
+        this.$store.dispatch('rows/cekTableOptions', {'row': this.vuerow, 'column': this.vuecolumn})
+    }
 }
 </script>

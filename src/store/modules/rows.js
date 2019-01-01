@@ -345,7 +345,16 @@ const mutations = {
 
     SET_GROUP_DATA(state, options) {
         state.rows[options.row][options.column]['group_data'] = options.group
-    }
+    },
+
+    SET_TABLE_OPTIONS(state, options) {
+        if(state.rows[options.row][options.column]['table_options'] == undefined)
+            state.rows[options.row][options.column]['table_options'] = {}
+    },
+
+    UPDATE_TABLE_OPTIONS(state, options) {
+        state.rows[options.row][options.col]['table_options'][Object.keys(options.data)] = options.data[Object.keys(options.data)]
+    },
 }
 
 const actions = {
@@ -683,6 +692,28 @@ const actions = {
         commit('SET_GROUP_DATA', group)
 
         dispatch('save', false)
+    },
+
+    cekTableOptions({ commit, dispatch }, options) {
+        commit('SET_TABLE_OPTIONS', options)
+
+        dispatch('save', false)
+    },
+
+    updateTableOptions({ commit, dispatch }, options) {
+        commit('UPDATE_TABLE_OPTIONS', options)
+
+        dispatch('save', false)
+    },
+
+    getOption({state}, options) {
+        return new Promise((res, rej) => {
+            try {
+                res(state.rows[options.row][options.col]['table_options'][options.key])
+            } catch (error) {
+                rej(error)
+            }
+        })
     }
 }
 

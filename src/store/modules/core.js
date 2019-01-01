@@ -1,7 +1,8 @@
 const state = {
     db_name: 'tes',
     user: JSON.parse(localStorage.getItem('user')),
-    token: null
+    token: null,
+    loading: false
 }
 
 const getters = {
@@ -15,6 +16,10 @@ const getters = {
 
     getToken(state) {
         return state.token
+    },
+
+    getLoading(state) {
+        return state.loading
     }
 }
 
@@ -27,6 +32,10 @@ const actions = {
 const mutations = {
     setToken(state, token) {
         state.token = token
+    },
+
+    SET_LOADING(state, loading) {
+        state.loading = loading
     }
 }
 

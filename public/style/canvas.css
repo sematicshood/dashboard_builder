@@ -102,3 +102,7 @@ body {
     font-size: 85%;
     text-align: left !important;
 }
+
+#loading-page {
+    z-index: 9999;
+}

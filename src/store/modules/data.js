@@ -172,6 +172,8 @@ const actions = {
         }
 
         return new Promise((resolve, reject) => {
+            commit('core/SET_LOADING', true, {root: true})
+
             const data      = {
                 order: "write_date asc",
                 username: JSON.parse(localStorage.getItem('user'))['username'],
@@ -216,9 +218,15 @@ const actions = {
                         commit('setDatas', {data: res.data['results'], model: datas['model']})
                         
                         resolve(res.data['results'])
+
+                        commit('core/SET_LOADING', false, {root: true})
                     })
                     .catch(err => {
+                        console.log(filters)
+                        
                         reject(err.response)
+
+                        commit('core/SET_LOADING', false, {root: true})
                     })
         })
     },
