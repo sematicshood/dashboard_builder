@@ -23,6 +23,7 @@ const state = {
         { value: 'horizontal', text: 'horizontal' },
         { value: 'polar', text: 'polar' },
         { value: 'widget-card', text: 'widget card' },
+        { value: 'widget-table', text: 'widget table' },
     ],
     edited: false
 }
@@ -268,6 +269,7 @@ const mutations = {
 
     RESET_TITLES(state) {
         state.rows[state.rowOp][state.colOp]['titles'] = []
+        state.rows[state.rowOp][state.colOp]['table_options'] = {}
     },
 
     SET_EDITED(state, edited) {

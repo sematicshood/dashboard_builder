@@ -20,6 +20,8 @@
                         <b-dropdown-item @click="set_options(data, 'count', '-')">Count (-)</b-dropdown-item>
                         <b-dropdown-item @click="set_options(data, 'sum', '+')">Sum (+)</b-dropdown-item>
                         <b-dropdown-item @click="set_options(data, 'sum', '-')">Sum (-)</b-dropdown-item>
+                        <b-dropdown-item @click="set_options(data, 'avg', '+')">Average (+)</b-dropdown-item>
+                        <b-dropdown-item @click="set_options(data, 'avg', '-')">Average (-)</b-dropdown-item>
                         </b-dropdown>
                         <br>
                         <span v-for="(i, a) in table_options[data[key]]">
@@ -33,7 +35,7 @@
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
-                    <td class="text-center" :colspan="titles.length + 2">Not Found Data</td>
+                    <td class="text-center" :colspan="titles.length + (type == 'edit') ? 2 : 1">Not Found Data</td>
                 </tr>
             </tbody>
             <tfoot>
@@ -144,13 +146,22 @@ export default {
 
                 let amount = 0
                 let type   = (this.table_options[el]) ? this.table_options[el].type : undefined
+                let total  = 0
 
                 data.forEach(e => {
-                    if(type == 'sum')
+                    if(type == 'sum') {
                         amount += e[value]
-                    else
+                    } else if(type == 'avg') {
+                        amount += e[value]
+                        total++
+                    } else {
                         amount++
+                    }
                 })
+
+                if(type == 'avg') {
+                    amount = amount / total
+                }
 
                 let anu = {}
 
