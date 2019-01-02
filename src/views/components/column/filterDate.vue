@@ -1,7 +1,7 @@
 <template lang="">
     <div id="filterDate" style="position: absolute; z-index: 999;">
         <vue-rangedate-picker :configs="selectedDate" @selected="onDateSelected" :captions="captions" i18n="ID" ></vue-rangedate-picker>
-        <span v-for="(select, i) in selectedDate">{{ select }}<span v-if="i == 'start'"> sampai </span></span>
+        <span v-for="(select, i) in selectedDate">{{ select | dateFilter }}<span v-if="i == 'start'"> sampai </span></span>
     </div>
 </template>
 
@@ -17,6 +17,18 @@
         },
 
         props: ['vuecolumn', 'vuerow'],
+
+        filters: {
+            dateFilter(value) {
+                if(typeof value == 'string') {
+                    let dated = value.split('-')
+                    
+                    return `${dated[2]}/${dated[1]}/${dated[0]}`
+                } else {
+                    return `${value.getUTCFullYear()}/${value.getUTCMonth() + 1}/${value.getUTCDate()}`
+                }
+            }
+        },
 
         data () {
             return {
