@@ -1,7 +1,7 @@
 <template lang="">
     <div id="filterDate" style="position: absolute; z-index: 999;">
         <vue-rangedate-picker :configs="selectedDate" @selected="onDateSelected" :captions="captions" i18n="ID" ></vue-rangedate-picker>
-        {{ selectedDate }}
+        <span v-for="(select, i) in selectedDate">{{ select }}<span v-if="i == 'start'"> sampai </span></span>
     </div>
 </template>
 
@@ -52,6 +52,8 @@
                     .catch(err => {
                         this.$store.dispatch('rows/setDataRow', [])
                     })
+
+                this.$store.dispatch('rows/save', false)
             }
         },
 

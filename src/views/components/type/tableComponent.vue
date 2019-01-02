@@ -96,3 +96,9 @@
         },
     }
 </script>
+
+<style>
+    #table {
+        margin-top: 50px;
+    }
+</style>
