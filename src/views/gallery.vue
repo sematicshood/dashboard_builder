@@ -22,6 +22,8 @@
                         <router-link tag="div" :to="{ name: 'dashboard', params: { name: dashboard['name'].replace(/ /g, '-'), type: 'view' } }" class="bg">
                             <center><h4 v-text="dashboard['name']"></h4></center>
                         </router-link>
+                        <button class="btn btn-primary btn-sm" @click="duplicate(dashboard['name'].replace(/ /g, '-'))">Duplicate</button>
+                        <button class="btn btn-danger btn-sm" @click="deleteDashboard(dashboard['name'].replace(/ /g, '-'))">Delete</button>
                     </b-card>
                 </b-col>
             </div>
@@ -62,6 +64,22 @@
                 if(total == 0) {
                     this.$store.dispatch('workspace/getDataDashboard')
                 }
+            },
+
+            duplicate(template) {
+                let temp = JSON.parse(localStorage.getItem('template-dashboard-' + template))
+
+                temp['name'] = 'Duplicate ' + temp['name']
+
+                localStorage.setItem('template-dashboard-Duplicate-' + template, JSON.stringify(temp))
+
+                this.loadTemplate()
+            },
+
+            deleteDashboard(template) {
+                localStorage.removeItem('template-dashboard-' + template)
+
+                window.location.reload()
             }
         },
 
