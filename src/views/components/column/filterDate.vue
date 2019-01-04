@@ -1,7 +1,9 @@
 <template lang="">
     <div id="filterDate" style="position: absolute; z-index: 999;">
         <vue-rangedate-picker :configs="selectedDate" @selected="onDateSelected" :captions="captions" i18n="ID" ></vue-rangedate-picker>
-        <span v-for="(select, i) in selectedDate">{{ select | dateFilter }}<span v-if="i == 'start'"> sampai </span></span>
+        <div class="filterdate-area">
+            <span class="filter-date" v-for="(select, i) in selectedDate">{{ select | dateFilter }}<span v-if="i == 'start'"> to </span></span>            
+        </div>
     </div>
 </template>
 
