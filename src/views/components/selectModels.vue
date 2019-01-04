@@ -56,6 +56,8 @@
                         this.$store.dispatch('rows/save', false)
                     })
 
+                this.$store.dispatch('rows/resetDateProperty')
+
                 this.$store.dispatch('data/getDatas', {'model': model})
                     .then(res => {
                         this.$store.dispatch('data/selectData', {model, res})

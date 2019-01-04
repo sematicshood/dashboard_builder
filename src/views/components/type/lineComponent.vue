@@ -50,7 +50,7 @@
             },
             height: {
                 get() {
-                    return this.rows.rows[this.vuerow][0]['height'] - 75
+                    return this.rows.rows[this.vuerow][0]['height'] - 135
                 }
             },
             titles: {
@@ -74,8 +74,6 @@
         watch: {
             titles(newv, oldv) {
                 this.fillData()
-
-                console.log(newv, oldv)
             },
             row: {
                 handler(val){
@@ -95,7 +93,6 @@
             },
 
             cekWeek(date) { 
-                console.log(date)
                 var target = new Date(date.valueOf()),
                     dayNumber = (date.getUTCDay() + 6) % 7,
                     firstThursday;
@@ -140,6 +137,12 @@
                 if(this.group != '' && this.group != 'Hari' && this.group != undefined) {
                     let newl = []
 
+                    labels.sort((a,b) => {
+                        if(a < b) { return -1; }
+                        if(a > b) { return 1; }
+                        return 0;
+                    })
+
                     labels.forEach(la => {
                         let dat  = la.split(' ')[0].split('-')
                         
@@ -178,7 +181,6 @@
                                     return `${bulan[parseInt(dat[1]) - 1]} #${dat[0]}` == el
                                 } else if(this.group == 'Minggu') {
                                     let minggu = this.cekWeek(new Date(dat[0],parseInt(dat[1]) - 1,dat[2]))
-                                    console.log(minggu)
 
                                     return `Minggu #${minggu[1]} - ${minggu[0]}` == el
                                 }

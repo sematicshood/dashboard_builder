@@ -2,7 +2,7 @@
     <div id="buttonDeleteRow">
          <b-btn size="sm" 
                 variant="info" 
-                @click="deleteRow(rowOp)"><font-awesome-icon icon="trash"/></b-btn>
+                @click="deleteRow"><font-awesome-icon icon="trash"/></b-btn>
     </div>
 </template>
 
@@ -12,18 +12,15 @@
     export default {
         name: 'button-delete-row',
 
+        props: ['vuerow'],
+
         methods: {
-            deleteRow(rowOp) {
-                this.$store.dispatch('rows/deleteRow', rowOp)
+            deleteRow() {
+                this.$store.dispatch('rows/deleteRow', this.vuerow)
             }
         },
 
         computed: {
-            ...mapGetters('rows', {
-                rowOptionShow: 'getRowOptionShow',
-                rowOp: 'getRowOp'
-            }),
-
             ...mapGetters('workspace', {
                 type: 'getType'
             })

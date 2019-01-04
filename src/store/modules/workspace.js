@@ -62,7 +62,7 @@ const actions = {
             db_name: rootGetters['core/getDatabase']
         }
 
-        data['filters'] = `[('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
+        data['filters'] = `[('user_id','=',${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
 
         client.get('/api_dashboard/dashboard', { params: data })
               .then(res => {
@@ -71,6 +71,9 @@ const actions = {
 
                       commit('ADD_DASHBOARDS', JSON.parse(el['template']))
                   })
+              })
+              .catch(err => {
+                  console.log(err)
               })
     }
 }

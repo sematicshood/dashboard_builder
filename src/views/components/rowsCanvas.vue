@@ -10,7 +10,7 @@
                 <font-awesome-icon icon="plus"/>
             </div>
             <div class="button-row delete-row" v-show="type == 'edit'">
-                <button-delete-row/>
+                <button-delete-row :vuerow="index"/>
             </div>
 
             <div class="rows" :style="`height: ${ row[0]['height'] }px`">
@@ -29,6 +29,8 @@
                         v-if="type == 'view' && column['type'] == 'bar' || column['type'] == 'line'"/>
 
                     <h5 v-text="column['title']"></h5>
+
+                    <div class="line"></div>
                     
                     <table-component v-if="column['type'] == 'table'"
                            :vuerow="index"
@@ -185,4 +187,7 @@
         z-index: 9999;;
     }
 
+    .line {
+        margin-top: 80px;
+    }
 </style>

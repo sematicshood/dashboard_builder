@@ -1,5 +1,11 @@
 <template>
     <div id="widget-table">
+        <b-dropdown left text="Option" size="sm" variant="white">
+            <b-dropdown-item @click="set_options('count')">Count</b-dropdown-item>
+            <b-dropdown-item @click="set_options('sum')">Sum</b-dropdown-item>
+            <b-dropdown-item @click="set_options('avg')">Average</b-dropdown-item>
+        </b-dropdown>
+        
         <table class="widget-table" :height="height">
             <thead>
                 <tr>
@@ -15,15 +21,6 @@
                         {{ magic(data[title.prop], title) }}
                     </td>
                     <td v-show="type == 'edit'">
-                        <b-dropdown left text="Option" size="sm" variant="white">
-                        <b-dropdown-item @click="set_options(data, 'count', '+')">Count (+)</b-dropdown-item>
-                        <b-dropdown-item @click="set_options(data, 'count', '-')">Count (-)</b-dropdown-item>
-                        <b-dropdown-item @click="set_options(data, 'sum', '+')">Sum (+)</b-dropdown-item>
-                        <b-dropdown-item @click="set_options(data, 'sum', '-')">Sum (-)</b-dropdown-item>
-                        <b-dropdown-item @click="set_options(data, 'avg', '+')">Average (+)</b-dropdown-item>
-                        <b-dropdown-item @click="set_options(data, 'avg', '-')">Average (-)</b-dropdown-item>
-                        </b-dropdown>
-                        <br>
                         <span v-for="(i, a) in table_options[data[key]]">
                             <span v-if="a == 'type'">
                                 {{ i }}
@@ -32,6 +29,7 @@
                                 ({{ i }})
                             </span>
                         </span>
+                        <button class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
@@ -66,15 +64,24 @@ export default {
     },
 
     methods: {
-        set_options(data, type, operation) {
+        ChangeOperator(data) {
+            let keys  = this.titles[0]['prop'],
+                op    = this.table_options[data[keys]]['operation']
+
+            this.table_options[data[keys]]['operation'] = (op == '+') ? '-' : '+'
+        },
+
+        set_options(type) {
             let keys  = this.titles[0]['prop']
             
             let datas = {}
 
-            datas[data[keys]] = {
-                type: type,
-                operation: operation
-            }
+            this.$data.alls.forEach(el => {
+                datas[el[keys]] = {
+                    type: type,
+                    operation: '+'
+                }
+            })
 
             this.$store.dispatch('rows/updateTableOptions', {'data': datas, 'row': this.vuerow, 'col': this.vuecolumn})
         },
@@ -103,7 +110,7 @@ export default {
                     if(option == '+' || option == undefined)
                         duit += parseInt(el[title.prop])
                     else
-                        duit -= parseInt(el[title.prop])
+                        duit - parseInt(el[title.prop])
                 })
 
                 return duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
@@ -196,7 +203,7 @@ export default {
         },
         height: {
             get() {
-                return this.rows.rows[this.vuerow][0]['height'] - 75
+                return this.rows.rows[this.vuerow][0]['height'] - 135
             }
         },
         titles: {

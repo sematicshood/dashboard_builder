@@ -41,7 +41,7 @@
             },
             height: {
                 get() {
-                    return this.rows.rows[this.vuerow][0]['height'] - 75
+                    return this.rows.rows[this.vuerow][0]['height'] - 135
                 }
             },
             titles: {

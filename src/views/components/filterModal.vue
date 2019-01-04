@@ -184,7 +184,7 @@
                     if(this.$data.filter['option'] == 'True' || this.$data.filter['option'] == 'False') {
                         this.$data.filter['content'][0] = this.$data.filter['option']
 
-                        this.$data.filter['option'] = '=='
+                        this.$data.filter['option'] = '='
                     }
 
                     let judul = ''

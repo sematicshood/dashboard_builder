@@ -233,6 +233,14 @@ const mutations = {
         state.rows[state.rowOp][state.colOp]['datas'] = data
     },
 
+    SET_ROW_HEIGHT(state, height) {
+        state.rows[state.rowOp][0]['height'] = height
+    },
+
+    SET_COLUMN_TITLE(state, title) {
+        state.rows[state.rowOp][state.colOp]['title'] = title
+    },
+
     SET_COLUMN_WIDTH(state, width) {
         let totalWidth       = 100,
             before           = state.rows[state.rowOp][state.colOp]['width']
@@ -325,11 +333,19 @@ const mutations = {
 
     CEK_DATE_PROPERTY(state, options) {
         var d       =  new Date(),
-            from    =  new Date(d.getFullYear(), d.getMonth(), 1),
-            to      =  new Date(d.getFullYear(), d.getMonth() + 1, 1)
+            from    =  new Date(d.getUTCFullYear(), d.getUTCMonth(), 1),
+            to      =  new Date(d.getUTCFullYear(), d.getUTCMonth() + 1, 1)
 
         if(state.rows[options.row][options.column]['filter_date'] == undefined)
             state.rows[options.row][options.column]['filter_date'] = { start: from, end: to }
+    },
+
+    RESET_DATE_PROPERTY(state) {
+        var d       =  new Date(),
+            from    =  new Date(d.getUTCFullYear(), d.getUTCMonth(), 1),
+            to      =  new Date(d.getUTCFullYear(), d.getUTCMonth() + 1, 1)
+
+        state.rows[state.rowOp][state.colOp]['filter_date'] = { start: from, end: to }
     },
 
     SET_DATE(state, option) {
@@ -355,7 +371,9 @@ const mutations = {
     },
 
     UPDATE_TABLE_OPTIONS(state, options) {
-        state.rows[options.row][options.col]['table_options'][Object.keys(options.data)] = options.data[Object.keys(options.data)]
+        state.rows[options.row][options.col]['table_options'] = options.data
+
+        // console.log(state.rows[options.row][options.col]['table_options'] = {})
     },
 }
 
@@ -392,8 +410,10 @@ const actions = {
         commit('ADD_ROWS', rows)
     },
 
-    updateSelected({commit}, selected) {
+    updateSelected({commit, dispatch}, selected) {
         commit('UPDATE_SELECTED', selected)
+
+        dispatch('save', false)
     },
 
     setColOp({commit}, index) {
@@ -455,7 +475,6 @@ const actions = {
         template['edited'] = false
         
         localStorage.setItem(name, JSON.stringify(template))
-        console.log('masuk sini')
 
         dispatch('reset', all)
     },
@@ -663,6 +682,18 @@ const actions = {
         dispatch('save', false)   
     },
 
+    setColumnTitle({ commit, dispatch }, title) {
+        commit('SET_COLUMN_TITLE', title)
+
+        dispatch('save', false)   
+    },
+
+    setRowHeight({ commit, dispatch }, height) {
+        commit('SET_ROW_HEIGHT', height)
+
+        dispatch('save', false)   
+    },
+
     setEdited({ commit, rootGetters }) {
         let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
             template    = JSON.parse(localStorage.getItem(name))['edited'] || false
@@ -678,8 +709,13 @@ const actions = {
     },
 
     cekDateProperty({ commit, dispatch }, options) {
-        console.log('------------------')
         commit('CEK_DATE_PROPERTY', options)
+
+        dispatch('save', false)
+    },
+
+    resetDateProperty({ commit, dispatch }) {
+        commit('RESET_DATE_PROPERTY')
 
         dispatch('save', false)
     },

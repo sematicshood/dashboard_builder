@@ -22,8 +22,6 @@
 
         methods: {
             changeGroup(group) {
-                console.log(group)
-                console.log(this.select)
                 this.$store.dispatch('rows/setGroupData', {'group': group, 'row': this.vuerow, 'column': this.vuecolumn})
             },
 
