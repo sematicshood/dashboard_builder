@@ -21,7 +21,7 @@
         filters: {
             dateFilter(value) {
                 if(typeof value == 'string') {
-                    let dated = value.split('-')
+                    let dated = value.split('T')[0].split('-')
                     
                     return `${dated[2]}/${dated[1]}/${dated[0]}`
                 } else {
