@@ -352,6 +352,14 @@ const mutations = {
         state.rows[state.rowOp][state.colOp]['filter_date'][option.type] = option.value
     },
 
+    SET_LIMIT_TABLE(state, limit_table) {
+        if(limit_table < 0) {
+            limit_table = 0
+        }
+        
+        state.rows[state.rowOp][state.colOp]['limit_table'] = limit_table
+    },
+
     SET_DISPLAY(state, display) {
         state.rows[state.rowOp][state.colOp]['options_chart']['legend']['display'] = display
     },
@@ -368,6 +376,9 @@ const mutations = {
     SET_TABLE_OPTIONS(state, options) {
         if(state.rows[options.row][options.column]['table_options'] == undefined)
             state.rows[options.row][options.column]['table_options'] = {}
+
+        if(state.rows[options.row][options.column]['limit_table'] == undefined)
+            state.rows[options.row][options.column]['limit_table'] = 0
     },
 
     UPDATE_TABLE_OPTIONS(state, options) {
@@ -752,6 +763,12 @@ const actions = {
                 rej(error)
             }
         })
+    },
+
+    setLimitTable({ commit, dispatch }, limit_table) {
+        commit('SET_LIMIT_TABLE', limit_table)
+
+        dispatch('save', false)
     }
 }
 
