@@ -2,6 +2,11 @@
     <div id="gallery">
         <navbar/>
 
+        <div id="loading-page" v-show="loading">
+            <h5>Loading . . .</h5>
+            <p>Sematics© 2018 Dashboard Studio.</p>
+        </div>
+
         <div class="container-3">
             <!-- <div class="text-center">
                 <hr>
@@ -46,40 +51,21 @@
 
         methods: {
             loadTemplate() {
-                let dashboard = Object.keys(localStorage),
-                    total     = 0
-
-                for (let index = 0; index < dashboard.length; index++) {
-                    let d = dashboard[index].split('-')
-                    
-                    if(d[0] == 'template' && d[1] == 'dashboard') {
-                        total += 1
-
-                        let data = JSON.parse(localStorage.getItem(dashboard[index])) 
-
-                        this.$store.dispatch('workspace/addDashboards', data)
-                    }
-                }
-
-                if(total == 0) {
-                    this.$store.dispatch('workspace/getDataDashboard')
-                }
+                this.$store.dispatch('workspace/getDataDashboard')
             },
 
             duplicate(template) {
-                let temp = JSON.parse(localStorage.getItem('template-dashboard-' + template))
-
-                temp['name'] = 'Duplicate ' + temp['name']
-
-                localStorage.setItem('template-dashboard-Duplicate-' + template, JSON.stringify(temp))
-
-                this.loadTemplate()
+                this.$store.dispatch('workspace/duplicateDashboard', template)
+                    .then(res => {
+                        this.loadTemplate()
+                    })
             },
 
             deleteDashboard(template) {
-                localStorage.removeItem('template-dashboard-' + template)
-
-                window.location.reload()
+                this.$store.dispatch('workspace/deleteDashboard', template)
+                    .then(res => {
+                        this.loadTemplate()
+                    })
             }
         },
 
@@ -91,6 +77,10 @@
             ...mapGetters('workspace', {
                 dashboards: 'getDashboards',
             }),
+
+            ...mapGetters('core', {
+                loading: 'getLoading'
+            })
         }
     }
 </script>

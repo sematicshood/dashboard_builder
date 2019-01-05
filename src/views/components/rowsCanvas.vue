@@ -1,6 +1,5 @@
 <template>
     <div id="rows">
-        
         <div v-for="(row, index) in rows" class="s-row">
 
             <div class="button-row" 
@@ -19,6 +18,10 @@
                     @click="colOption(index, indexes)" v-if="indexes != 0">
 
                     <b-btn class="btn-filter-dashboard" v-if="type == 'edit'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
+
+                    <filter-modal
+                        :vuerow="index"
+                        :vuecolumn="indexes"></filter-modal>
 
                     <filter-date :vuerow="index"
                            :vuecolumn="indexes" 
@@ -70,8 +73,6 @@
                 </div>
             </div>
         </div>
-
-        <filter-modal></filter-modal>
     </div>
 </template>
 

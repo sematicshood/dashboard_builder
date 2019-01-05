@@ -1,5 +1,6 @@
 // const client = require('./client');
-import { client } from './client'
+import client from './client'
+import qs from 'qs'
 
 const state = {
     fields: {}

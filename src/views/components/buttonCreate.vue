@@ -31,11 +31,7 @@
             createDashboard() {
                 let name = this.$data.name.replace(/ /g, '-')
 
-                if(localStorage.getItem(`template-dashboard-${ name }`) != null) {
-                    alert('Nama telah digunakan')
-
-                    return false
-                }
+                let named = `template-dashboard-${ name }`
 
                 if(name == '') {
                     alert('Masukkan nama')
@@ -43,11 +39,15 @@
                     return false
                 }
 
-                localStorage.setItem(`template-dashboard-${ name }`, JSON.stringify({name: this.$data.name}))
+                this.$store.dispatch('workspace/addNewDashboard', {'named': named, 'name': this.$data.name})
+                    .then(res => {
+                        alert('Nama sudah digunakan')
+                    })
+                    .catch(err => {
+                        this.$data.name = ''
 
-                this.$data.name = ''
-
-                this.$router.push({ name: 'dashboard', params: { name: name, type: 'edit' } })
+                        this.$router.push({ name: 'dashboard', params: { name: name, type: 'edit' } })
+                    })
             }
         },
 

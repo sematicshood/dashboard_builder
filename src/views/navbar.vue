@@ -8,16 +8,9 @@
                 <span v-text="greeting"></span>
             </div>
             <div class="content col-md-6">
-                <button-sync/>
                 <button-share/>
                 <a href="#">
                     <button-add-row/> 
-                </a>
-                <!-- <a href="#">
-                    <button-save/>
-                </a> -->
-                <a href="#">
-                    <button-cancel/>
                 </a>
                 <a href="#">
                     <button-changed></button-changed>

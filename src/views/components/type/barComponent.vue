@@ -107,10 +107,10 @@
             },
 
             fillData () {
-                let xaxis       = this.titles[0]['prop'] || [],
-                    type        = this.titles[0]['type'] || [],
-                    key         = this.titles[1]['prop'] || [],
-                    value       = this.titles[2]['prop'] || [],
+                let xaxis       = (this.titles[0]) ? this.titles[0]['prop'] : [],
+                    type        = (this.titles[0]) ? this.titles[0]['type'] : [],
+                    key         = (this.titles[1]) ? this.titles[1]['prop'] : [],
+                    value       = (this.titles[2]) ? this.titles[2]['prop'] : [],
                     labels      = [],
                     datasets    = [],
                     keys        = [],
