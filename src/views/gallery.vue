@@ -18,12 +18,15 @@
                 </b-col>
 
                 <b-col sm="6" lg="3" v-for="dashboard in dashboards">
-                    <b-card no-body class="bg-info">
-                        <router-link tag="div" :to="{ name: 'dashboard', params: { name: dashboard['name'].replace(/ /g, '-'), type: 'view' } }" class="bg">
-                            <center><h4 v-text="dashboard['name']"></h4></center>
+                    <b-card no-body class="bg">
+                        <router-link tag="div" :to="{ name: 'dashboard', params: { name: dashboard['name'].replace(/ /g, '-'), type: 'view' } }" class="bg-container">
+                            <h4 v-text="dashboard['name']"></h4>                                                       
                         </router-link>
-                        <button class="btn btn-primary btn-sm" @click="duplicate(dashboard['name'].replace(/ /g, '-'))">Duplicate</button>
-                        <button class="btn btn-danger btn-sm" @click="deleteDashboard(dashboard['name'].replace(/ /g, '-'))">Delete</button>
+                        <b-button-group>
+                            <b-button class="btn-dashboard" @click="deleteDashboard(dashboard['name'].replace(/ /g, '-'))"><font-awesome-icon icon="trash-alt"/></b-button>
+                            <b-button class="btn-dashboard" @click="duplicate(dashboard['name'].replace(/ /g, '-'))"><font-awesome-icon icon="copy"/></b-button>
+                        </b-button-group>
+                        
                     </b-card>
                 </b-col>
             </div>
