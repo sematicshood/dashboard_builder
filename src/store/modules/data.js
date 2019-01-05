@@ -1,5 +1,6 @@
 // const client = require('./client');
-import { client } from './client'
+import client from './client'
+import qs from 'qs'
 
 const state = {
     datas: {},
@@ -91,24 +92,28 @@ const actions = {
         dispatch('saveModels')
     },
 
-    setSelected({ commit, rootGetters }) {
-        let name            = 'template-dashboard-' +  rootGetters['workspace/getName'],
-            selected        = JSON.parse(localStorage.getItem(name))
-        
-        commit('SET_SELECTED', selected['selected'] || [])
-    },
-
-    saveData({ getters }) {
-        localStorage.setItem('data', JSON.stringify(getters.getData))
+    setSelected({ commit, rootGetters }, selected) {
+        commit('SET_SELECTED', selected)
     },
 
     saveModels({ getters, rootGetters }) {
-        let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
-            template    = JSON.parse(localStorage.getItem(name))
+        let alls = rootGetters['rows/getAlls']
 
-        template['selected'] = getters.getSelected
+        const data      = {
+            username: JSON.parse(localStorage.getItem('user'))['username'],
+            password: JSON.parse(localStorage.getItem('user'))['password'],
+            db_name: rootGetters['core/getDatabase']
+        }
 
-        localStorage.setItem(name, JSON.stringify(template))
+        let anu = JSON.parse(alls['template'])
+
+        anu['selected'] = getters.getSelected
+
+        let payload = {
+            template: JSON.stringify(anu)
+        }
+
+        client.post('/api_dashboard/dashboard/' + alls['id'], qs.stringify(payload), {params: data})
     },
 
     inArray({ getters }, options) {
@@ -121,11 +126,9 @@ const actions = {
         })
     },
     
-    loadData({ getters, state, commit, dispatch, rootGetters }) {
-        let models = getters.getModels
-
-        if(rootGetters['rows/getRows'] != undefined) {
-            rootGetters['rows/getRows'].forEach((element, row) => {
+    loadData({ getters, state, commit, dispatch, rootGetters }, data) {
+        if(data != undefined) {
+            data.forEach((element, row) => {
                 element.forEach((el, col) => {
                     if(el['model'] != undefined) {
                         dispatch('getDatas', {'model': el['model'], 'filters': el['filters_data'], 'date': el['filter_date']})

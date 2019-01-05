@@ -1,8 +1,8 @@
 <template>
     <div id="titles" v-if="colOptionShow && type == 'edit'">
-        <draggable element="span" v-model="rows[rowOp][colOp]['titles']">
+        <draggable element="span" v-model="titles">
             <transition-group name="no" class="list-group" tag="ul">
-                <li v-for="(element, index) in rows[rowOp][colOp]['titles']" :key="element.prop">
+                <li v-for="(element, index) in titles" :key="element.prop">
                     <button><span>{{element.label}}</span> <span @click="removeTitle(index)">x</span></button>
                 </li>
             </transition-group>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapGetters, mapState } from 'vuex'
     import draggable from 'vuedraggable'
 
     export default {
@@ -23,7 +23,6 @@
 
         computed: {
             ...mapGetters('rows', {
-                rows: 'getRows',
                 rowOp: 'getRowOp',
                 colOp: 'getColOp',
                 colOptionShow: 'getColOptionShow'
@@ -32,6 +31,21 @@
             ...mapGetters('workspace', {
                 type: 'getType'
             }),
+
+            ...mapState(['rows']),
+
+            titles: {
+                get() {
+                    let row     = (this.rowOp != '') ? this.rowOp : 0,
+                        column  = (this.colOp != '') ? this.colOp : 0
+                    
+                    return this.rows.rows[row][column]['titles']
+                },
+
+                set(titles) {
+                    this.$store.dispatch('rows/setTitlesColumn', titles)
+                }
+            }
         },
 
         methods: {

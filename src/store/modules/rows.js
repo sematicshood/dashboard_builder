@@ -1,8 +1,8 @@
-import { client } from './client'
+import client from './client'
 import qs from 'qs';
 
 const state = {
-    rows: [],
+    rows: {},
     height: '',
     width: '',
     maxWidth: '',
@@ -25,10 +25,15 @@ const state = {
         { value: 'widget-card', text: 'widget card' },
         { value: 'widget-table', text: 'widget table' },
     ],
-    edited: false
+    edited: false,
+    alls: ''
 }
 
 const getters = {
+    getAlls(state) {
+        return state.alls
+    },
+
     getRows(state) {
         return state.rows
     },
@@ -87,9 +92,16 @@ const getters = {
 
     getColumns(state) {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
-            column  = (state.colOp != '') ? state.colOp : 1
+            column  = (state.colOp != '') ? state.colOp : 0
         
         return state.rows[row][column]['columns']
+    },
+
+    getTitles(state) {
+        let row     = (state.rowOp != '') ? state.rowOp : 0,
+            column  = (state.colOp != '') ? state.colOp : 0
+        
+        return state.rows[row][column]['titles']
     },
 
     getModel(state) {
@@ -135,6 +147,10 @@ const getters = {
 }
 
 const mutations = {
+    SET_ALLS(state, alls) {
+        state.alls = alls
+    },
+
     SET_ROWS(state, rows) {
         state.rows = rows
     },
@@ -352,6 +368,14 @@ const mutations = {
         state.rows[state.rowOp][state.colOp]['filter_date'][option.type] = option.value
     },
 
+    SET_LIMIT_TABLE(state, limit_table) {
+        if(limit_table < 0) {
+            limit_table = 0
+        }
+        
+        state.rows[state.rowOp][state.colOp]['limit_table'] = limit_table
+    },
+
     SET_DISPLAY(state, display) {
         state.rows[state.rowOp][state.colOp]['options_chart']['legend']['display'] = display
     },
@@ -368,6 +392,9 @@ const mutations = {
     SET_TABLE_OPTIONS(state, options) {
         if(state.rows[options.row][options.column]['table_options'] == undefined)
             state.rows[options.row][options.column]['table_options'] = {}
+
+        if(state.rows[options.row][options.column]['limit_table'] == undefined)
+            state.rows[options.row][options.column]['limit_table'] = 0
     },
 
     UPDATE_TABLE_OPTIONS(state, options) {
@@ -375,6 +402,10 @@ const mutations = {
 
         // console.log(state.rows[options.row][options.col]['table_options'] = {})
     },
+
+    SET_TITLES_COLUMN(state, titles) {
+        state.rows[state.rowOp][state.colOp]['titles'] = titles
+    }
 }
 
 const actions = {
@@ -430,53 +461,49 @@ const actions = {
         dispatch('save')
     },
 
-    save({getters, dispatch,commit, rootGetters}, all = true) {
-        let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
-            template    = JSON.parse(localStorage.getItem(name))
+    save({getters, dispatch, commit, rootGetters, state}, datad) {
+        let id = state.alls['id']
 
-        template['rows'] = getters.getRows
-
-        for(let t in template['rows']) {
-            for(let a in template['rows'][t]) {
-                if(a != 0) {
-                    if(template['rows'][t][a].hasOwnProperty('data')) {
-                        delete template['rows'][t][a]['data']
-                    }
-                }
-            }
+        const data      = {
+            username: JSON.parse(localStorage.getItem('user'))['username'],
+            password: JSON.parse(localStorage.getItem('user'))['password'],
+            db_name: rootGetters['core/getDatabase']
         }
-        
-        commit('SET_EDITED', true)
 
-        template['edited'] = true
-        
-        localStorage.setItem(name, JSON.stringify(template))
+        let anu = JSON.parse(state.alls['template'])
 
-        dispatch('reset', all)
+        anu['rows'] = state.rows
+
+        let payload = {
+            template: JSON.stringify(anu)
+        }
+
+        if((payload['template'] == state.alls['template']) == false)
+            client.post('/api_dashboard/dashboard/' + id, qs.stringify(payload), {params: data})
     },
 
     editedFalse({getters, dispatch,commit, rootGetters}, all = true) {
-        let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
-            template    = JSON.parse(localStorage.getItem(name))
+        // let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
+        //     template    = JSON.parse(localStorage.getItem(name))
 
-        template['rows'] = getters.getRows
+        // template['rows'] = getters.getRows
 
-        for(let t in template['rows']) {
-            for(let a in template['rows'][t]) {
-                if(a != 0) {
-                    if(template['rows'][t][a].hasOwnProperty('data')) {
-                        delete template['rows'][t][a]['data']
-                    }
-                }
-            }
-        }
-        commit('SET_EDITED', false)
+        // for(let t in template['rows']) {
+        //     for(let a in template['rows'][t]) {
+        //         if(a != 0) {
+        //             if(template['rows'][t][a].hasOwnProperty('data')) {
+        //                 delete template['rows'][t][a]['data']
+        //             }
+        //         }
+        //     }
+        // }
+        // commit('SET_EDITED', false)
 
-        template['edited'] = false
+        // template['edited'] = false
         
-        localStorage.setItem(name, JSON.stringify(template))
+        // localStorage.setItem(name, JSON.stringify(template))
 
-        dispatch('reset', all)
+        // dispatch('reset', all)
     },
 
     reset({commit}, all = true) {
@@ -508,9 +535,9 @@ const actions = {
         dispatch('reset')
     },
 
-    syncDatabase({ rootGetters, dispatch }, id = false) {
-        let name        = 'template-dashboard-' +  rootGetters['workspace/getName'],
-            rows        = localStorage.getItem(name) || []
+    syncDatabase({ rootGetters, dispatch }, datad) {
+        let name        = datad['name'],
+            rows        = datad['template']
 
         const data      = {
             username: JSON.parse(localStorage.getItem('user'))['username'],
@@ -521,14 +548,17 @@ const actions = {
         let payload = {
             name: name,
             user_id: JSON.parse(localStorage.getItem('login'))['uid'],
-            template: rows
+            template: JSON.stringify(rows)
         }
 
-        dispatch('editedFalse')
+        console.log(payload)
+
+        // dispatch('editedFalse')
 
         data['filters'] = `[('name', '=', '${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
 
-        client.get('/api_dashboard/dashboard', { params: data })
+        return new Promise((resolve, rej) => {
+            client.get('/api_dashboard/dashboard', { params: data })
               .then(res => {
                   delete data['filters']
 
@@ -536,13 +566,15 @@ const actions = {
 
                   client.post('/api_dashboard/dashboard/' + payload['id'], qs.stringify(payload), {params: data})
                             .then(re => {
-                                if(id) {
+                                resolve(re)
+                                if(datad['id']) {
                                     payload['parent_id'] =   payload['id']
                                     payload['user_id']   =   id
                                     delete payload['id']
 
                                     client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
                                     .then(re => {
+                                        resolve(re)
                                         console.log(re)
                                     })
                                     .catch(er => {
@@ -578,12 +610,14 @@ const actions = {
                   if(err.response.status) {
                       client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
                             .then(re => {
-                                if(id) {
+                                resolve(re)
+                                if(datad['id']) {
                                     payload['parent_id'] =   re.data.id
                                     payload['user_id']   =   id
 
                                     client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
                                     .then(re => {
+                                        resolve(re)
                                         console.log(re)
                                     })
                                     .catch(er => {
@@ -596,6 +630,7 @@ const actions = {
                             })
                   }
               })
+        })
     },
 
     setTitle({commit}, title) {
@@ -752,6 +787,42 @@ const actions = {
                 rej(error)
             }
         })
+    },
+
+    setLimitTable({ commit, dispatch }, limit_table) {
+        commit('SET_LIMIT_TABLE', limit_table)
+
+        dispatch('save', false)
+    },
+
+    getRowsFromServer({ commit, rootGetters, dispatch }, name) {
+        const data      = {
+            username: JSON.parse(localStorage.getItem('user'))['username'],
+            password: JSON.parse(localStorage.getItem('user'))['password'],
+            db_name: rootGetters['core/getDatabase']
+        }
+
+        data['filters'] = `[('name', '=', 'template-dashboard-${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
+
+        client.get('/api_dashboard/dashboard', {params: data})
+              .then(res => {
+                  let data = JSON.parse(res.data.results[0]['template'])
+                  
+                  commit('data/SET_SELECTED', data['selected'], {root: true})
+                  commit('SET_ROWS', data['rows'])
+                  commit('SET_ALLS', res.data.results[0])
+
+                  dispatch('data/loadData', data['rows'], {root: true})
+              })
+              .catch(err => {
+                  console.log(err)
+              })
+    },
+
+    setTitlesColumn({ commit, dispatch }, titles) {
+        commit('SET_TITLES_COLUMN', titles)
+
+        dispatch('save', false)
     }
 }
 

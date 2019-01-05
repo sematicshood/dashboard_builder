@@ -5,6 +5,8 @@
             <b-dropdown-item @click="set_options('sum')">Sum</b-dropdown-item>
             <b-dropdown-item @click="set_options('avg')">Average</b-dropdown-item>
         </b-dropdown>
+
+        <input type="number" placeholder="Input limit data" v-model="limit_table">
         
         <table class="widget-table" :height="height">
             <thead>
@@ -15,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(data, i) in alls" v-if="alls.length > 0">
+                <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table > 0 && i < limit_table">
                     <td v-text="i + 1"></td>
                     <td v-for="title in titles">
                         {{ magic(data[title.prop], title) }}
@@ -29,7 +31,24 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+                        <button v-show="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+                    </td>
+                </tr>
+                <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
+                    <td v-text="i + 1"></td>
+                    <td v-for="title in titles">
+                        {{ magic(data[title.prop], title) }}
+                    </td>
+                    <td v-show="type == 'edit'">
+                        <span v-for="(i, a) in table_options[data[key]]">
+                            <span v-if="a == 'type'">
+                                {{ i }}
+                            </span>
+                            <span v-else>
+                                ({{ i }})
+                            </span>
+                        </span>
+                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
@@ -98,22 +117,40 @@ export default {
 
         magicFooter(title) {
             if(title.type != 'monetary') {
-                return this.$data.alls.length
+                if(this.limit_table > 0) {
+                    return this.$data.alls.slice(0, this.limit_table).length
+                } else {
+                    return this.$data.alls.length
+                }
             }
 
             if(title.type == 'monetary') {
                 let duit = 0
 
-                this.$data.alls.forEach(el => {
-                    let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
+                this.$data.alls.forEach((el, i) => {
+                    if(this.limit_table > 0) {
+                        if(i < this.limit_table) {
+                            let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
 
-                    if(option == '+' || option == undefined)
-                        duit += parseInt(el[title.prop])
-                    else
-                        duit - parseInt(el[title.prop])
+                            if(option == '+' || option == undefined)
+                                duit += parseInt(el[title.prop])
+                            else
+                                duit - parseInt(el[title.prop])
+
+                            if(this.limit_table == 1 && option == '-')
+                                duit -= parseInt(el[title.prop])
+                        }
+                    } else {
+                        let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
+
+                        if(option == '+' || option == undefined)
+                            duit += parseInt(el[title.prop])
+                        else
+                            duit - parseInt(el[title.prop])
+                    }
                 })
 
-                return duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+                return 'Rp. ' + duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
             }
         },
 
@@ -126,61 +163,69 @@ export default {
         },
 
         magicBims() {
-            this.$data.alls = []
+            if(this.titles[0] && this.titles[1]) {
+                this.$data.alls = []
 
-            let keys  = this.titles[0]['prop'],
-                value = this.titles[1]['prop'],
-                group = []
+                let keys  = this.titles[0]['prop'],
+                    value = this.titles[1]['prop'],
+                    group = []
 
-            this.datas.forEach(e => {
-                if(typeof e[keys] == 'object') {
-                    if(this.inArray(group, e[keys][1]) == false)
-                        group.push(e[keys][1])
-                } else {
-                    if(this.inArray(group, e[keys]) == false)
-                        group.push(e[keys])
-                }
-            })
-
-            group.forEach(el => {
-                let data = this.datas.filter(dat => {
-                    if(typeof dat[keys] == 'object') {
-                        return dat[keys][1] == el
+                this.datas.forEach(e => {
+                    if(typeof e[keys] == 'object') {
+                        if(this.inArray(group, e[keys][1]) == false)
+                            group.push(e[keys][1])
                     } else {
-                        return dat[keys] == el
+                        if(this.inArray(group, e[keys]) == false)
+                            group.push(e[keys])
                     }
                 })
 
-                let amount = 0
-                let type   = (this.table_options[el]) ? this.table_options[el].type : undefined
-                let total  = 0
+                group.forEach(el => {
+                    let data = this.datas.filter(dat => {
+                        if(typeof dat[keys] == 'object') {
+                            return dat[keys][1] == el
+                        } else {
+                            return dat[keys] == el
+                        }
+                    })
 
-                data.forEach(e => {
-                    if(type == 'sum') {
-                        amount += e[value]
-                    } else if(type == 'avg') {
-                        amount += e[value]
-                        total++
-                    } else {
-                        amount++
+                    let amount = 0
+                    let type   = (this.table_options[el]) ? this.table_options[el].type : undefined
+                    let total  = 0
+
+                    data.forEach(e => {
+                        if(type == 'sum') {
+                            amount += e[value]
+                        } else if(type == 'avg') {
+                            amount += e[value]
+                            total++
+                        } else {
+                            amount++
+                        }
+                    })
+
+                    if(type == 'avg') {
+                        amount = amount / total
                     }
+
+                    let anu = {}
+
+                    anu[keys]  = el
+
+                    if(type == 'sum' || type == undefined)
+                        anu[value] = Math.floor(amount)
+                    else
+                        anu[value] = `${Math.floor(amount)}`
+
+                    this.$data.alls.push(anu)
                 })
 
-                if(type == 'avg') {
-                    amount = amount / total
-                }
-
-                let anu = {}
-
-                anu[keys]  = el
-
-                if(type == 'sum' || type == undefined)
-                    anu[value] = Math.floor(amount)
-                else
-                    anu[value] = `${Math.floor(amount)}`
-
-                this.$data.alls.push(anu)
-            })
+                this.$data.alls.sort((a,b) => {
+                    if(parseInt(a[value]) < parseInt(b[value])) { return 1; }
+                    if(parseInt(a[value]) > parseInt(b[value])) { return -1; }
+                    return 0;
+                })
+            }
         }
     },
 
@@ -225,7 +270,16 @@ export default {
             get() {
                 return this.rows.rows[this.vuerow][this.vuecolumn]['titles'][0]['prop']
             }
-        }
+        },
+        limit_table: {
+            get() {
+                return this.rows.rows[this.vuerow][this.vuecolumn]['limit_table']
+            },
+
+            set(limit_table) {
+                this.$store.dispatch('rows/setLimitTable', limit_table)
+            }
+        },
     },
 
     watch: {

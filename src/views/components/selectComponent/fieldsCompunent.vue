@@ -43,10 +43,6 @@
             }),
         },
 
-        created() {
-            this.$data.options = this.rows[(this.rowOp) ? this.rowOp : 0][(this.colOp) ? this.colOp : 0]['columns']
-        },
-
         methods: {
             addTitle(column) {
                 this.$store.dispatch('rows/addTitle', {prop: column.name, label: column.field_description, type: column.ttype})

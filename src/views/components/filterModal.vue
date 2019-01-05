@@ -35,10 +35,11 @@
     export default {
         name: 'filter-modal',
 
+        props: ['vuerow', 'vuecolumn'],
+
         data() {
             return {
                 select: '',
-                // columns: '',
                 options: '',
                 type: '',
                 filter: {
@@ -124,14 +125,25 @@
 
         computed: {
             ...mapGetters('rows', {
-                rows: 'getRows',
                 rowOp: 'getRowOp',
                 colOp: 'getColOp',
                 colOptionShow: 'getColOptionShow',
                 columns: 'getColumns',
-                filters_data: 'getColumnFilters',
-                filters_list: 'getColumnFiltersList',
             }),
+
+            ...mapState(['rows']),
+
+            filters_list: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['filters_list']
+                }
+            },
+
+            filters_data: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['filters_data']
+                }
+            }
         },
 
         methods: {
@@ -199,7 +211,6 @@
                     this.$data.filter['name'] = this.$data.filter['value'].split('-')[2] + ' ' + name[0].text + judul
 
                     this.$store.dispatch('rows/addFiltersList', this.$data.filter)
-                    console.log('masuk')
                 } catch (error) {
                     console.log(error)
                 }

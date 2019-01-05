@@ -1,4 +1,5 @@
 require('font-awesome/css/font-awesome.min.css')
+require('nprogress/nprogress.css')
 
 import Vue from 'vue'
 import App from './App.vue'
@@ -20,6 +21,7 @@ import locale from 'element-ui/lib/locale'
 import BootstrapVue from 'bootstrap-vue'
 import Datatable from 'vue2-datatable-component'
 import VueRangedatePicker from 'vue-rangedate-picker'
+import nprogress from 'nprogress'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare, faCog, faLongArrowAltUp, faLongArrowAltDown} from '@fortawesome/free-solid-svg-icons'
@@ -32,6 +34,7 @@ library.add(faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus,
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 locale.use(lang)
 
+Vue.use(nprogress)
 Vue.use(Vuex)
 Vue.use(VueRouter)
 Vue.use(VeeValidate)

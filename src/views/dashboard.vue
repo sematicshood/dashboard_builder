@@ -48,8 +48,11 @@
         created() {
             this.$store.dispatch('workspace/setType', this.$route.params.type),
             this.$store.dispatch('workspace/setName', this.$route.params.name),
-            this.$store.dispatch('style/setSidebar', this.$route.params.type),
-            this.$store.dispatch('rows/setEdited')
+            this.$store.dispatch('style/setSidebar', this.$route.params.type)
+        },
+
+        mounted() {
+            this.$store.dispatch('rows/getRowsFromServer', this.$route.params.name)
         },
 
         computed: {
