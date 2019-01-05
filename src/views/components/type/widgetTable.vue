@@ -31,7 +31,7 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button v-show="table_options != undefined" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+                        <button v-show="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
                     </td>
                 </tr>
                 <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
@@ -48,7 +48,7 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button v-if="table_options.length > 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
