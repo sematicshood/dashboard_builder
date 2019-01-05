@@ -31,7 +31,7 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button v-if="table_options.length > 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+                        <button v-show="table_options != undefined" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
                     </td>
                 </tr>
                 <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
@@ -117,22 +117,37 @@ export default {
 
         magicFooter(title) {
             if(title.type != 'monetary') {
-                return this.$data.alls.length
+                if(this.limit_table > 0) {
+                    return this.$data.alls.slice(0, this.limit_table).length
+                } else {
+                    return this.$data.alls.length
+                }
             }
 
             if(title.type == 'monetary') {
                 let duit = 0
 
-                this.$data.alls.forEach(el => {
-                    let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
+                this.$data.alls.forEach((el, i) => {
+                    if(this.limit_table > 0) {
+                        if(i < this.limit_table) {
+                            let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
 
-                    if(option == '+' || option == undefined)
-                        duit += parseInt(el[title.prop])
-                    else
-                        duit - parseInt(el[title.prop])
+                            if(option == '+' || option == undefined)
+                                duit += parseInt(el[title.prop])
+                            else
+                                duit - parseInt(el[title.prop])
+                        }
+                    } else {
+                        let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
+
+                        if(option == '+' || option == undefined)
+                            duit += parseInt(el[title.prop])
+                        else
+                            duit - parseInt(el[title.prop])
+                    }
                 })
 
-                return duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+                return 'Rp. ' + duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
             }
         },
 
