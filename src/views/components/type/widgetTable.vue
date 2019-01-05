@@ -136,6 +136,9 @@ export default {
                                 duit += parseInt(el[title.prop])
                             else
                                 duit - parseInt(el[title.prop])
+
+                            if(this.limit_table == 1 && option == '-')
+                                duit -= parseInt(el[title.prop])
                         }
                     } else {
                         let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
