@@ -32,6 +32,8 @@
                             </span>
                         </span>
                         <button v-show="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+
+                        <button class="btn btn-danger btn-sm" @click="hidden(data[key])">Hidden Label</button>
                     </td>
                 </tr>
                 <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
@@ -49,6 +51,10 @@
                             </span>
                         </span>
                         <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+
+                        <button v-if="cekExistsHiddenLabel(data[key]) == false" class="btn btn-danger btn-sm" @click="hidden(data[key])">Hidden Label</button>
+
+                        <button v-if="cekExistsHiddenLabel(data[key])" class="btn btn-warning btn-sm" @click="show(data[key])">Show Label</button>
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
@@ -87,7 +93,9 @@ export default {
             let keys  = this.titles[0]['prop'],
                 op    = this.table_options[data[keys]]['operation']
 
-            this.table_options[data[keys]]['operation'] = (op == '+') ? '-' : '+'
+            op = (op == '+') ? '-' : '+'
+            
+            this.$store.dispatch('rows/changeTableOptions', {'row': this.vuerow, 'column': this.vuecolumn, 'keys': data[keys], 'op': op})
         },
 
         set_options(type) {
@@ -116,41 +124,49 @@ export default {
         },
 
         magicFooter(title) {
-            if(title.type != 'monetary') {
+            if(title.type != 'monetary' && title.type != 'integer') {
+                let re = ''
+
                 if(this.limit_table > 0) {
-                    return this.$data.alls.slice(0, this.limit_table).length
+                    re = this.$data.alls.slice(0, this.limit_table).length
                 } else {
-                    return this.$data.alls.length
+                    re = this.$data.alls.length
                 }
+
+                return re
             }
 
-            if(title.type == 'monetary') {
+            if(title.type == 'monetary' || title.type == 'integer') {
                 let duit = 0
 
                 this.$data.alls.forEach((el, i) => {
-                    if(this.limit_table > 0) {
-                        if(i < this.limit_table) {
+                    if(this.inArray(this.hidden_label, el[this.key]) == false) {
+                        if(this.limit_table > 0) {
+                            if(i < this.limit_table) {
+                                let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
+
+                                if(option == '+' || option == undefined)
+                                    duit += parseInt(el[title.prop])
+                                else
+                                    duit - parseInt(el[title.prop])
+
+                                if(this.limit_table == 1 && option == '-')
+                                    duit -= parseInt(el[title.prop])
+                            }
+                        } else {
                             let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
 
                             if(option == '+' || option == undefined)
                                 duit += parseInt(el[title.prop])
                             else
                                 duit - parseInt(el[title.prop])
-
-                            if(this.limit_table == 1 && option == '-')
-                                duit -= parseInt(el[title.prop])
                         }
-                    } else {
-                        let option   = (this.table_options[el[this.key]]) ? this.table_options[el[this.key]].operation : undefined
-
-                        if(option == '+' || option == undefined)
-                            duit += parseInt(el[title.prop])
-                        else
-                            duit - parseInt(el[title.prop])
                     }
                 })
 
-                return 'Rp. ' + duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+                if(title.type == 'monetary') return 'Rp. ' + duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+
+                if(title.type == 'integer') return duit
             }
         },
 
@@ -220,12 +236,32 @@ export default {
                     this.$data.alls.push(anu)
                 })
 
+                if(this.type == 'view') {
+                    this.$data.alls.forEach((el, x) => {
+                        if(this.inArray(this.hidden_label, el[this.key])) {
+                            this.$data.alls.splice(x, 1)
+                        }
+                    })
+                }
+
                 this.$data.alls.sort((a,b) => {
                     if(parseInt(a[value]) < parseInt(b[value])) { return 1; }
                     if(parseInt(a[value]) > parseInt(b[value])) { return -1; }
                     return 0;
                 })
             }
+        },
+
+        hidden(label) {
+            this.$store.dispatch('rows/addHiddenLabel', {'row': this.vuerow, 'column': this.vuecolumn, 'label': label})
+        },
+
+        cekExistsHiddenLabel(label) {
+            return this.inArray(this.hidden_label, label)
+        },
+
+        show(label) {
+            this.$store.dispatch('rows/removeHiddenLabel', {'row': this.vuerow, 'column': this.vuecolumn, 'label': label})
         }
     },
 
@@ -264,7 +300,7 @@ export default {
         table_options: {
             get() {
                 return this.rows.rows[this.vuerow][this.vuecolumn]['table_options']
-            }
+            },
         },
         key: {
             get() {
@@ -280,6 +316,12 @@ export default {
                 this.$store.dispatch('rows/setLimitTable', limit_table)
             }
         },
+
+        hidden_label: {
+            get() {
+                return this.rows.rows[this.vuerow][this.vuecolumn]['hidden_label']
+            }
+        },
     },
 
     watch: {
@@ -288,6 +330,13 @@ export default {
         },
 
         row: {
+            handler(val){
+                this.magicBims()
+            },
+            deep: true
+        },
+
+        type: {
             handler(val){
                 this.magicBims()
             },

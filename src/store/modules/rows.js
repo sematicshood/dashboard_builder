@@ -94,42 +94,42 @@ const getters = {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
             column  = (state.colOp != '') ? state.colOp : 0
         
-        return state.rows[row][column]['columns']
+        return (state.rows[row] != undefined) ? state.rows[row][column]['columns'] : []
     },
 
     getTitles(state) {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
             column  = (state.colOp != '') ? state.colOp : 0
         
-        return state.rows[row][column]['titles']
+            return (state.rows[row] != undefined) ? state.rows[row][column]['titles'] : []
     },
 
     getModel(state) {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
             column  = (state.colOp != '') ? state.colOp : 1
         
-        return state.rows[row][column]['model']
+        return (state.rows[row] != undefined) ? state.rows[row][column]['model'] : []
     },
 
     getColumnWidth(state) {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
             column  = (state.colOp != '') ? state.colOp : 1
         
-        return state.rows[row][column]['width']
+            return (state.rows[row] != undefined) ? state.rows[row][column]['width'] : []
     },
 
     getColumnFilters(state) {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
-            column  = (state.colOp != '') ? state.colOp : 1
+            column  = (state.colOp != '') ? state.colOp : 0
         
-        return state.rows[row][column]['filters_data']
+        return (state.rows[row] != undefined) ? state.rows[row][column]['filters_data'] : []
     },
 
     getColumnFiltersList(state) {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
-            column  = (state.colOp != '') ? state.colOp : 1
+            column  = (state.colOp != '') ? state.colOp : 0
         
-        return state.rows[row][column]['filters_list']
+        return (state.rows[row] != undefined) ? state.rows[row][column]['filters_list'] : []
     },
 
     // getColumnDetail(state) {
@@ -395,6 +395,9 @@ const mutations = {
 
         if(state.rows[options.row][options.column]['limit_table'] == undefined)
             state.rows[options.row][options.column]['limit_table'] = 0
+
+        if(state.rows[options.row][options.column]['hidden_label'] == undefined)
+            state.rows[options.row][options.column]['hidden_label'] = []
     },
 
     UPDATE_TABLE_OPTIONS(state, options) {
@@ -405,6 +408,19 @@ const mutations = {
 
     SET_TITLES_COLUMN(state, titles) {
         state.rows[state.rowOp][state.colOp]['titles'] = titles
+    },
+
+    ADD_HIDDEN_LABEL(state, label) {
+        state.rows[label.row][label.column]['hidden_label'].push(label.label)
+    },
+
+    REMOVE_HIDDEN_LABEL(state, label) {
+        var index = state.rows[label.row][label.column]['hidden_label'].indexOf(label.label);
+        if (index !== -1) state.rows[label.row][label.column]['hidden_label'].splice(index, 1);
+    },
+
+    CHANGE_TABLE_OPTIONS(state, option) {
+        state.rows[option.row][option.column]['table_options'][option.keys]['operation'] = option.op
     }
 }
 
@@ -821,6 +837,24 @@ const actions = {
 
     setTitlesColumn({ commit, dispatch }, titles) {
         commit('SET_TITLES_COLUMN', titles)
+
+        dispatch('save', false)
+    },
+
+    addHiddenLabel({ commit, dispatch }, label) {
+        commit('ADD_HIDDEN_LABEL', label)
+
+        dispatch('save', false)
+    },
+
+    removeHiddenLabel({ commit, dispatch }, label) {
+        commit('REMOVE_HIDDEN_LABEL', label)
+
+        dispatch('save', false)
+    },
+
+    changeTableOptions({ commit, dispatch }, options) {
+        commit('CHANGE_TABLE_OPTIONS', options)
 
         dispatch('save', false)
     }
