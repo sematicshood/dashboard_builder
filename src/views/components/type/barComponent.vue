@@ -20,10 +20,7 @@
         data () {
             return {
                 datacollection: null,
-                chartOptions: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                },
+                chartOptions: null,
             }
         },
         mounted() {
@@ -63,7 +60,25 @@
                 get() {
                     return this.rows.rows[this.vuerow][this.vuecolumn]['group_data']
                 }
-            }
+            },
+            options: {
+                get() {
+                    let hello  = this.rows.rows[this.vuerow][this.vuecolumn]['options_chart'],
+                        value  = (this.titles[2]) ? this.titles[2]['prop'] : [],
+                        type   = (this.titles[2]) ? this.titles[2]['type'] : [],
+
+                        option = {
+                            responsive: true, 
+                            maintainAspectRatio: false,
+                            // legend: { 
+                            //     display: hello.legend.display
+                            // },
+                            scales: {}
+                        }
+
+                    return option
+                }
+            },
         },
 
         watch: {
@@ -113,10 +128,24 @@
                     type        = (this.titles[0]) ? this.titles[0]['type'] : [],
                     key         = (this.titles[1]) ? this.titles[1]['prop'] : [],
                     value       = (this.titles[2]) ? this.titles[2]['prop'] : [],
+                    tvalue      = (this.titles[2]) ? this.titles[2]['type'] : [],
                     labels      = [],
                     datasets    = [],
                     keys        = [],
-                    values      = {}
+                    values      = {},
+                    yaxis       = (tvalue == 'monetary') ? true : false
+
+                this.options['scales']['yAxes'] = [
+                    {
+                        ticks: {
+                            callback: function(label, index, labels) {
+                                return (yaxis) ? 'Rp. ' + label.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : label
+                            }
+                        },
+                    }
+                ]
+
+                this.$data.chartOptions = this.options
 
                 this.datas.forEach(el => {
                     if(el[xaxis] != undefined) {
