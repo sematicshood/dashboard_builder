@@ -1,14 +1,22 @@
 <template>
     <div id="widget-table">
-        <b-dropdown left text="Option" size="sm" variant="white">
+        <b-button-group size="sm" class="btn-group-widget-table">
+            <b-button variant="info" @click="set_options('count')">Count</b-button>
+            <b-button variant="info" @click="set_options('sum')">Sum</b-button>
+            <b-button variant="info" @click="set_options('avg')">Average</b-button>
+        </b-button-group>
+
+        <!-- <b-dropdown left text="Option" size="sm" variant="white">
             <b-dropdown-item @click="set_options('count')">Count</b-dropdown-item>
             <b-dropdown-item @click="set_options('sum')">Sum</b-dropdown-item>
             <b-dropdown-item @click="set_options('avg')">Average</b-dropdown-item>
-        </b-dropdown>
+        </b-dropdown> -->
 
-        <input type="number" placeholder="Input limit data" v-model="limit_table">
+        <input type="number" v-model="limit_table">
+        <label for="">Limit Data: </label>
         
         <table class="widget-table" :height="height">
+            <col width="10%">
             <thead>
                 <tr>
                     <th>#</th>
@@ -31,7 +39,7 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button v-show="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+                        <button v-show="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
                 <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
@@ -48,7 +56,7 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
@@ -248,7 +256,7 @@ export default {
         },
         height: {
             get() {
-                return this.rows.rows[this.vuerow][0]['height'] - 135
+                return this.rows.rows[this.vuerow][0]['height'] - 185
             }
         },
         titles: {
