@@ -1,14 +1,16 @@
 <template>
     <div id="widget-table">
-        <b-dropdown left text="Option" size="sm" variant="white">
-            <b-dropdown-item @click="set_options('count')">Count</b-dropdown-item>
-            <b-dropdown-item @click="set_options('sum')">Sum</b-dropdown-item>
-            <b-dropdown-item @click="set_options('avg')">Average</b-dropdown-item>
-        </b-dropdown>
+        <b-button-group v-if="type == 'edit'" size="sm" class="btn-group-widget-table">
+            <b-button variant="info" @click="set_options('count')">Count</b-button>
+            <b-button variant="info" @click="set_options('sum')">Sum</b-button>
+            <b-button variant="info" @click="set_options('avg')">Average</b-button>
+        </b-button-group>
 
-        <input type="number" placeholder="Input limit data" v-model="limit_table">
+        <input type="number" v-model="limit_table">
+        <label for="">Limit Data: </label>
         
         <table class="widget-table" :height="height">
+            <col width="10%">
             <thead>
                 <tr>
                     <th>#</th>
@@ -18,7 +20,6 @@
             </thead>
             <tbody>
                 <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table > 0 && i < limit_table">
-<<<<<<< HEAD
                     <td v-text="i + 1"></td>
                     <td v-for="title in titles">
                         {{ magic(data[title.prop], title) }}
@@ -32,31 +33,11 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button v-show="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
-                    </td>
-                </tr>
-                <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
-=======
->>>>>>> bima
-                    <td v-text="i + 1"></td>
-                    <td v-for="title in titles">
-                        {{ magic(data[title.prop], title) }}
-                    </td>
-                    <td v-show="type == 'edit'">
-                        <span v-for="(i, a) in table_options[data[key]]">
-                            <span v-if="a == 'type'">
-                                {{ i }}
-                            </span>
-                            <span v-else>
-                                ({{ i }})
-                            </span>
-                        </span>
-<<<<<<< HEAD
-                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
-=======
-                        <button v-show="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
+                        <button v-if="cekExistsHiddenLabel(data[key]) == false" class="btn btn-danger btn-sm" @click="hidden(data[key])">Hidden Label</button>
 
-                        <button class="btn btn-danger btn-sm" @click="hidden(data[key])">Hidden Label</button>
+                        <button v-if="cekExistsHiddenLabel(data[key])" class="btn btn-warning btn-sm" @click="show(data[key])">Show Label</button>
+
+                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
                 <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
@@ -73,12 +54,12 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">Change Operator</button>
 
                         <button v-if="cekExistsHiddenLabel(data[key]) == false" class="btn btn-danger btn-sm" @click="hidden(data[key])">Hidden Label</button>
 
                         <button v-if="cekExistsHiddenLabel(data[key])" class="btn btn-warning btn-sm" @click="show(data[key])">Show Label</button>
->>>>>>> bima
+
+                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
@@ -310,7 +291,7 @@ export default {
         },
         height: {
             get() {
-                return this.rows.rows[this.vuerow][0]['height'] - 135
+                return this.rows.rows[this.vuerow][0]['height'] - 185
             }
         },
         titles: {

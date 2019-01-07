@@ -64,6 +64,10 @@ body {
     font-weight: 600;
 }
 
+.btn-group-widget-table{
+    float: left;
+}
+
 .dropdown-item.active, .dropdown-item:active, dropdown-item.focus, .dropdown-item:focus {
     color: #fff;
     text-decoration: none;
@@ -116,3 +120,28 @@ body {
     border: 1px solid #c8ced3;
     border-radius: 0.25rem;
 }
+
+#widget-table{
+    margin-top: -30px;
+}
+
+#widget-table .btn-group .btn-secondary{
+    height: 31px;
+    padding: 4px 8px;
+    font-size: 85%;
+}
+
+
+#widget-table input{
+    margin-left: 5px;
+    margin-bottom: 15px;
+    float: right;
+    width: 100px;
+    border: 1px solid #c8ced3;
+    border-radius: 0.25rem;
+}
+#widget-table label{
+    margin-top: 3px;
+    float: right;
+}
+

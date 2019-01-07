@@ -8,12 +8,29 @@
 }
 
 .bg {
-    background-image: linear-gradient(to bottom right, #20a8d8, #4dbd74); background-position:center; background-size:cover; padding:10px; height: 100vh;
+    background-image: linear-gradient(to bottom right, #20a8d8, #0099FB); background-position:center; background-size:cover; padding:10px; height: 100vh;
     /* background-color: #63c2de; */
     color: #FFFFFF;
     height: 160px;
     padding: 20px;
     border-radius: 0.25rem;
+    margin-bottom: 30px;
+}
+
+.bg-container{
+    height: 100%;
+}
+
+.btn-dashboard{
+    height: 35px;
+    color: rgb(243, 242, 242);
+    background-color: #20a8d8 !important;
+    border: 1px solid rgb(230, 230, 230) !important;
+}
+
+.btn-dashboard:hover{
+    border: 2px solid rgb(255, 255, 255) !important;
+    color: rgb(255, 255, 255);
 }
 
 .col {
@@ -180,3 +197,5 @@ a {
     font-weight: 600;
     font-size: 90%;
 }
+
+
