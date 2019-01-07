@@ -76,17 +76,15 @@
     import fieldsColumn from './components/selectComponent/fieldsCompunent.vue'
     import judulColumn from './components/selectComponent/judulComponent.vue'
     import jenisColumn from './components/selectComponent/jenisColumnComponent.vue'
-    import rowOption from './components/rowOption.vue'
     import widthColumn from './components/column/widthColumn.vue'
     import categoryComponent from './components/categoryComponent.vue'
-    import collapseOption from './components/column/collapseOption.vue'
     import buttonDeleteComponent from './components/selectComponent/buttonDeleteComponent.vue'
 
     export default {
         name: 'sidebar',
 
         components: {
-            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, rowOption, categoryComponent, heightRow, widthColumn, collapseOption, buttonDeleteComponent
+            selectModels, titlesColumn, fieldsColumn, judulColumn, jenisColumn, categoryComponent, heightRow, widthColumn, buttonDeleteComponent
         },
         
         computed: {

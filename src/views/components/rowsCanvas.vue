@@ -17,7 +17,11 @@
                     :style="`width: ${column['width']}%; left: ${column['left']}%;`"
                     @click="colOption(index, indexes)" v-if="indexes != 0">
 
-                    <b-btn class="btn-filter-dashboard" v-if="type == 'edit'" v-b-modal.filterModal size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
+                    <b-btn class="btn-filter-dashboard" v-if="type == 'edit'" v-b-modal="`filterModal-${ index }-${ indexes }`" size="sm" variant="info"><font-awesome-icon icon="filter"/> Filter Data</b-btn>
+
+                    <filter-modal
+                        :vuerow="index"
+                        :vuecolumn="indexes"></filter-modal>
 
                     <filter-modal
                         :vuerow="index"
@@ -185,7 +189,7 @@
         top: 9px;
         position: absolute;
         left: 85px;
-        z-index: 9999;;
+        z-index: 999;
     }
 
     .line {

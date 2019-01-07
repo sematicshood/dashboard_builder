@@ -83,11 +83,13 @@
 
         methods: {
             inArray(all, newed) {
-                var length = all.length;
-                for(var i = 0; i < length; i++) {
-                    if(all[i] == newed) return true;
+                if(all != undefined) {
+                    var length = all.length;
+                    for(var i = 0; i < length; i++) {
+                        if(all[i] == newed) return true;
+                    }
+                    return false;
                 }
-                return false;
             },
 
             cekWeek(date) { 
@@ -117,18 +119,26 @@
                     values      = {}
 
                 this.datas.forEach(el => {
-                    if(el[xaxis].length == 2) {
-                        if(this.inArray(labels, el[xaxis][1]) == false)
-                            labels.push(el[xaxis][1])
-                    } else {
-                        let dat  = el[xaxis].split(' ')[0],
-                            x    = el[xaxis]
+                    if(el[xaxis] != undefined) {
+                        if(el[xaxis].length == 2) {
+                            if(this.inArray(labels, el[xaxis][1]) == false)
+                                labels.push(el[xaxis][1])
+                        } else {
+                            let x    = el[xaxis]
 
-                        if (type == 'datetime') {
-                            x    = dat
+                            if(typeof el[xaxis] == 'number') {
+                                x = el[xaxis]
+                            } else {
+                                let dat  = el[xaxis].split(' ')[0]
+
+                                if (type == 'datetime') {
+                                    x    = dat
+                                }
+                            }
+                            
+                            if(this.inArray(labels, x) == false)
+                                labels.push(x)
                         }
-                        if(this.inArray(labels, x) == false)
-                            labels.push(x)
                     }
                 })
 
@@ -142,7 +152,11 @@
                     })
 
                     labels.forEach(la => {
-                        let dat  = la.split(' ')[0].split('-')
+                        let dat  = la
+
+                        if(typeof la != 'number') {
+                            dat = la.split(' ')[0].split('-')
+                        }
                         
                         if(this.group == 'Tahun') {
                             if(this.inArray(newl, dat[0]) == false)
@@ -165,43 +179,50 @@
 
                 labels.forEach(el => {
                     let datas = this.datas.filter((data) => {
-                        if(data[xaxis].length == 2) {
-                            return data[xaxis][1] == el
-                        } else {
-                            if(this.group != '' && this.group != 'Hari' && this.group != undefined) {
-                                let dat  = data[xaxis].split(' ')[0].split('-')
-
-                                if(this.group == 'Tahun') {
-                                    return dat[0] == el
-                                } else if(this.group == 'Bulan') {
-                                    let bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
-
-                                    return `${bulan[parseInt(dat[1]) - 1]} #${dat[0]}` == el
-                                } else if(this.group == 'Minggu') {
-                                    let minggu = this.cekWeek(new Date(dat[0],parseInt(dat[1]) - 1,dat[2]))
-
-                                    return `Minggu #${minggu[1]} - ${minggu[0]}` == el
-                                }
+                        if(data[xaxis] != undefined) {
+                            if(data[xaxis].length == 2) {
+                                return data[xaxis][1] == el
                             } else {
-                                let dat  = data[xaxis].split(' ')[0],
-                                    x    = data[xaxis]
+                                if(this.group != '' && this.group != 'Hari' && this.group != undefined) {
+                                    let dat  = data[xaxis]
 
-                                if (type == 'datetime') {
-                                    x    = dat
+                                    if(typeof data[xaxis] != 'number')
+                                        dat  = data[xaxis].split(' ')[0].split('-')
+
+                                    if(this.group == 'Tahun') {
+                                        return dat[0] == el
+                                    } else if(this.group == 'Bulan') {
+                                        let bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
+
+                                        return `${bulan[parseInt(dat[1]) - 1]} #${dat[0]}` == el
+                                    } else if(this.group == 'Minggu') {
+                                        let minggu = this.cekWeek(new Date(dat[0],parseInt(dat[1]) - 1,dat[2]))
+
+                                        return `Minggu #${minggu[1]} - ${minggu[0]}` == el
+                                    }
+                                } else {
+                                    let dat  = data[xaxis].split(' ')[0],
+                                        x    = data[xaxis]
+
+                                    if (type == 'datetime') {
+                                        x    = dat
+                                    }
+
+                                    return x == el
                                 }
-
-                                return x == el
                             }
                         }
                     })
 
                     datas.forEach(e => {
-                        if(e[key].length == 2) {
-                            if(this.inArray(keys, e[key][1]) == false)
-                                keys.push(e[key][1])
-                        } else {
-                            if(this.inArray(keys, e[key]) == false)
-                                keys.push(e[key])
+                        if(e[key] != undefined) {
+                            if(e[key].length == 2) {
+                                if(this.inArray(keys, e[key][1]) == false)
+                                    keys.push(e[key][1])
+                            } else {
+                                if(this.inArray(keys, e[key]) == false)
+                                    keys.push(e[key])
+                            }
                         }
                     })
 

@@ -69,46 +69,54 @@
 
         methods: {
             inArray(all, newed) {
-                var length = all.length;
-                for(var i = 0; i < length; i++) {
-                    if(all[i] == newed) return true;
+                if(all) {
+                    var length = all.length;
+                    for(var i = 0; i < length; i++) {
+                        if(all[i] == newed) return true;
+                    }
+                    return false;
                 }
-                return false;
             },
             fillData () {
-                let xaxis       = this.titles[0]['prop'] || [],
-                    key         = this.titles[1]['prop'] || [],
-                    value       = this.titles[2]['prop'] || [],
+                let xaxis       = (this.titles[0]) ? this.titles[0]['prop'] : [],
+                    key         = (this.titles[1]) ? this.titles[1]['prop'] : [],
+                    value       = (this.titles[2]) ? this.titles[2]['prop'] : [],
                     labels      = [],
                     datasets    = [],
                     keys        = [],
                     values      = {}
 
                 this.datas.forEach(el => {
-                    if(el[xaxis].length == 2) {
-                        if(this.inArray(labels, el[xaxis][1]) == false)
-                            labels.push(el[xaxis][1])
-                    } else {
-                        if(this.inArray(labels, el[xaxis]) == false)
-                            labels.push(el[xaxis])
+                    if(el[xaxis]) {
+                        if(el[xaxis].length == 2) {
+                            if(this.inArray(labels, el[xaxis][1]) == false)
+                                labels.push(el[xaxis][1])
+                        } else {
+                            if(this.inArray(labels, el[xaxis]) == false)
+                                labels.push(el[xaxis])
+                        }
                     }
                 })
 
                 labels.forEach(el => {
                     let datas = this.datas.filter((data) => {
-                        if(data[xaxis].length == 2)
-                            return data[xaxis][1] == el
-                        else
-                            return data[xaxis] == el
+                        if(data[xaxis]) {
+                            if(data[xaxis].length == 2)
+                                return data[xaxis][1] == el
+                            else
+                                return data[xaxis] == el
+                        }
                     })
 
                     datas.forEach(e => {
-                        if(e[key].length == 2) {
-                            if(this.inArray(keys, e[key][1]) == false)
-                                keys.push(e[key][1])
-                        } else {
-                            if(this.inArray(keys, e[key]) == false)
-                                keys.push(e[key])
+                        if(e[key]) {
+                            if(e[key].length == 2) {
+                                if(this.inArray(keys, e[key][1]) == false)
+                                    keys.push(e[key][1])
+                            } else {
+                                if(this.inArray(keys, e[key]) == false)
+                                    keys.push(e[key])
+                            }
                         }
                     })
 
@@ -116,10 +124,12 @@
                         let amount = 0
 
                         let list_amount = datas.filter(dat => {
-                            if(dat[key].length == 2)
-                                return dat[key][1] == e
-                            else
-                                return dat[key] == e
+                            if(dat[key]) {
+                                if(dat[key].length == 2)
+                                    return dat[key][1] == e
+                                else
+                                    return dat[key] == e
+                            }
                         })
 
                         try {
