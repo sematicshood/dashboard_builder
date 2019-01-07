@@ -132,19 +132,18 @@
                     labels      = [],
                     datasets    = [],
                     keys        = [],
-                    values      = {}
+                    values      = {},
+                    yaxis       = (tvalue == 'monetary') ? true : false
 
-                if(tvalue == 'monetary') {
-                    this.options['scales']['yAxes'] = [
-                        {
-                            ticks: {
-                                callback: function(label, index, labels) {
-                                    return 'Rp. ' + label.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.");
-                                }
-                            },
-                        }
-                    ]
-                }
+                this.options['scales']['yAxes'] = [
+                    {
+                        ticks: {
+                            callback: function(label, index, labels) {
+                                return (yaxis) ? 'Rp. ' + label.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : label
+                            }
+                        },
+                    }
+                ]
 
                 this.$data.chartOptions = this.options
 
