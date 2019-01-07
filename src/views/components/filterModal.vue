@@ -1,6 +1,6 @@
 <template>
     <div id="filterModal">
-        <b-modal id="filterModal" 
+        <b-modal :id="`filterModal-${ vuerow }-${ vuecolumn }`" 
                  centered 
                  title="Filter" 
                  button-size="sm"
@@ -212,7 +212,7 @@
 
                     this.$store.dispatch('rows/addFiltersList', this.$data.filter)
                 } catch (error) {
-                    console.log(error)
+                    // console.log(error)
                 }
 
                 this.actionFilter()

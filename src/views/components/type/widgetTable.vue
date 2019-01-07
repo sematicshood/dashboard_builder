@@ -90,8 +90,8 @@ export default {
 
     methods: {
         ChangeOperator(data) {
-            let keys  = this.titles[0]['prop'],
-                op    = this.table_options[data[keys]]['operation']
+            let keys  = (this.titles[0]) ? this.titles[0]['prop'] : [],
+                op    = (this.table_options[data[keys]]) ? this.table_options[data[keys]]['operation'] : []
 
             op = (op == '+') ? '-' : '+'
             
@@ -99,7 +99,7 @@ export default {
         },
 
         set_options(type) {
-            let keys  = this.titles[0]['prop']
+            let keys  = (this.titles[0]) ? this.titles[0]['prop'] : []
             
             let datas = {}
 
@@ -171,19 +171,21 @@ export default {
         },
 
         inArray(all, newed) {
-            var length = all.length;
-            for(var i = 0; i < length; i++) {
-                if(all[i] == newed) return true;
+            if(all) {
+                var length = all.length;
+                for(var i = 0; i < length; i++) {
+                    if(all[i] == newed) return true;
+                }
+                return false;
             }
-            return false;
         },
 
         magicBims() {
             if(this.titles[0] && this.titles[1]) {
                 this.$data.alls = []
 
-                let keys  = this.titles[0]['prop'],
-                    value = this.titles[1]['prop'],
+                let keys  = (this.titles[0]) ? this.titles[0]['prop'] : [],
+                    value = (this.titles[1]) ? this.titles[1]['prop'] : [],
                     group = []
 
                 this.datas.forEach(e => {

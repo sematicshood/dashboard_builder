@@ -38,6 +38,12 @@
                 },
                 deep: true
             },
+            row: {
+                handler(val){
+                    this.fillData()
+                },
+                deep: true
+            },
         },
 
         computed: {
@@ -113,7 +119,7 @@
             },
 
             fillData() {
-                let key         = this.titles[0].prop
+                let key         = (this.titles[0]) ? this.titles[0].prop : []
                 this.$data.sum  = 0
                 
                 let start       = this.getDays(this.date.start, this.date.end)
@@ -136,6 +142,8 @@
 
                 this.$store.dispatch('data/getDatas', {'date': dated, 'filters': this.filterData, 'model': this.model})
                     .then(res => {
+                        this.$data.last = 0
+
                         res.forEach(el => {
                             this.$data.last += Math.floor(el[key])
                         })

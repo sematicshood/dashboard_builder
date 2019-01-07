@@ -55,9 +55,9 @@
                     let option = {
                         responsive: true, 
                         maintainAspectRatio: false,
-                        legend: { 
-                            display: hello.legend.display
-                        }
+                        // legend: { 
+                        //     display: hello.legend.display
+                        // }
                     }
 
                     return option
@@ -86,11 +86,13 @@
 
         methods: {
             inArray(all, newed) {
-                var length = all.length;
-                for(var i = 0; i < length; i++) {
-                    if(all[i] == newed) return true;
+                if(all) {
+                    var length = all.length;
+                    for(var i = 0; i < length; i++) {
+                        if(all[i] == newed) return true;
+                    }
+                    return false;
                 }
-                return false;
             },
             fillData () {
                 let labels          = [],
@@ -99,65 +101,73 @@
                     backgroundColor = [],
                     counts          = {}
 
-                if(this.titles.length > 1) {
-                    let xaxis           = this.titles[0]['prop'] || [],
-                        value           = this.titles[1]['prop'] || []
+                if(this.titles) {
+                    if(this.titles.length > 1) {
+                        let xaxis           = (this.titles[0]) ? this.titles[0]['prop'] : [],
+                            value           = (this.titles[1]) ? this.titles[1]['prop'] : []
 
-                    this.datas.forEach(el => {
-                        if(el[xaxis].length == 2) {
-                            if(this.inArray(labels, el[xaxis][1]) == false)
-                                labels.push(el[xaxis][1])
-                        } else {
-                            if(this.inArray(labels, el[xaxis]) == false)
-                                labels.push(el[xaxis])
-                        }
-                    })
-
-                    labels.forEach(el => {
-                        let amount = 0
-
-                        let datas = this.datas.filter((data) => {
-                            if(data[xaxis].length == 2)
-                                return data[xaxis][1] == el
-                            else
-                                return data[xaxis] == el
+                        this.datas.forEach(el => {
+                            if(el[xaxis]) {
+                                if(el[xaxis].length == 2) {
+                                    if(this.inArray(labels, el[xaxis][1]) == false)
+                                        labels.push(el[xaxis][1])
+                                } else {
+                                    if(this.inArray(labels, el[xaxis]) == false)
+                                        labels.push(el[xaxis])
+                                }
+                            }
                         })
 
-                        datas.forEach(e => {    
-                            amount += e[value]   
+                        labels.forEach(el => {
+                            let amount = 0
+
+                            let datas = this.datas.filter((data) => {
+                                if(data[xaxis]) {
+                                    if(data[xaxis].length == 2)
+                                        return data[xaxis][1] == el
+                                    else
+                                        return data[xaxis] == el
+                                }
+                            })
+
+                            datas.forEach(e => {    
+                                amount += e[value]   
+                            })
+
+                            values.push(amount)
+
+                            backgroundColor.push(this.getRandomColor())
+                        })
+                    } else {
+                        let xaxis           = (this.titles[0]) ? this.titles[0]['prop'] : [],
+                            alls            = []
+
+                        this.datas.forEach(el => {
+                            if(el[xaxis]) {
+                                if(el[xaxis].length == 2) {
+                                    if(this.inArray(labels, el[xaxis][1]) == false)
+                                        labels.push(el[xaxis][1])
+
+                                    alls.push(el[xaxis][1])
+                                } else {
+                                    if(this.inArray(labels, el[xaxis]) == false)
+                                        labels.push(el[xaxis])
+
+                                    alls.push(el[xaxis])
+                                }
+                            }
                         })
 
-                        values.push(amount)
+                        alls.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
 
-                        backgroundColor.push(this.getRandomColor())
-                    })
-                } else {
-                    let xaxis           = this.titles[0]['prop'] || [],
-                        alls            = []
+                        labels.forEach(el => {
+                            let amount = 0
 
-                    this.datas.forEach(el => {
-                        if(el[xaxis].length == 2) {
-                            if(this.inArray(labels, el[xaxis][1]) == false)
-                                labels.push(el[xaxis][1])
+                            values.push(counts[el])
 
-                            alls.push(el[xaxis][1])
-                        } else {
-                            if(this.inArray(labels, el[xaxis]) == false)
-                                labels.push(el[xaxis])
-
-                            alls.push(el[xaxis])
-                        }
-                    })
-
-                    alls.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
-
-                    labels.forEach(el => {
-                        let amount = 0
-
-                        values.push(counts[el])
-
-                        backgroundColor.push(this.getRandomColor())
-                    })
+                            backgroundColor.push(this.getRandomColor())
+                        })
+                    }
                 }
 
                 datasets.push({
