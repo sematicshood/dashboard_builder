@@ -10,6 +10,7 @@ import data from './modules/data'
 import rows from './modules/rows'
 import workspace from './modules/workspace'
 import style from './modules/style'
+import chart from './modules/chart'
 
 Vue.use(Vuex)
 
@@ -24,7 +25,8 @@ const store = new Vuex.Store({
         data,
         rows,
         workspace,
-        style
+        style,
+        chart
     },
     strict: debug
 })

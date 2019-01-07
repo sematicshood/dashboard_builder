@@ -2,20 +2,11 @@
     <div v-if="colOptionShow && type == 'edit'">
         <b-form-group>
             <b-form-checkbox id="checkbox1"
-                            v-model="display"
+                            v-model="enable"
                             value="true"
                             unchecked-value="false">
             Display legend chart
             </b-form-checkbox>
-        </b-form-group>
-
-        <b-form-group label="Postion Legend">
-            <b-form-radio-group id="radios2" v-model="position" name="radioSubComponent">
-                <b-form-radio value="top">Top</b-form-radio>
-                <b-form-radio value="bottom">Bottom</b-form-radio>
-                <b-form-radio value="left">Left</b-form-radio>
-                <b-form-radio value="right">Right</b-form-radio>
-            </b-form-radio-group>
         </b-form-group>
     </div>
 </template>
@@ -24,7 +15,7 @@
     import { mapState, mapGetters } from 'vuex'
 
     export default {
-        name: 'title-chart',
+        name: 'tooltip-chart',
 
         computed: {
             ...mapState(['rows']),
@@ -39,21 +30,21 @@
                 type: 'getType'
             }),
 
-            display: {
+            enable: {
                 get() {
-                    return this.rows.rows[this.rowOp][this.colOp]['options_chart']['legend']['display']
+                    return this.rows.rows[this.rowOp][this.colOp]['options_chart']['tooltip']['enable']
                 },
 
-                set(display) {
-                    let dis = (display === 'true')
+                set(enable) {
+                    let dis = (enable === 'true')
 
-                    this.$store.commit('rows/SET_DISPLAY', dis)
+                    this.$store.commit('rows/SET_ENABLE_TOOLTIP', dis)
                 }
             },
 
             position: {
                 get() {
-                    return this.rows.rows[this.rowOp][this.colOp]['options_chart']['legend']['position']
+                    return this.rows.rows[this.rowOp][this.colOp]['options_chart']['tooltip']['position']
                 },
 
                 set(position) {
@@ -63,7 +54,7 @@
         },
 
         created() {
-            this.$store.dispatch('rows/cekLegend', {'row': this.rowOp, 'col': this.colOp})
+            this.$store.dispatch('rows/cekTooltip', {'row': this.rowOp, 'col': this.colOp})
         }
     }
 </script>

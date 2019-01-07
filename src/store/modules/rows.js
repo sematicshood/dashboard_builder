@@ -331,26 +331,45 @@ const mutations = {
         state.edited = defaulted
     },
 
-    CEK_LEGEND(state) {
+    CEK_LEGEND(state, options) {
         let legends = [
             {
                 name:'display',
                 value: true
+            },
+            {
+                name: 'position',
+                value: 'top'
             }
         ]
 
-        state.rows.forEach((el, o) => {
-            el.forEach((e, i) => {
-                if(i != 0) {
-                    if(state.rows[o][i]['options_chart']['legend'] == undefined)
-                        state.rows[o][i]['options_chart']['legend'] =   {}
+        if(state.rows[options.row][options.col]['options_chart']['legend'] == undefined)
+            state.rows[options.row][options.col]['options_chart']['legend'] =   {}
 
-                    legends.forEach(el => {
-                        if(state.rows[o][i]['options_chart']['legend'][el.name] == undefined)
-                            state.rows[o][i]['options_chart']['legend'][el.name] = el.value
-                    })
-                }
-            })
+        legends.forEach(el => {
+            if(state.rows[options.row][options.col]['options_chart']['legend'][el.name] == undefined)
+                state.rows[options.row][options.col]['options_chart']['legend'][el.name] = el.value
+        })
+    },
+
+    CEK_TOOLTIP(state, options) {
+        let tooltips = [
+            {
+                name:'enabled',
+                value: true
+            },
+            {
+                name: 'uang',
+                value: true
+            }
+        ]
+
+        if(state.rows[options.row][options.col]['options_chart']['tooltip'] == undefined)
+            state.rows[options.row][options.col]['options_chart']['tooltip'] =   {}
+
+        tooltips.forEach(el => {
+            if(state.rows[options.row][options.col]['options_chart']['tooltip'][el.name] == undefined)
+                state.rows[options.row][options.col]['options_chart']['tooltip'][el.name] = el.value
         })
     },
 
@@ -385,6 +404,14 @@ const mutations = {
 
     SET_DISPLAY(state, display) {
         state.rows[state.rowOp][state.colOp]['options_chart']['legend']['display'] = display
+    },
+
+    SET_POSITION(state, position) {
+        state.rows[state.rowOp][state.colOp]['options_chart']['legend']['position'] = position
+    },
+
+    SET_ENABLE_TOOLTIP(state, enable) {
+        state.rows[state.rowOp][state.colOp]['options_chart']['tooltip']['enable'] = enable
     },
 
     CEK_GROUP_OPTION(state, options) {
@@ -760,8 +787,14 @@ const actions = {
         commit('SET_EDITED', template)
     },
 
-    cekLegend({ commit, dispatch }) {
-        commit('CEK_LEGEND')
+    cekLegend({ commit, dispatch }, options) {
+        commit('CEK_LEGEND', options)
+
+        dispatch('save', false)
+    },
+
+    cekTooltip({ commit, dispatch }, options) {
+        commit('CEK_TOOLTIP', options)
 
         dispatch('save', false)
     },

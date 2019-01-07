@@ -10,6 +10,14 @@ export default {
       default: null
     }
   },
+  watch: {
+    'options': {
+      handler(newOption, oldOption) {
+        this.renderChart(this.chartData, this.options)
+      },
+      deep: true
+    }
+  },
   mounted () {
     this.renderChart(this.chartData, this.options)
   },
