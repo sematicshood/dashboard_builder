@@ -24,6 +24,7 @@ const state = {
         { value: 'polar', text: 'polar' },
         { value: 'widget-card', text: 'widget card' },
         { value: 'widget-table', text: 'widget table' },
+        { value: 'pivot-table', text: 'pivot table' },
     ],
     edited: false,
     alls: ''
@@ -494,8 +495,6 @@ const mutations = {
 
     UPDATE_TABLE_OPTIONS(state, options) {
         state.rows[options.row][options.col]['table_options'] = options.data
-
-        // console.log(state.rows[options.row][options.col]['table_options'] = {})
     },
 
     SET_TITLES_COLUMN(state, titles) {

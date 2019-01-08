@@ -48,9 +48,7 @@ const mutations = {
 const actions = {
     optionsChart({dispatch}, options) {
         return new Promise((res, rej) => {
-            let     tvalue      = (options.titles[2]) ? options.titles[2]['type'] : [],
-                    ismonetary  = (tvalue == 'monetary') ? true : false,
-                    optionsC    = options.column['options_chart'],
+            let     optionsC    = (options.column['options_chart']) ? options.column['options_chart'] : [],
                     type        = options.column['type']
 
             options.options['legend'] = {
