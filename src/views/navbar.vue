@@ -8,11 +8,11 @@
                 <span v-text="greeting"></span>
             </div>
             <div class="content col-md-6">
-                <button-share/>
-                <a href="#">
+                <button-share v-if="now != 'gallery'"/>
+                <a href="#" v-if="now != 'gallery'">
                     <button-add-row/> 
                 </a>
-                <a href="#">
+                <a href="#" v-if="now != 'gallery'">
                     <button-changed></button-changed>
                 </a>
                 <a href="#">
@@ -31,13 +31,15 @@
     import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
     import buttonSync from './components/row/buttonSync.vue'
     import buttonShare from './components/row/buttonShare.vue'
+    import { mapGetters } from 'vuex'
 
     export default {
         name: 'navbar',
 
         data() {
             return {
-                greeting: 'Selamat datang'
+                greeting: 'Selamat datang',
+                now: this.$route.name
             }
         },
 

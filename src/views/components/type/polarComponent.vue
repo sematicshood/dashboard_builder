@@ -75,8 +75,6 @@
         watch: {
             titles(newv, oldv) {
                 this.fillData()
-
-                console.log(newv, oldv)
             },
             row: {
                 handler(val){
@@ -102,6 +100,10 @@
                     this.$data.chartOptions = res
                 })
             },
+        },
+
+        created() {
+            this.$store.dispatch('rows/cekTableOptions', {'row': this.vuerow, 'column': this.vuecolumn})
         }
     }
 </script>

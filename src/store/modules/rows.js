@@ -101,14 +101,7 @@ const getters = {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
             column  = (state.colOp != '') ? state.colOp : 0
         
-            return (state.rows[row] != undefined) ? state.rows[row][column]['titles'] : []
-    },
-
-    getTitles(state) {
-        let row     = (state.rowOp != '') ? state.rowOp : 0,
-            column  = (state.colOp != '') ? state.colOp : 0
-        
-        return state.rows[row][column]['titles']
+        return (state.rows[row] != undefined) ? state.rows[row][column]['titles'] : []
     },
 
     getModel(state) {
@@ -465,6 +458,38 @@ const mutations = {
 
         if(state.rows[options.row][options.column]['hidden_label'] == undefined)
             state.rows[options.row][options.column]['hidden_label'] = []
+            
+        if(state.rows[options.row][options.column]['options_chart'] == undefined) {
+            state.rows[options.row][options.column]['options_chart'] = {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {},
+                layout: {},
+                title: {},
+                tooltip: {},
+                scales: {
+                    yAxes: [{}],
+                    xAxes: [{}],
+                }
+            }
+        }
+
+        if(state.rows[options.row][options.column]['options_chart'] != undefined) {
+            if(state.rows[options.row][options.column]['options_chart'].length == 0) {
+                state.rows[options.row][options.column]['options_chart'] = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {},
+                    layout: {},
+                    title: {},
+                    tooltip: {},
+                    scales: {
+                        yAxes: [{}],
+                        xAxes: [{}],
+                    }
+                }
+            }
+        }
     },
 
     UPDATE_TABLE_OPTIONS(state, options) {
