@@ -20,10 +20,7 @@
         data () {
             return {
                 datacollection: null,
-                chartOptions: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                },
+                chartOptions: null,
             }
         },
         mounted() {
@@ -58,7 +55,21 @@
                     // return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']]
                     return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
                 }
-            }
+            },
+            options: {
+                get() {
+                    let hello  = this.rows.rows[this.vuerow][this.vuecolumn]['options_chart']
+                    let option = {
+                        responsive: true, 
+                        maintainAspectRatio: false,
+                        // legend: { 
+                        //     display: hello.legend.display
+                        // }
+                    }
+
+                    return option
+                }
+            },
         },
 
         watch: {
@@ -66,7 +77,13 @@
                 this.fillData()
 
                 console.log(newv, oldv)
-            }
+            },
+            row: {
+                handler(val){
+                    this.fillData()
+                },
+                deep: true
+            },
         },
 
         methods: {
@@ -75,6 +92,15 @@
                     .then(res => {
                         this.datacollection = res
                     })
+
+                this.$store.dispatch('chart/optionsChart', {
+                    'options': this.options, 
+                    'titles': this.titles,
+                    'column': this.column,
+                })
+                .then(res => {
+                    this.$data.chartOptions = res
+                })
             },
         }
     }

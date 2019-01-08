@@ -373,6 +373,27 @@ const mutations = {
         })
     },
 
+    CEK_SCALES(state, options) {
+        let scales = [
+            {
+                name:'xuang',
+                value: true
+            },
+            {
+                name: 'yuang',
+                value: true
+            }
+        ]
+
+        if(state.rows[options.row][options.col]['options_chart']['scales'] == undefined)
+            state.rows[options.row][options.col]['options_chart']['scales'] =   {}
+
+        scales.forEach(el => {
+            if(state.rows[options.row][options.col]['options_chart']['scales'][el.name] == undefined)
+                state.rows[options.row][options.col]['options_chart']['scales'][el.name] = el.value
+        })
+    },
+
     CEK_DATE_PROPERTY(state, options) {
         var d       =  new Date(),
             from    =  new Date(d.getUTCFullYear(), d.getUTCMonth(), 1),
@@ -410,8 +431,20 @@ const mutations = {
         state.rows[state.rowOp][state.colOp]['options_chart']['legend']['position'] = position
     },
 
-    SET_ENABLE_TOOLTIP(state, enable) {
-        state.rows[state.rowOp][state.colOp]['options_chart']['tooltip']['enable'] = enable
+    SET_ENABLED_TOOLTIP(state, enabled) {
+        state.rows[state.rowOp][state.colOp]['options_chart']['tooltip']['enabled'] = enabled
+    },
+
+    SET_XUANG_SCALES(state, xuang) {
+        state.rows[state.rowOp][state.colOp]['options_chart']['scales']['xuang'] = xuang
+    },
+
+    SET_YUANG_SCALES(state, yuang) {
+        state.rows[state.rowOp][state.colOp]['options_chart']['scales']['yuang'] = yuang
+    },
+
+    SET_UANG_TOOLTIP(state, uang) {
+        state.rows[state.rowOp][state.colOp]['options_chart']['tooltip']['uang'] = uang
     },
 
     CEK_GROUP_OPTION(state, options) {
@@ -795,6 +828,12 @@ const actions = {
 
     cekTooltip({ commit, dispatch }, options) {
         commit('CEK_TOOLTIP', options)
+
+        dispatch('save', false)
+    },
+
+    cekScales({ commit, dispatch }, options) {
+        commit('CEK_SCALES', options)
 
         dispatch('save', false)
     },

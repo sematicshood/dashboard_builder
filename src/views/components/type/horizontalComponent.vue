@@ -20,10 +20,7 @@
         data () {
             return {
                 datacollection: null,
-                chartOptions: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                },
+                chartOptions: null,
             }
         },
         mounted() {
@@ -82,7 +79,16 @@
         watch: {
             titles(newv, oldv) {
                 this.fillData()
-            }
+            },
+            datas(newv, oldv) {
+                this.fillData()
+            },
+            row: {
+                handler(val){
+                    this.fillData()
+                },
+                deep: true
+            },
         },
 
         methods: {
@@ -96,10 +102,14 @@
                     this.datacollection = res
                 })
 
-                // this.$store.dispatch('chart/optionsChart', {'options': this.options, 'titles': this.titles})
-                //     .then(res => {
-                //         this.$data.chartOptions = res
-                //     })
+                this.$store.dispatch('chart/optionsChart', {
+                    'options': this.options, 
+                    'titles': this.titles,
+                    'column': this.column,
+                })
+                .then(res => {
+                    this.$data.chartOptions = res
+                })
             }
         }
     }

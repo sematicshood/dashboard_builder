@@ -1,6 +1,6 @@
 <template>
     <div id="pieComponent">
-        <pie-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="options"></pie-chart>
+        <pie-chart :chart-data="datacollection" :styles="{height: `${ height }px`}" :options="chartOptions"></pie-chart>
     </div>
 </template>
 
@@ -20,6 +20,7 @@
         data () {
             return {
                 datacollection: null,
+                chartOptions: null
             }
         },
         mounted() {
@@ -90,6 +91,15 @@
                     .then(res => {
                         this.datacollection = res
                     })
+
+                this.$store.dispatch('chart/optionsChart', {
+                    'options': this.options, 
+                    'titles': this.titles,
+                    'column': this.column,
+                })
+                .then(res => {
+                    this.$data.chartOptions = res
+                })
             },
         }
     }

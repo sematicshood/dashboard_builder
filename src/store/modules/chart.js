@@ -50,28 +50,47 @@ const actions = {
         return new Promise((res, rej) => {
             let     tvalue      = (options.titles[2]) ? options.titles[2]['type'] : [],
                     ismonetary  = (tvalue == 'monetary') ? true : false,
-                    optionsC    = options.column['options_chart']
+                    optionsC    = options.column['options_chart'],
+                    type        = options.column['type']
 
             options.options['legend'] = {
                 display: optionsC['legend']['display'],
                 position: optionsC['legend']['position']
             }
 
-            options.options['scales']['yAxes'] = [
-                {
-                    ticks: {
-                        callback: function(label, index, labels) {
-                            return (ismonetary) ? 'Rp. ' + label.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : label
-                        }
-                    },
-                }
-            ]
+            if(type != 'pie' && type != 'doughnut' && type != 'polar') {
+                options.options['scales']['yAxes'] = [
+                    {
+                        ticks: {
+                            callback: function(label, index, labels) {
+                                return (optionsC['scales']['yuang']) ? 'Rp. ' + label.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : label
+                            }
+                        },
+                    }
+                ]
+    
+                options.options['scales']['xAxes'] = [
+                    {
+                        ticks: {
+                            callback: function(label, index, labels) {
+                                return (optionsC['scales']['xuang']) ? 'Rp. ' + label.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : label
+                            }
+                        },
+                    }
+                ]
+            }
 
             options.options['tooltips'] = {
-                enabled: optionsC['tooltip']['enable'],
+                enabled: optionsC['tooltip']['enabled'],
                 callbacks: {
                     label:function (tooltipItems, data) {
-                        return (ismonetary) ? 'Rp. ' +  tooltipItems.yLabel.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : label
+                        if(type == 'pie' || type == 'doughnut' || type == 'polar') {
+                            var value     = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
+                            
+                            return (optionsC['tooltip']['uang']) ? 'Rp. ' +  value.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : value
+                        } else {
+                            return (optionsC['tooltip']['uang']) ? 'Rp. ' +  tooltipItems.yLabel.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : tooltipItems.yLabel
+                        }
                     }
                 }
             }

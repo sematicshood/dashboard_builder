@@ -1,19 +1,19 @@
 <template lang="">
     <div v-if="colOptionShow && type == 'edit'">
         <b-form-group>
-            <b-form-checkbox id="checkbox-enable"
-                            v-model="enabled"
+            <b-form-checkbox id="checkbox-xaxis"
+                            v-model="xuang"
                             value="true"
                             unchecked-value="false">
-            Display tooltip
+            X Axis rupiah format
             </b-form-checkbox>
         </b-form-group>
         <b-form-group>
-            <b-form-checkbox id="checkbox-rupiah"
-                            v-model="uang"
+            <b-form-checkbox id="checkbox-yaxis"
+                            v-model="yuang"
                             value="true"
                             unchecked-value="false">
-            Format rupiah
+            Y Axis rupiah format
             </b-form-checkbox>
         </b-form-group>
     </div>
@@ -23,7 +23,7 @@
     import { mapState, mapGetters } from 'vuex'
 
     export default {
-        name: 'tooltip-chart',
+        name: 'scales-chart',
 
         computed: {
             ...mapState(['rows']),
@@ -38,33 +38,33 @@
                 type: 'getType'
             }),
 
-            enabled: {
+            xuang: {
                 get() {
-                    return this.rows.rows[this.rowOp][this.colOp]['options_chart']['tooltip']['enabled']
+                    return this.rows.rows[this.rowOp][this.colOp]['options_chart']['scales']['xuang']
                 },
 
-                set(enabled) {
-                    let dis = (enabled === 'true')
+                set(xuang) {
+                    let dis = (xuang === 'true')
 
-                    this.$store.commit('rows/SET_ENABLED_TOOLTIP', dis)
+                    this.$store.commit('rows/SET_XUANG_SCALES', dis)
                 }
             },
 
-            uang: {
+            yuang: {
                 get() {
-                    return this.rows.rows[this.rowOp][this.colOp]['options_chart']['tooltip']['uang']
+                    return this.rows.rows[this.rowOp][this.colOp]['options_chart']['scales']['yuang']
                 },
 
-                set(uang) {
-                    let dis = (uang === 'true')
+                set(yuang) {
+                    let dis = (yuang === 'true')
 
-                    this.$store.commit('rows/SET_UANG_TOOLTIP', dis)
+                    this.$store.commit('rows/SET_YUANG_SCALES', dis)
                 }
             },
         },
 
         created() {
-            this.$store.dispatch('rows/cekTooltip', {'row': this.rowOp, 'col': this.colOp})
+            this.$store.dispatch('rows/cekScales', {'row': this.rowOp, 'col': this.colOp})
         }
     }
 </script>
