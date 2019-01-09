@@ -13,15 +13,15 @@
             <col width="10%">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th v-for="title in titles" v-text="title.label"></th>
+                    <th><center>#</center></th>
+                    <th v-for="(title, index) in titles" v-text="title.label" :class="{'col-right': (index == 1) ? true : false}"></th>
                     <th v-show="type == 'edit'">Options</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table > 0 && i < limit_table">
-                    <td v-text="i + 1"></td>
-                    <td v-for="title in titles">
+                    <td v-text="i + 1" align="center"></td>
+                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magic(data[title.prop], title) }}
                     </td>
                     <td v-show="type == 'edit'">
@@ -33,16 +33,16 @@
                                 ({{ i }})
                             </span>
                         </span>
-                        <button v-if="cekExistsHiddenLabel(data[key]) == false" class="btn btn-danger btn-sm" @click="hidden(data[key])">Hidden Label</button>
+                        <button v-if="cekExistsHiddenLabel(data[key]) == false" class="btn btn-sm" @click="hidden(data[key])">Hide</button>
 
-                        <button v-if="cekExistsHiddenLabel(data[key])" class="btn btn-warning btn-sm" @click="show(data[key])">Show Label</button>
+                        <button v-if="cekExistsHiddenLabel(data[key])" class="btn btn-sm" @click="show(data[key])">Show</button>
 
-                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">(+/-)</button>
+                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
                 <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
-                    <td v-text="i + 1"></td>
-                    <td v-for="title in titles">
+                    <td v-text="i + 1" align="center"></td>
+                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magic(data[title.prop], title) }}
                     </td>
                     <td v-show="type == 'edit'">
@@ -55,11 +55,11 @@
                             </span>
                         </span>
 
-                        <button v-if="cekExistsHiddenLabel(data[key]) == false" class="btn btn-danger btn-sm" @click="hidden(data[key])">Hidden Label</button>
+                        <button v-if="cekExistsHiddenLabel(data[key]) == false" class="btn btn-sm btn-widiget-table" @click="hidden(data[key])">Hide</button>
 
-                        <button v-if="cekExistsHiddenLabel(data[key])" class="btn btn-warning btn-sm" @click="show(data[key])">Show Label</button>
+                        <button v-if="cekExistsHiddenLabel(data[key])" class="btn btn-sm btn-widiget-table" @click="show(data[key])">Show</button>
 
-                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-primary btn-sm" @click="ChangeOperator(data)">(+/-)</button>
+                        <button v-if="Object.keys(table_options).length != 0" class="btn btn-sm btn-widiget-table" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
@@ -69,7 +69,7 @@
             <tfoot>
                 <tr>
                     <td>Jumlah</td>
-                    <td v-for="title in titles">
+                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magicFooter(title) }}
                     </td>
                     <td v-show="type == 'edit'">Options</td>

@@ -166,3 +166,14 @@
 .multiselect__input{
     font-size: 100% !important;
 }
+
+.btn-sidebar{
+    background-color: #20a8d8 !important;
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+.btn-sidebar:hover{
+    background-color: #008fc3;
+    font-weight: 700 !important;
+}
