@@ -57,6 +57,16 @@
                     return this.rows.rows[this.vuerow][this.vuecolumn]['columns']
                 }
             },
+            rowfieldes: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['rowfieldes']
+                }
+            },
+            colfieldes: {
+                get() {
+                    return this.rows.rows[this.vuerow][this.vuecolumn]['colfieldes']
+                },
+            },
             datas: {
                 get() {
                     return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
@@ -67,12 +77,7 @@
         data: () => {
             return {
                 asyncData: [],
-                fieldes: [{
-                    getter: item => item.id,
-                    label: 'Year'
-                }],
-                rowfieldes: [],
-                colfieldes: [],
+                fieldes: [],
                 reducer: (sum, item) => sum + item.count,
                 defaultShowSettings: true,
                 isDataLoading: false
@@ -91,12 +96,9 @@
         },
 
         created: function() {
+            this.$store.dispatch('rows/cekPivotOptions', {'row': this.vuerow, 'col': this.vuecolumn})
             this.renderFields()
             this.isDataLoading = true
-            setTimeout(() => {
-            this.asyncData = data
-            this.isDataLoading = false
-            }, 3000)
         },
         filters: {
             number: function(value) {

@@ -450,6 +450,14 @@ const mutations = {
         state.rows[options.row][options.column]['group_data'] = options.group
     },
 
+    SET_PIVOT_OPTIONS(state, options) {
+        if(state.rows[options.row][options.col]['rowfieldes'] == undefined)
+            state.rows[options.row][options.col]['rowfieldes'] = []
+
+        if(state.rows[options.row][options.col]['colfieldes'] == undefined)
+            state.rows[options.row][options.col]['colfieldes'] = []
+    },
+
     SET_TABLE_OPTIONS(state, options) {
         if(state.rows[options.row][options.column]['table_options'] == undefined)
             state.rows[options.row][options.column]['table_options'] = {}
@@ -888,6 +896,12 @@ const actions = {
 
     cekTableOptions({ commit, dispatch }, options) {
         commit('SET_TABLE_OPTIONS', options)
+
+        dispatch('save', false)
+    },
+
+    cekPivotOptions({ commit, dispatch }, options) {
+        commit('SET_PIVOT_OPTIONS', options)
 
         dispatch('save', false)
     },

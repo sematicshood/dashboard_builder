@@ -88,7 +88,7 @@
                 this.fillData()
             },
             row: {
-                handler(val){
+                handler(){
                     this.fillData()
                 },
                 deep: true
