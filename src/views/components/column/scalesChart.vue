@@ -5,7 +5,7 @@
                             v-model="xuang"
                             value="true"
                             unchecked-value="false">
-            X Axis rupiah format
+            <label class="label-form">X Axis rupiah format</label>
             </b-form-checkbox>
         </b-form-group>
         <b-form-group>
@@ -13,7 +13,7 @@
                             v-model="yuang"
                             value="true"
                             unchecked-value="false">
-            Y Axis rupiah format
+            <label class="label-form">Y Axis rupiah format</label>
             </b-form-checkbox>
         </b-form-group>
     </div>

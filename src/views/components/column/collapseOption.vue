@@ -2,7 +2,7 @@
     <div id="collapseOption" v-if="colOptionShow && type == 'edit'">
         <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion1 variant="info">Legend</b-btn>
+            <b-btn block href="#" v-b-toggle.accordion1 variant="sidebar" size="sm">Legend</b-btn>
         </b-card-header>
         <b-collapse id="accordion1" accordion="my-accordion" role="tabpanel">
             <b-card-body>
@@ -12,7 +12,7 @@
         </b-card>
         <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion2 variant="info">Tooltip</b-btn>
+            <b-btn block href="#" v-b-toggle.accordion2 variant="sidebar" size="sm">Tooltip</b-btn>
         </b-card-header>
         <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
             <b-card-body>
@@ -22,7 +22,7 @@
         </b-card>
         <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion3 variant="info">Scales</b-btn>
+            <b-btn block href="#" v-b-toggle.accordion3 variant="sidebar" size="sm">Scales</b-btn>
         </b-card-header>
         <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
             <b-card-body>
