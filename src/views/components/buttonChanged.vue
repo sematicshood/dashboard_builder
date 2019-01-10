@@ -25,6 +25,8 @@
 
                 this.$store.dispatch('style/changeSidebar')
 
+                this.$store.dispatch('rows/save', false)
+
                 this.$router.push({ name: 'dashboard', params: { name: this.name, type: typeChange } })
             },
 

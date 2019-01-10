@@ -559,7 +559,7 @@ const actions = {
     updateSelected({commit, dispatch}, selected) {
         commit('UPDATE_SELECTED', selected)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     setColOp({commit}, index) {
@@ -592,6 +592,7 @@ const actions = {
         let payload = {
             template: JSON.stringify(anu)
         }
+        console.log('save')
 
         if((payload['template'] == state.alls['template']) == false)
             client.post('/api_dashboard/dashboard/' + id, qs.stringify(payload), {params: data})
@@ -780,16 +781,16 @@ const actions = {
         if(dispatch('cekColRow'))
             commit('ADD_TITLE', option)
 
-        dispatch('data/loadSingleData', state.rows[state.rowOp][state.colOp], { root: true })
+        dispatch('data/loadSingleData', {'data': state.rows[state.rowOp][state.colOp], 'row': state.rowOp, 'col': state.colOp}, { root: true })
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     removeTitle({ commit, dispatch }, index) {
         if (dispatch('cekColRow'))
             commit('REMOVE_TITLE', index)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     setDataRow({ commit }, data) {
@@ -807,43 +808,43 @@ const actions = {
     setFilters({ commit, dispatch }, filters) {
         commit('SET_FILTERS', filters)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     removeFilters({ commit, dispatch }, i) {
         commit('REMOVE_FILTERS', i)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     addFilters({ commit, dispatch }, filter) {
         commit('ADD_FILTERS', filter)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     addFiltersList({ commit, dispatch }, filter) {
         commit('ADD_FILTERS_LIST', filter)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     setColumnWidth({ commit, dispatch }, width) {
         commit('SET_COLUMN_WIDTH', width)
 
-        dispatch('save', false)   
+        //dispatch('save', false)   
     },
 
     setColumnTitle({ commit, dispatch }, title) {
         commit('SET_COLUMN_TITLE', title)
 
-        dispatch('save', false)   
+        //dispatch('save', false)   
     },
 
     setRowHeight({ commit, dispatch }, height) {
         commit('SET_ROW_HEIGHT', height)
 
-        dispatch('save', false)   
+        //dispatch('save', false)   
     },
 
     setEdited({ commit, rootGetters }) {
@@ -857,61 +858,61 @@ const actions = {
     cekLegend({ commit, dispatch }, options) {
         commit('CEK_LEGEND', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     cekTooltip({ commit, dispatch }, options) {
         commit('CEK_TOOLTIP', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     cekScales({ commit, dispatch }, options) {
         commit('CEK_SCALES', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     cekDateProperty({ commit, dispatch }, options) {
         commit('CEK_DATE_PROPERTY', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     resetDateProperty({ commit, dispatch }) {
         commit('RESET_DATE_PROPERTY')
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     cekGroupOption({ commit, dispatch }, options) {
         commit('CEK_GROUP_OPTION', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     setGroupData({ commit, dispatch }, group) {
         commit('SET_GROUP_DATA', group)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     cekTableOptions({ commit, dispatch }, options) {
         commit('SET_TABLE_OPTIONS', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     cekPivotOptions({ commit, dispatch }, options) {
         commit('SET_PIVOT_OPTIONS', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     updateTableOptions({ commit, dispatch }, options) {
         commit('UPDATE_TABLE_OPTIONS', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     getOption({state}, options) {
@@ -927,7 +928,7 @@ const actions = {
     setLimitTable({ commit, dispatch }, limit_table) {
         commit('SET_LIMIT_TABLE', limit_table)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     getRowsFromServer({ commit, rootGetters, dispatch }, name) {
@@ -957,25 +958,25 @@ const actions = {
     setTitlesColumn({ commit, dispatch }, titles) {
         commit('SET_TITLES_COLUMN', titles)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     addHiddenLabel({ commit, dispatch }, label) {
         commit('ADD_HIDDEN_LABEL', label)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     removeHiddenLabel({ commit, dispatch }, label) {
         commit('REMOVE_HIDDEN_LABEL', label)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     },
 
     changeTableOptions({ commit, dispatch }, options) {
         commit('CHANGE_TABLE_OPTIONS', options)
 
-        dispatch('save', false)
+        //dispatch('save', false)
     }
 }
 

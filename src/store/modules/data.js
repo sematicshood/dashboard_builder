@@ -150,15 +150,15 @@ const actions = {
     },
 
     loadSingleData({ dispatch }, data) {
-        if(data['model'] != undefined) {
-            if(data['titles'].length > 0) {
-                dispatch('getDatas', {'model': data['model'], 'filters': data['filters_data'], 'date': data['filter_date'], 'titles': data['titles']})
+        if(data['data']['model'] != undefined) {
+            if(data['data']['titles'].length > 0) {
+                dispatch('getDatas', {'model': data['data']['model'], 'filters': data['data']['filters_data'], 'date': data['data']['filter_date'], 'titles': data['data']['titles']})
                     .then(res => {
-                        dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
+                        dispatch('rows/setDataDefaultRow', {'res': res, 'row': data['row'], 'col': data['col']}, { root: true })
                     })
                     .catch(err => {
                         let res = []
-                        dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
+                        dispatch('rows/setDataDefaultRow', {'res': res, 'row': data['row'], 'col': data['col']}, { root: true })
                     })
             }
         }
@@ -194,7 +194,7 @@ const actions = {
         }
 
         return new Promise((resolve, reject) => {
-            commit('core/SET_LOADING', true, {root: true})
+            // commit('core/SET_LOADING', true, {root: true})
 
             const data      = {
                 order: "write_date asc",
@@ -203,16 +203,18 @@ const actions = {
                 db_name: rootGetters['core/getDatabase']
             }
 
-            let fields      =   ''
+            if(datas['titles']) {
+                let fields      =   ''
 
-            datas['titles'].forEach((el, i) => {
-                if(i == datas['titles'].length - 1)
-                    fields += `"${el.prop}"`
-                else
-                    fields += `"${el.prop}",`
-            })
-
-            data['field']   =   `[${fields}]`
+                datas['titles'].forEach((el, i) => {
+                    if(i == datas['titles'].length - 1)
+                        fields += `"${el.prop}"`
+                    else
+                        fields += `"${el.prop}",`
+                })
+                
+                data['field']   =   `[${fields}]`
+            }
 
             if(datas['filters'] != undefined) filters += `${datas['filters']}`
             
@@ -221,8 +223,8 @@ const actions = {
                     let st = datas['date'].start.split('T')[0].split('-'),
                         en = datas['date'].end.split('T')[0].split('-')
 
-                    let from = `${ st[0] }-${ st[1] }-${ st[2] }`,
-                        to   = `${ en[0] }-${ en[1] }-${ en[2] }`
+                    let from = `${ st[0] }-${ (st[1] > 0) ? st[1] : 1 }-${ st[2] }`,
+                        to   = `${ en[0] }-${ (en[1] > 0) ? en[1] : 1 }-${ en[2] }`
 
                     if(from == to) {
                         filters += `('write_date','=','${ from }')`
