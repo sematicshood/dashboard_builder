@@ -63,13 +63,13 @@
                     .then(res => {
                         console.log(res)
                         this.$store.dispatch('rows/setDataRow', res)
+                        this.$store.dispatch('rows/save', false)
                     })
                     .catch(err => {
-                        console.log(err)
+                        console.log(res)
                         this.$store.dispatch('rows/setDataRow', [])
+                        this.$store.dispatch('rows/save', false)
                     })
-
-                this.$store.dispatch('rows/save', false)
             }
         },
 

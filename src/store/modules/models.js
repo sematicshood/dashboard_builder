@@ -28,7 +28,7 @@ const mutations = {
 
 const actions = {
     getModels({ commit, dispatch, getters, rootGetters }) {
-        commit('core/SET_LOADING', true, {root: true})
+        // commit('core/SET_LOADING', true, {root: true})
 
         return new Promise((resolve, reject) => {
             dispatch('login/reload', {}, {root: true})
@@ -65,7 +65,7 @@ const actions = {
 
     setCategory({ commit, rootGetters, dispatch }, category) {
         commit('SET_CATEGORY', category)
-        commit('core/SET_LOADING', true, {root: true})
+        // commit('core/SET_LOADING', true, {root: true})
 
         if(category == 'all') {
             dispatch('getModels').then(res => commit('setModels', res))
