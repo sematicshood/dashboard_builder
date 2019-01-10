@@ -776,9 +776,11 @@ const actions = {
             commit('ADD_MODEL', model)
     },
 
-    addTitle({ commit, dispatch }, option) {
+    addTitle({ state, commit, dispatch }, option) {
         if(dispatch('cekColRow'))
             commit('ADD_TITLE', option)
+
+        dispatch('data/loadSingleData', state.rows[state.rowOp][state.colOp], { root: true })
 
         dispatch('save', false)
     },

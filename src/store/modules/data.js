@@ -131,17 +131,36 @@ const actions = {
             data.forEach((element, row) => {
                 element.forEach((el, col) => {
                     if(el['model'] != undefined) {
-                        dispatch('getDatas', {'model': el['model'], 'filters': el['filters_data'], 'date': el['filter_date']})
-                            .then(res => {
-                                dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
-                            })
-                            .catch(err => {
-                                let res = []
-                                dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
-                            })
+                        if(el['titles'].length > 0) {
+                            dispatch('getDatas', {'model': el['model'], 'filters': el['filters_data'], 'date': el['filter_date'], 'titles': el['titles']})
+                                .then(res => {
+                                    dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
+                                    commit('core/SET_LOADING', false, {root: true})
+                                })
+                                .catch(err => {
+                                    let res = []
+                                    dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
+                                    commit('core/SET_LOADING', false, {root: true})
+                                })
+                        }
                     }
                 })
             });
+        }
+    },
+
+    loadSingleData({ dispatch }, data) {
+        if(data['model'] != undefined) {
+            if(data['titles'].length > 0) {
+                dispatch('getDatas', {'model': data['model'], 'filters': data['filters_data'], 'date': data['filter_date'], 'titles': data['titles']})
+                    .then(res => {
+                        dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
+                    })
+                    .catch(err => {
+                        let res = []
+                        dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
+                    })
+            }
         }
     },
 
@@ -183,6 +202,17 @@ const actions = {
                 password: JSON.parse(localStorage.getItem('user'))['password'],
                 db_name: rootGetters['core/getDatabase']
             }
+
+            let fields      =   ''
+
+            datas['titles'].forEach((el, i) => {
+                if(i == datas['titles'].length - 1)
+                    fields += `"${el.prop}"`
+                else
+                    fields += `"${el.prop}",`
+            })
+
+            data['field']   =   `[${fields}]`
 
             if(datas['filters'] != undefined) filters += `${datas['filters']}`
             

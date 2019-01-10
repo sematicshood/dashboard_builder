@@ -61,9 +61,11 @@
 
                 this.$store.dispatch('data/getDatas', {'date': date, 'filters': this.filterData})
                     .then(res => {
+                        console.log(res)
                         this.$store.dispatch('rows/setDataRow', res)
                     })
                     .catch(err => {
+                        console.log(err)
                         this.$store.dispatch('rows/setDataRow', [])
                     })
 

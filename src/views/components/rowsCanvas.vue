@@ -23,10 +23,6 @@
                         :vuerow="index"
                         :vuecolumn="indexes"></filter-modal>
 
-                    <filter-modal
-                        :vuerow="index"
-                        :vuecolumn="indexes"></filter-modal>
-
                     <filter-date :vuerow="index"
                            :vuecolumn="indexes" 
                            v-show="type == 'view'"/>

@@ -147,12 +147,14 @@
                         res.forEach(el => {
                             this.$data.last += Math.floor(el[key])
                         })
-                        
-                        this.$data.percentage = (((this.$data.sum - this.$data.last) / this.$data.sum) * 100).toFixed(2)
                     })
                     .catch(err => {
                         this.$data.last = 0
                     })
+                
+                this.$data.percentage = (((this.$data.sum - this.$data.last) / this.$data.sum) * 100).toFixed(2)
+                
+                if(this.$data.percentage == 'NaN') this.$data.percentage = 0
             }
         },
 
