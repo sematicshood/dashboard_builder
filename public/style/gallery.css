@@ -151,12 +151,6 @@ a {
     color: black !important;
 }
 
-
-.list-group-item{
-    background-color: rgb(255, 123, 0) !important;
-    border: 0px solid #ffc107 !important;
-}
-
 #workspace{
     height: 84vh;
     overflow-y: scroll;

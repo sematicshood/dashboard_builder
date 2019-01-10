@@ -24,12 +24,12 @@ import VueRangedatePicker from 'vue-rangedate-picker'
 import nprogress from 'nprogress'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare, faCog, faLongArrowAltUp, faLongArrowAltDown, faTrashAlt, faCopy} from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare, faCog, faLongArrowAltUp, faLongArrowAltDown, faTrashAlt, faCopy, faWindowClose} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 require('vue2-animate/dist/vue2-animate.min.css')
 
-library.add(faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare, faCog, faLongArrowAltUp, faLongArrowAltDown, faTrashAlt, faCopy)
+library.add(faEdit, faEye, faSave, faUndo, faSync, faDatabase, faStream, faPlus, faSignOutAlt, faFilter, faTrash, faChartBar, faShareSquare, faCog, faLongArrowAltUp, faLongArrowAltDown, faTrashAlt, faCopy, faWindowClose)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 locale.use(lang)
