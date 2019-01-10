@@ -48,9 +48,9 @@
                         <div class="style-content-sidebar">
                             <judul-column/>
                             <jenis-column/>
-                            <width-column/>
-                            <button-delete-component/>
+                            <width-column/>                            
                             <collapse-option/>
+                            <button-delete-component/>
                         </div>                    
                     </div>
 

@@ -5,11 +5,12 @@
                             v-model="display"
                             value="true"
                             unchecked-value="false">
-            Display legend chart
+            <label class="label-form">Display legend</label>
             </b-form-checkbox>
         </b-form-group>
 
-        <b-form-group label="Postion Legend">
+        <b-form-group>
+            <label class="label-form">Postion Legend</label>
             <b-form-radio-group id="radios2" v-model="position" name="radioSubComponent">
                 <b-form-radio value="top">Top</b-form-radio>
                 <b-form-radio value="bottom">Bottom</b-form-radio>

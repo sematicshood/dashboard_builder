@@ -5,7 +5,7 @@
                             v-model="enabled"
                             value="true"
                             unchecked-value="false">
-            Display tooltip
+            <label class="label-form">Display tooltip</label>
             </b-form-checkbox>
         </b-form-group>
         <b-form-group>
@@ -13,7 +13,7 @@
                             v-model="uang"
                             value="true"
                             unchecked-value="false">
-            Format rupiah
+            <label class="label-form">Format rupiah</label>
             </b-form-checkbox>
         </b-form-group>
     </div>
