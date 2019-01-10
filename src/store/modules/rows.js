@@ -24,6 +24,7 @@ const state = {
         { value: 'polar', text: 'polar' },
         { value: 'widget-card', text: 'widget card' },
         { value: 'widget-table', text: 'widget table' },
+        { value: 'pivot-table', text: 'pivot table' },
     ],
     edited: false,
     alls: ''
@@ -101,14 +102,7 @@ const getters = {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
             column  = (state.colOp != '') ? state.colOp : 0
         
-            return (state.rows[row] != undefined) ? state.rows[row][column]['titles'] : []
-    },
-
-    getTitles(state) {
-        let row     = (state.rowOp != '') ? state.rowOp : 0,
-            column  = (state.colOp != '') ? state.colOp : 0
-        
-        return state.rows[row][column]['titles']
+        return (state.rows[row] != undefined) ? state.rows[row][column]['titles'] : []
     },
 
     getModel(state) {
@@ -456,6 +450,14 @@ const mutations = {
         state.rows[options.row][options.column]['group_data'] = options.group
     },
 
+    SET_PIVOT_OPTIONS(state, options) {
+        if(state.rows[options.row][options.col]['rowfieldes'] == undefined)
+            state.rows[options.row][options.col]['rowfieldes'] = []
+
+        if(state.rows[options.row][options.col]['colfieldes'] == undefined)
+            state.rows[options.row][options.col]['colfieldes'] = []
+    },
+
     SET_TABLE_OPTIONS(state, options) {
         if(state.rows[options.row][options.column]['table_options'] == undefined)
             state.rows[options.row][options.column]['table_options'] = {}
@@ -465,12 +467,42 @@ const mutations = {
 
         if(state.rows[options.row][options.column]['hidden_label'] == undefined)
             state.rows[options.row][options.column]['hidden_label'] = []
+            
+        if(state.rows[options.row][options.column]['options_chart'] == undefined) {
+            state.rows[options.row][options.column]['options_chart'] = {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {},
+                layout: {},
+                title: {},
+                tooltip: {},
+                scales: {
+                    yAxes: [{}],
+                    xAxes: [{}],
+                }
+            }
+        }
+
+        if(state.rows[options.row][options.column]['options_chart'] != undefined) {
+            if(state.rows[options.row][options.column]['options_chart'].length == 0) {
+                state.rows[options.row][options.column]['options_chart'] = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {},
+                    layout: {},
+                    title: {},
+                    tooltip: {},
+                    scales: {
+                        yAxes: [{}],
+                        xAxes: [{}],
+                    }
+                }
+            }
+        }
     },
 
     UPDATE_TABLE_OPTIONS(state, options) {
         state.rows[options.row][options.col]['table_options'] = options.data
-
-        // console.log(state.rows[options.row][options.col]['table_options'] = {})
     },
 
     SET_TITLES_COLUMN(state, titles) {
@@ -744,9 +776,11 @@ const actions = {
             commit('ADD_MODEL', model)
     },
 
-    addTitle({ commit, dispatch }, option) {
+    addTitle({ state, commit, dispatch }, option) {
         if(dispatch('cekColRow'))
             commit('ADD_TITLE', option)
+
+        dispatch('data/loadSingleData', state.rows[state.rowOp][state.colOp], { root: true })
 
         dispatch('save', false)
     },
@@ -864,6 +898,12 @@ const actions = {
 
     cekTableOptions({ commit, dispatch }, options) {
         commit('SET_TABLE_OPTIONS', options)
+
+        dispatch('save', false)
+    },
+
+    cekPivotOptions({ commit, dispatch }, options) {
+        commit('SET_PIVOT_OPTIONS', options)
 
         dispatch('save', false)
     },

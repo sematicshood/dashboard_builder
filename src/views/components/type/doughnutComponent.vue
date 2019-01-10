@@ -101,6 +101,10 @@
                     this.$data.chartOptions = res
                 })
             },
+        },
+        
+        created() {
+            this.$store.dispatch('rows/cekTableOptions', {'row': this.vuerow, 'column': this.vuecolumn})
         }
     }
 </script>

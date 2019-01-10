@@ -23,10 +23,6 @@
                         :vuerow="index"
                         :vuecolumn="indexes"></filter-modal>
 
-                    <filter-modal
-                        :vuerow="index"
-                        :vuecolumn="indexes"></filter-modal>
-
                     <filter-date :vuerow="index"
                            :vuecolumn="indexes" 
                            v-show="type == 'view'"/>
@@ -74,6 +70,10 @@
                     <widget-table v-if="column['type'] == 'widget-table'"
                            :vuerow="index"
                            :vuecolumn="indexes"/>
+
+                    <pivot-table v-if="column['type'] == 'pivot-table'"
+                           :vuerow="index"
+                           :vuecolumn="indexes"/>
                 </div>
             </div>
         </div>
@@ -94,6 +94,7 @@
     import filterModal from './filterModal.vue'
     import filterDate from './column/filterDate.vue'
     import groupOption from './column/groupOption.vue'
+    import pivotTable from './type/pivotTable.vue'
     import { mapGetters } from 'vuex'
 
     export default {
@@ -107,7 +108,7 @@
         },
 
         components: {
-            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow, filterDate, widgetTable, widgetCard, groupOption
+            tableComponent, lineComponent, barComponent, pieComponent, polarComponent, doughnutComponent, horizontalComponent, filterModal, buttonDeleteRow, filterDate, widgetTable, widgetCard, groupOption, pivotTable
         },
 
         methods: {
