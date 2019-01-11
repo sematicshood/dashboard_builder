@@ -154,3 +154,25 @@ body {
     text-align: right !important;
     padding-right: 15px;
 }
+
+.list-group-item{
+    color: #4e5862 !important;
+    font-size: 85%;
+    text-align: left !important;
+    padding: 5px 5px !important;
+}
+.list-group-item button{
+    width: 15px;
+    height: 15px;
+    padding: 0 0 0 0;
+}
+
+.icon-close{
+    margin-top: 4px;
+    float: right;
+}
+
+.modal-body .form-control{
+    font-size: 85% !important;
+    margin: 0 0 10px 0;
+}

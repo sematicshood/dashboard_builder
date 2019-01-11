@@ -6,25 +6,25 @@
                  button-size="sm"
                  @ok="submitFilter"
                  @cancel="cancel">
-            <ul>
-                <li v-for="(fil, i) in filters_list"><span>{{ fil['name'] }}</span> <button @click="deleteFilter(i)">x</button></li>
-            </ul>
-
-            <select v-model="filter['value']" class="form-control" @change="change">
-                <option v-for="opt in columns" :value="`${opt['name']}-${opt['ttype']}-${opt['field_description']}`" v-text="opt['field_description']"></option>
-            </select>
-
-            <select v-if="Object.keys(filter['value']).length != 0" v-model="filter['option']" class="form-control" @change="changeOp">
-                <option v-for="(opt, i) in options" :value="opt['value']" v-text="opt['text']"></option>
-            </select>
-            
-            <div v-if="filter['option'] != 'True' && filter['option'] != 'False' && type != ''">
-                <input v-if="type == 'datetime'" v-for="i in input" type="date" v-model="filter['content'][i]" class="form-control">
-
-                <input v-if="type == 'integer' || type == 'monetary'" type="number" v-model="filter['content'][0]" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" class="form-control">
+                <b-list-group>
+                    <b-list-group-item v-for="(fil, i) in filters_list" href="#" ><span>{{ fil['name'] }}</span>&nbsp;<font-awesome-icon @click="deleteFilter(i)" icon="window-close" class="icon-close"/></b-list-group-item>
+                </b-list-group>
+                <br>
+                <select v-model="filter['value']" class="form-control" @change="change">
+                    <option v-for="opt in columns" :value="`${opt['name']}-${opt['ttype']}-${opt['field_description']}`" v-text="opt['field_description']"></option>
+                </select>
                 
-                <input v-if="type != 'integer' && type != 'monetary' && type != 'datetime'" type="text" v-model="filter['content'][0]" class="form-control">
-            </div>
+                <select v-if="Object.keys(filter['value']).length != 0" v-model="filter['option']" class="form-control" @change="changeOp">
+                    <option v-for="(opt, i) in options" :value="opt['value']" v-text="opt['text']"></option>
+                </select>
+                
+                <div v-if="filter['option'] != 'True' && filter['option'] != 'False' && type != ''">
+                    <input v-if="type == 'datetime'" v-for="i in input" type="date" v-model="filter['content'][i]" class="form-control">
+
+                    <input v-if="type == 'integer' || type == 'monetary'" type="number" v-model="filter['content'][0]" pattern="[0-9]+([\.,][0-9]+)?" step="0.01" class="form-control">
+                    
+                    <input v-if="type != 'integer' && type != 'monetary' && type != 'datetime'" type="text" v-model="filter['content'][0]" class="form-control">
+                </div>
         </b-modal>
     </div>
 </template>
