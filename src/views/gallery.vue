@@ -2,10 +2,10 @@
     <div id="gallery">
         <navbar/>
 
-        <div id="loading-page" v-show="loading">
+        <!-- <div id="loading-page" v-show="loading">
             <h5>Loading . . .</h5>
             <p>Sematics© 2018 Dashboard Studio.</p>
-        </div>
+        </div> -->
 
         <div class="container-3">
             <!-- <div class="text-center">
