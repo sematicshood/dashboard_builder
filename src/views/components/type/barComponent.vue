@@ -6,7 +6,7 @@
 
 <script>
     import barChart from './chart/BarChart.js'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: 'bar-component',
@@ -62,16 +62,9 @@
             },
             options: {
                 get() {
-                    let hello  = this.rows.rows[this.vuerow][this.vuecolumn]['options_chart'],
-                        value  = (this.titles[2]) ? this.titles[2]['prop'] : [],
-                        type   = (this.titles[2]) ? this.titles[2]['type'] : [],
-
-                        option = {
+                    let option = {
                             responsive: true, 
                             maintainAspectRatio: false,
-                            // legend: { 
-                            //     display: hello.legend.display
-                            // },
                             scales: {}
                         }
 
@@ -81,10 +74,10 @@
         },
 
         watch: {
-            titles(newv, oldv) {
+            titles() {
                 this.fillData()
             },
-            datas(newv, oldv) {
+            datas() {
                 this.fillData()
             },
             row: {

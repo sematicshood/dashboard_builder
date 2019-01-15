@@ -1,6 +1,6 @@
 <template>
     <div id="rows">
-        <div v-for="(row, index) in rows" class="s-row">
+        <div v-for="(row, index) in rows" class="s-row" :key="index">
 
             <div class="button-row" 
                  v-show="type == 'edit'" 
@@ -13,7 +13,7 @@
             </div>
 
             <div class="rows" :style="`height: ${ row[0]['height'] }px`">
-                <div v-for="(column, indexes) in rows[index]" class="column"
+                <div v-for="(column, indexes) in rows[index]" :key="indexes" class="column"
                     :style="`width: ${column['width']}%; left: ${column['left']}%;`"
                     @click="colOption(index, indexes)" v-if="indexes != 0">
 

@@ -61,11 +61,12 @@ const mutations = {
     },
 
     ADD_SELECTED(state, value) {
+        if(typeof state.selected == 'string') state.selected = []
+        
         state.selected.push(value)
     },
 
     SET_SELECTED(state, selected) {
-        console.log(selected)
         state.selected = selected
     },
 
@@ -83,8 +84,10 @@ const actions = {
         commit('REMOVE_SELECTED', i)
     },
 
-    addSelected({ commit }, value) {
+    addSelected({ commit, dispatch }, value) {
         commit('ADD_SELECTED', value)
+
+        dispatch('rows/save', false, { root: true })
     },
 
     setSelected({ commit }, selected) {

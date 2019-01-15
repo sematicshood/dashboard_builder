@@ -16,7 +16,7 @@
 
 
 <script>
-    import { mapGetters, mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: "widget-card",
@@ -33,13 +33,13 @@
 
         watch: {
             date: {
-                handler(val){
+                handler(){
                     this.fillData()
                 },
                 deep: true
             },
             row: {
-                handler(val){
+                handler(){
                     this.fillData()
                 },
                 deep: true
@@ -90,32 +90,45 @@
 
         filters: {
             rupiah(angka){
-                return angka.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+                return this.rupiah(angka)
             },
         },
 
         methods: {
             getDays(date1, date2) {
-                var ONE_DAY = 1000 * 60 * 60 * 24;
+                let ONE_DAY  = 1000 * 60 * 60 * 24,
+                    date1_ms = '',
+                    date2_ms = '',
+                    dated1   = '',
+                    dated2   = ''
+
                 
                 if(typeof date1 == 'object') {
                     // Convert both dates to milliseconds
-                    var date1_ms = new Date(date1.getUTCFullYear(), date1.getUTCMonth(), date1.getUTCDate());
-                    var date2_ms = new Date(date2.getUTCFullYear(), date2.getUTCMonth(), date2.getUTCDate());
+                    date1_ms = new Date(date1.getUTCFullYear(), date1.getUTCMonth(), date1.getUTCDate());
+                    date2_ms = new Date(date2.getUTCFullYear(), date2.getUTCMonth(), date2.getUTCDate());
                 } else {
-                    let dated1 = date1.split('T')[0].split('-')
-                    let dated2 = date2.split('T')[0].split('-')
+                    dated1 = date1.split('T')[0].split('-')
+                    dated2 = date2.split('T')[0].split('-')
 
                     // Convert both dates to milliseconds
-                    var date1_ms = new Date(dated1[0], dated1[1], dated1[2]);
-                    var date2_ms = new Date(dated2[0], dated2[1], dated2[2]);
+                    date1_ms = new Date(dated1[0], dated1[1], dated1[2]);
+                    date2_ms = new Date(dated2[0], dated2[1], dated2[2]);
                 }
 
                 // Calculate the difference in milliseconds
-                var difference_ms = Math.abs(date1_ms - date2_ms);
+                let difference_ms = Math.abs(date1_ms - date2_ms);
 
                 // Convert back to days and return
                 return difference_ms/ONE_DAY;
+            },
+
+            rupiah(bilangan) {
+                var	reverse = bilangan.toString().split('').reverse().join(''),
+                    ribuan 	= reverse.match(/\d{1,3}/g);
+                    ribuan	= ribuan.join('.').split('').reverse().join('');
+
+                return ribuan
             },
 
             fillData() {
@@ -148,7 +161,7 @@
                             this.$data.last += Math.floor(el[key])
                         })
                     })
-                    .catch(err => {
+                    .catch(() => {
                         this.$data.last = 0
                     })
                 

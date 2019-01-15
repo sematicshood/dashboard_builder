@@ -14,18 +14,18 @@
             <thead>
                 <tr>
                     <th><center>#</center></th>
-                    <th v-for="(title, index) in titles" v-text="title.label" :class="{'col-right': (index == 1) ? true : false}"></th>
+                    <th v-for="(title, index) in titles" :key="index" v-text="title.label" :class="{'col-right': (index == 1) ? true : false}"></th>
                     <th v-show="type == 'edit'">Options</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table > 0 && i < limit_table">
+                <tr v-for="(data, i) in alls" :key="i" v-if="alls.length > 0 && titles.length > 0 && limit_table > 0 && i < limit_table">
                     <td v-text="i + 1" align="center"></td>
-                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
+                    <td v-for="(title, index) in titles" :key="index" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magic(data[title.prop], title) }}
                     </td>
                     <td v-show="type == 'edit'">
-                        <span v-for="(i, a) in table_options[data[key]]">
+                        <span v-for="(i, a) in table_options[data[key]]" :key="a">
                             <span v-if="a == 'type'">
                                 {{ i }}
                             </span>
@@ -40,13 +40,13 @@
                         <button v-if="Object.keys(table_options).length != 0" class="btn btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
-                <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
+                <tr v-for="(data, i) in alls" :key="i" v-else-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
                     <td v-text="i + 1" align="center"></td>
-                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
+                    <td v-for="(title, index) in titles" :key="index" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magic(data[title.prop], title) }}
                     </td>
                     <td v-show="type == 'edit'">
-                        <span v-for="(i, a) in table_options[data[key]]">
+                        <span v-for="(i, a) in table_options[data[key]]" :key="a">
                             <span v-if="a == 'type'">
                                 {{ i }}
                             </span>
@@ -69,7 +69,7 @@
             <tfoot>
                 <tr>
                     <td>Jumlah</td>
-                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
+                    <td v-for="(title, index) in titles" :key="index" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magicFooter(title) }}
                     </td>
                     <td v-show="type == 'edit'">Options</td>
@@ -103,6 +103,14 @@ export default {
             this.$store.dispatch('rows/changeTableOptions', {'row': this.vuerow, 'column': this.vuecolumn, 'keys': data[keys], 'op': op})
         },
 
+        rupiah(bilangan) {
+            var	reverse = bilangan.toString().split('').reverse().join(''),
+                ribuan 	= reverse.match(/\d{1,3}/g);
+                ribuan	= ribuan.join('.').split('').reverse().join('');
+
+            return ribuan
+        },
+
         set_options(type) {
             let keys  = (this.titles[0]) ? this.titles[0]['prop'] : []
             
@@ -122,7 +130,7 @@ export default {
             if(typeof data == 'object') {
                 return data[1]
             } else if(title['type'] == 'monetary' && typeof data == 'number') {
-                return 'Rp. ' + data.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+                return 'Rp. ' + this.rupiah(data)
             }
 
             return data
@@ -169,7 +177,7 @@ export default {
                     }
                 })
 
-                if(title.type == 'monetary') return 'Rp. ' + duit.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.")
+                if(title.type == 'monetary') return 'Rp. ' + this.rupiah(duit)
 
                 if(title.type == 'integer') return duit
             }
@@ -332,19 +340,19 @@ export default {
     },
 
     watch: {
-        titles(newv, oldv) {
+        titles() {
             this.magicBims()
         },
 
         row: {
-            handler(val){
+            handler(){
                 this.magicBims()
             },
             deep: true
         },
 
         type: {
-            handler(val){
+            handler(){
                 this.magicBims()
             },
             deep: true

@@ -6,7 +6,7 @@
 
 <script>
     import DoughnutChart from './chart/DoughnutChart.js'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: 'doughnut-component',
@@ -52,19 +52,14 @@
             },
             datas: {
                 get() {
-                    // return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']]
                     return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
                 }
             },
             options: {
                 get() {
-                    let hello  = this.rows.rows[this.vuerow][this.vuecolumn]['options_chart']
                     let option = {
                         responsive: true, 
                         maintainAspectRatio: false,
-                        // legend: { 
-                        //     display: hello.legend.display
-                        // }
                     }
 
                     return option
@@ -73,12 +68,12 @@
         },
 
         watch: {
-            titles(newv, oldv) {
+            titles() {
                 this.fillData()
             },
 
             row: {
-                handler(val){
+                handler(){
                     this.fillData()
                 },
                 deep: true

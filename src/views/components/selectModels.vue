@@ -4,7 +4,7 @@
         <multiselect v-model="value" :options="options" :custom-label="nameWithLang" placeholder="Select one" label="name" track-by="name" @select="action"></multiselect>
         
         <ul>
-            <li v-for="(select, i) in selected" :class="{'model_select': rows[(rowOp) ? rowOp : 0][(colOp) ? colOp : 0]['model'] == select['model'] }">
+            <li v-for="(select, i) in selected" :class="{'model_select': rows[(rowOp) ? rowOp : 0][(colOp) ? colOp : 0]['model'] == select['model'] }" :key="i">
                 <button @click="modelClick(select['id'], select['model'])"><span>{{ select['name'] }}</span> <span @click="remove(i)">x</span></button>
             </li>
         </ul>
@@ -68,8 +68,7 @@
                         this.$store.dispatch('rows/setDataRow', res)
                         this.$store.dispatch('rows/resetTitles')
                     })
-                    .catch(err => {
-                        console.log(err)
+                    .catch(() => {
                         this.$store.dispatch('rows/resetTitles')
                         this.$store.dispatch('rows/setDataRow', [])
                     })

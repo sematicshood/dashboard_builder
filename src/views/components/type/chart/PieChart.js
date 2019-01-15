@@ -12,7 +12,7 @@ export default {
   },
   watch: {
     'options': {
-      handler(newOption, oldOption) {
+      handler() {
         this.renderChart(this.chartData, this.options)
       },
       deep: true

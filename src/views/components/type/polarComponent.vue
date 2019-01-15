@@ -6,7 +6,7 @@
 
 <script>
     import PolarChart from './chart/PolarChart.js'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: 'polar-component',
@@ -58,13 +58,9 @@
             },
             options: {
                 get() {
-                    let hello  = this.rows.rows[this.vuerow][this.vuecolumn]['options_chart']
                     let option = {
                         responsive: true, 
                         maintainAspectRatio: false,
-                        // legend: { 
-                        //     display: hello.legend.display
-                        // }
                     }
 
                     return option
@@ -73,11 +69,11 @@
         },
 
         watch: {
-            titles(newv, oldv) {
+            titles() {
                 this.fillData()
             },
             row: {
-                handler(val){
+                handler(){
                     this.fillData()
                 },
                 deep: true

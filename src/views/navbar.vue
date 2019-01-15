@@ -27,11 +27,7 @@
     import logoutButton from './components/logoutButton.vue'
     import buttonChanged from './components/buttonChanged.vue'
     import buttonAddRow from './components/buttonAddRow.vue'
-    import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
-    import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
-    import buttonSync from './components/row/buttonSync.vue'
     import buttonShare from './components/row/buttonShare.vue'
-    import { mapGetters } from 'vuex'
 
     export default {
         name: 'navbar',
@@ -44,7 +40,7 @@
         },
 
         components: {
-            buttonChanged, buttonAddRow, buttonSave, buttonCancel, logoutButton, buttonSync, buttonShare
+            buttonChanged, buttonAddRow, logoutButton, buttonShare
         },
 
         methods: {

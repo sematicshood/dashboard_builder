@@ -5,16 +5,14 @@
 </template>
 
 <script>
-    import buttonDeleteRow from './rowComponent/buttonDeleteRow.vue'
     import heightRow from './rowComponent/heightRow.vue'
-    import buttonCancel from './selectComponent/buttonCancelComponent.vue'
     import { mapGetters } from 'vuex'
 
     export default {
         name: 'row-option',
 
         components: {
-            buttonDeleteRow, heightRow, buttonCancel
+            heightRow
         },
 
         computed: {

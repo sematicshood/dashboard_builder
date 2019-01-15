@@ -132,12 +132,7 @@ const getters = {
         
         return (state.rows[row] != undefined) ? state.rows[row][column]['filters_list'] : []
     },
-
-    // getColumnDetail(state) {
-    //     console.log(state.rows[0][1])
-    //     return state.rows[0][1]
-    // },
-
+    
     getHeightRow: (state) => (data) => {
         return state.rows[data][0]['height']
     },
@@ -572,7 +567,7 @@ const actions = {
         commit('UPDATE_ROWS', {row, column})
     },
 
-    save({rootGetters, state}) {
+    save({rootGetters, state, rootState}) {
         let id = state.alls['id']
 
         const data      = {
@@ -583,12 +578,12 @@ const actions = {
 
         let anu = JSON.parse(state.alls['template'])
 
-        anu['rows'] = state.rows
+        anu['rows']     = state.rows
+        anu['selected'] = rootState.data.selected
 
         let payload = {
             template: JSON.stringify(anu)
         }
-        console.log('save')
 
         if((payload['template'] == state.alls['template']) == false)
             client.post('/api_dashboard/dashboard/' + id, qs.stringify(payload), {params: data})
@@ -880,13 +875,29 @@ const actions = {
         client.get('/api_dashboard/dashboard', {params: data})
               .then(res => {
                   let data = JSON.parse(res.data.results[0]['template'])
-                  console.log(res.data.results)
                   
                   commit('data/SET_SELECTED', data['selected'], {root: true})
                   commit('SET_ROWS', data['rows'])
                   commit('SET_ALLS', res.data.results[0])
 
                   dispatch('data/loadData', data['rows'], {root: true})
+              })
+    },
+
+    getSelectedFromServer({ commit, rootGetters, dispatch }, name) {
+        const data      = {
+            username: JSON.parse(localStorage.getItem('user'))['username'],
+            password: JSON.parse(localStorage.getItem('user'))['password'],
+            db_name: rootGetters['core/getDatabase']
+        }
+
+        data['filters'] = `[('name', '=', 'template-dashboard-${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
+
+        client.get('/api_dashboard/dashboard', {params: data})
+              .then(res => {
+                  let data = JSON.parse(res.data.results[0]['template'])
+                  
+                  commit('data/SET_SELECTED', data['selected'], {root: true})
               })
     },
 

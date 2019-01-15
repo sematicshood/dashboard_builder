@@ -6,7 +6,7 @@
                  button-size="sm"
                  @ok="share">
             <select v-model="id" class="form-control">
-                <option :value="user.id" v-for="user in users" v-text="user.name"></option>
+                <option :value="user.id" :key="user.id" v-for="user in users" v-text="user.name"></option>
             </select>
         </b-modal>
     </div>
@@ -26,7 +26,6 @@
         methods: {
             share() {
                 this.$store.dispatch('workspace/shareDashboard', this.$data.id)
-                // this.$store.dispatch('rows/syncDatabase', this.$data.id)
             }
         },
 

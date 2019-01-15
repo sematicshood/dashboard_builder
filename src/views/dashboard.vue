@@ -18,24 +18,17 @@
 </template>
 
 <script>
-    import buttonChanged from './components/buttonChanged.vue'
-    import buttonDelete from './components/buttonDelete.vue'
-    import buttonAddRow from './components/buttonAddRow.vue'
-    import buttonSave from './components/selectComponent/buttonSaveComponent.vue'
-    import buttonDeleteColumn from './components/selectComponent/buttonDeleteComponent.vue'
-    import buttonCancel from './components/selectComponent/buttonCancelComponent.vue'
     import navbar from './navbar.vue'
     import breadcumb from './breadcumb.vue'
     import sidebar from './sidebar.vue'
     import workspace from './workspace.vue'
-    import { Event } from '../event.js'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapGetters } from 'vuex'
 
 
     export default {
         name: 'dashboard',
         components: {
-            buttonChanged, buttonDelete, buttonSave, buttonDeleteColumn, buttonCancel, navbar, breadcumb, sidebar, workspace, buttonAddRow
+            navbar, breadcumb, sidebar, workspace
         },
         
         data() {

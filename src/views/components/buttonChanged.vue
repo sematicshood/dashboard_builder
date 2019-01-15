@@ -29,7 +29,7 @@
 
                 this.$router.push({ name: 'dashboard', params: { name: this.name, type: typeChange } })
 
-                this.$store.dispatch('rows/getRowsFromServer', this.$route.params.name)
+                this.$store.dispatch('rows/getSelectedFromServer', this.$route.params.name)
             },
 
             change(type) {

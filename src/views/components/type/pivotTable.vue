@@ -24,13 +24,12 @@
 
 <script>
     import Pivot from '@marketconnect/vue-pivot-table'
-    import PivotTable from '@marketconnect/vue-pivot-table'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: 'pivot-table',
 
-        components: { Pivot, PivotTable },
+        components: { Pivot },
 
         props: ['vuecolumn', 'vuerow'],
 

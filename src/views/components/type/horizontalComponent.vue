@@ -6,7 +6,7 @@
 
 <script>
     import HorizontalChart from './chart/HorizontalChart.js'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: 'horizontal-component',
@@ -52,22 +52,14 @@
             },
             datas: {
                 get() {
-                    // return this.data.data[this.rows.rows[this.vuerow][this.vuecolumn]['model']]
                     return this.rows.rows[this.vuerow][this.vuecolumn]['datas']
                 }
             },
             options: {
                 get() {
-                    let hello  = this.rows.rows[this.vuerow][this.vuecolumn]['options_chart'],
-                        value  = (this.titles[2]) ? this.titles[2]['prop'] : [],
-                        type   = (this.titles[2]) ? this.titles[2]['type'] : [],
-
-                        option = {
+                    let option = {
                             responsive: true, 
                             maintainAspectRatio: false,
-                            // legend: { 
-                            //     display: hello.legend.display
-                            // },
                             scales: {}
                         }
 
@@ -77,14 +69,14 @@
         },
 
         watch: {
-            titles(newv, oldv) {
+            titles() {
                 this.fillData()
             },
-            datas(newv, oldv) {
+            datas() {
                 this.fillData()
             },
             row: {
-                handler(val){
+                handler(){
                     this.fillData()
                 },
                 deep: true
