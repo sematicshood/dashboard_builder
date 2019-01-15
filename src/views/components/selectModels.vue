@@ -33,9 +33,12 @@
                 return `${name}`
             },
             action(value) {
-                console.log(this.selected)
-                if(this.selected.map(e => e.model).indexOf(value.model) < 0)
+                if(this.selected) {
+                    if(this.selected.map(e => e.model).indexOf(value.model) < 0)
+                        this.$store.dispatch('data/addSelected', value)
+                } else {
                     this.$store.dispatch('data/addSelected', value)
+                }
             },
             remove(i) {
                 this.$store.dispatch('data/removeSelected', i)

@@ -16,14 +16,9 @@
 </template>
 
 <script>
-    import buttonDeleteRow from './rowComponent/buttonDeleteRow.vue'
-    import { Event } from '../../event.js'
-    import draggable from 'vuedraggable'
     import RowCanvas from './rowsCanvas.vue'
     import addRows from './addRows.vue'
-    import rowOption from './rowOption.vue'
     import addColumn from './addColumn.vue'
-    import buttonAddRow from './buttonAddRow.vue'
     import modalShare from './row/modalShare.vue'
     import { mapGetters } from 'vuex'
 
@@ -31,17 +26,9 @@
         name: 'canvasWorkspace',
 
         components: {
-            draggable, RowCanvas, addRows, rowOption, addColumn, buttonAddRow, buttonDeleteRow, modalShare
+            RowCanvas, addRows, addColumn, modalShare
         },
         
-        created() {
-            // this.$store.dispatch('rows/loadTemplate')
-
-            // this.$store.dispatch('data/loadData')
-
-            // this.loadData()
-        },
-
         computed: {
             ...mapGetters('core', {
                 loading: 'getLoading'

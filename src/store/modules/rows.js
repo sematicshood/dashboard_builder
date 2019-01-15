@@ -556,10 +556,8 @@ const actions = {
         commit('ADD_ROWS', rows)
     },
 
-    updateSelected({commit, dispatch}, selected) {
+    updateSelected({commit}, selected) {
         commit('UPDATE_SELECTED', selected)
-
-        //dispatch('save', false)
     },
 
     setColOp({commit}, index) {
@@ -570,13 +568,11 @@ const actions = {
         commit('SET_COL_OPTION_SHOW', index)
     },
 
-    updateRows({commit, dispatch}, {row, column}) {
+    updateRows({commit}, {row, column}) {
         commit('UPDATE_ROWS', {row, column})
-
-        dispatch('save')
     },
 
-    save({getters, dispatch, commit, rootGetters, state}, datad) {
+    save({rootGetters, state}) {
         let id = state.alls['id']
 
         const data      = {
@@ -598,30 +594,6 @@ const actions = {
             client.post('/api_dashboard/dashboard/' + id, qs.stringify(payload), {params: data})
     },
 
-    editedFalse({getters, dispatch,commit, rootGetters}, all = true) {
-        // let name        = 'template-dashboard-' + rootGetters['workspace/getName'],
-        //     template    = JSON.parse(localStorage.getItem(name))
-
-        // template['rows'] = getters.getRows
-
-        // for(let t in template['rows']) {
-        //     for(let a in template['rows'][t]) {
-        //         if(a != 0) {
-        //             if(template['rows'][t][a].hasOwnProperty('data')) {
-        //                 delete template['rows'][t][a]['data']
-        //             }
-        //         }
-        //     }
-        // }
-        // commit('SET_EDITED', false)
-
-        // template['edited'] = false
-        
-        // localStorage.setItem(name, JSON.stringify(template))
-
-        // dispatch('reset', all)
-    },
-
     reset({commit}, all = true) {
         commit('SET_ROW_SELECT', '')
         commit('SET_WIDTH', '')
@@ -638,8 +610,6 @@ const actions = {
 
     deleteRow({commit, dispatch}, index) {
         commit('DELETE_ROW', index)
-
-        dispatch('save')
     },
 
     loadTemplate({ commit, dispatch, rootGetters }) {
@@ -667,10 +637,6 @@ const actions = {
             template: JSON.stringify(rows)
         }
 
-        console.log(payload)
-
-        // dispatch('editedFalse')
-
         data['filters'] = `[('name', '=', '${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
 
         return new Promise((resolve, rej) => {
@@ -691,10 +657,6 @@ const actions = {
                                     client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
                                     .then(re => {
                                         resolve(re)
-                                        console.log(re)
-                                    })
-                                    .catch(er => {
-                                        console.log(er)
                                     })
                                 }
 
@@ -712,12 +674,6 @@ const actions = {
                                             client.post('/api_dashboard/dashboard/' + el['id'], qs.stringify(payload), {params: data})
                                           })
                                       })
-                                      .catch(err => {
-                                          console.log(err)
-                                      })
-                            })
-                            .catch(er => {
-                                console.log(er)
                             })
               })
               .catch(err => {
@@ -729,20 +685,13 @@ const actions = {
                                 resolve(re)
                                 if(datad['id']) {
                                     payload['parent_id'] =   re.data.id
-                                    payload['user_id']   =   id
+                                    payload['user_id']   =   datad['id']
 
                                     client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
                                     .then(re => {
                                         resolve(re)
-                                        console.log(re)
-                                    })
-                                    .catch(er => {
-                                        console.log(er)
                                     })
                                 }
-                            })
-                            .catch(er => {
-                                console.log(er)
                             })
                   }
               })
@@ -753,14 +702,12 @@ const actions = {
         commit('SET_TITLE', title)
     },
 
-    setSelected({commit, dispatch}, selected) {
+    setSelected({commit}, selected) {
         commit('SET_SELECTED', selected)
     },
 
     deleteColumn({commit, dispatch}) {
         commit('DELETE_COLUMN')
-
-        dispatch('save')
     },
 
     selectColumns({ dispatch, commit }, columns) {
@@ -783,14 +730,12 @@ const actions = {
 
         dispatch('data/loadSingleData', {'data': state.rows[state.rowOp][state.colOp], 'row': state.rowOp, 'col': state.colOp}, { root: true })
 
-        //dispatch('save', false)
+        
     },
 
     removeTitle({ commit, dispatch }, index) {
         if (dispatch('cekColRow'))
             commit('REMOVE_TITLE', index)
-
-        //dispatch('save', false)
     },
 
     setDataRow({ commit }, data) {
@@ -805,46 +750,40 @@ const actions = {
         commit('SET_DATA_DEFAULT_ROW', params)
     },
 
-    setFilters({ commit, dispatch }, filters) {
+    setFilters({ commit }, filters) {
         commit('SET_FILTERS', filters)
-
-        //dispatch('save', false)
     },
 
-    removeFilters({ commit, dispatch }, i) {
+    removeFilters({ commit }, i) {
         commit('REMOVE_FILTERS', i)
-
-        //dispatch('save', false)
     },
 
-    addFilters({ commit, dispatch }, filter) {
-        commit('ADD_FILTERS', filter)
-
-        //dispatch('save', false)
+    addFilters({ commit }, filter) {
+        commit('ADD_FILTERS', filter)  
     },
 
-    addFiltersList({ commit, dispatch }, filter) {
+    addFiltersList({ commit }, filter) {
         commit('ADD_FILTERS_LIST', filter)
 
-        //dispatch('save', false)
+        
     },
 
-    setColumnWidth({ commit, dispatch }, width) {
+    setColumnWidth({ commit }, width) {
         commit('SET_COLUMN_WIDTH', width)
 
-        //dispatch('save', false)   
+           
     },
 
-    setColumnTitle({ commit, dispatch }, title) {
+    setColumnTitle({ commit }, title) {
         commit('SET_COLUMN_TITLE', title)
 
-        //dispatch('save', false)   
+           
     },
 
-    setRowHeight({ commit, dispatch }, height) {
+    setRowHeight({ commit }, height) {
         commit('SET_ROW_HEIGHT', height)
 
-        //dispatch('save', false)   
+           
     },
 
     setEdited({ commit, rootGetters }) {
@@ -855,64 +794,64 @@ const actions = {
         commit('SET_EDITED', template)
     },
 
-    cekLegend({ commit, dispatch }, options) {
+    cekLegend({ commit }, options) {
         commit('CEK_LEGEND', options)
 
-        //dispatch('save', false)
+        
     },
 
-    cekTooltip({ commit, dispatch }, options) {
+    cekTooltip({ commit }, options) {
         commit('CEK_TOOLTIP', options)
 
-        //dispatch('save', false)
+        
     },
 
-    cekScales({ commit, dispatch }, options) {
+    cekScales({ commit }, options) {
         commit('CEK_SCALES', options)
 
-        //dispatch('save', false)
+        
     },
 
-    cekDateProperty({ commit, dispatch }, options) {
+    cekDateProperty({ commit }, options) {
         commit('CEK_DATE_PROPERTY', options)
 
-        //dispatch('save', false)
+        
     },
 
-    resetDateProperty({ commit, dispatch }) {
+    resetDateProperty({ commit }) {
         commit('RESET_DATE_PROPERTY')
 
-        //dispatch('save', false)
+        
     },
 
-    cekGroupOption({ commit, dispatch }, options) {
+    cekGroupOption({ commit }, options) {
         commit('CEK_GROUP_OPTION', options)
 
-        //dispatch('save', false)
+        
     },
 
-    setGroupData({ commit, dispatch }, group) {
+    setGroupData({ commit }, group) {
         commit('SET_GROUP_DATA', group)
 
-        //dispatch('save', false)
+        
     },
 
-    cekTableOptions({ commit, dispatch }, options) {
+    cekTableOptions({ commit }, options) {
         commit('SET_TABLE_OPTIONS', options)
 
-        //dispatch('save', false)
+        
     },
 
-    cekPivotOptions({ commit, dispatch }, options) {
+    cekPivotOptions({ commit }, options) {
         commit('SET_PIVOT_OPTIONS', options)
 
-        //dispatch('save', false)
+        
     },
 
-    updateTableOptions({ commit, dispatch }, options) {
+    updateTableOptions({ commit }, options) {
         commit('UPDATE_TABLE_OPTIONS', options)
 
-        //dispatch('save', false)
+        
     },
 
     getOption({state}, options) {
@@ -925,10 +864,8 @@ const actions = {
         })
     },
 
-    setLimitTable({ commit, dispatch }, limit_table) {
+    setLimitTable({ commit }, limit_table) {
         commit('SET_LIMIT_TABLE', limit_table)
-
-        //dispatch('save', false)
     },
 
     getRowsFromServer({ commit, rootGetters, dispatch }, name) {
@@ -943,6 +880,7 @@ const actions = {
         client.get('/api_dashboard/dashboard', {params: data})
               .then(res => {
                   let data = JSON.parse(res.data.results[0]['template'])
+                  console.log(res.data.results)
                   
                   commit('data/SET_SELECTED', data['selected'], {root: true})
                   commit('SET_ROWS', data['rows'])
@@ -950,33 +888,22 @@ const actions = {
 
                   dispatch('data/loadData', data['rows'], {root: true})
               })
-              .catch(err => {
-                  console.log(err)
-              })
     },
 
-    setTitlesColumn({ commit, dispatch }, titles) {
+    setTitlesColumn({ commit}, titles) {
         commit('SET_TITLES_COLUMN', titles)
-
-        //dispatch('save', false)
     },
 
-    addHiddenLabel({ commit, dispatch }, label) {
+    addHiddenLabel({ commit}, label) {
         commit('ADD_HIDDEN_LABEL', label)
-
-        //dispatch('save', false)
     },
 
-    removeHiddenLabel({ commit, dispatch }, label) {
+    removeHiddenLabel({ commit}, label) {
         commit('REMOVE_HIDDEN_LABEL', label)
-
-        //dispatch('save', false)
     },
 
-    changeTableOptions({ commit, dispatch }, options) {
+    changeTableOptions({ commit}, options) {
         commit('CHANGE_TABLE_OPTIONS', options)
-
-        //dispatch('save', false)
     }
 }
 

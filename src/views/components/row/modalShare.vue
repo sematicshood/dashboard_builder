@@ -25,7 +25,8 @@
 
         methods: {
             share() {
-                this.$store.dispatch('rows/syncDatabase', this.$data.id)
+                this.$store.dispatch('workspace/shareDashboard', this.$data.id)
+                // this.$store.dispatch('rows/syncDatabase', this.$data.id)
             }
         },
 

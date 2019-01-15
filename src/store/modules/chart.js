@@ -93,8 +93,6 @@ const actions = {
                 }
             }
 
-            dispatch('rows/save', false, { root: true })
-
             res(options.options)
         })
     },

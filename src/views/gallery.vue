@@ -2,34 +2,26 @@
     <div id="gallery">
         <navbar/>
 
-        <!-- <div id="loading-page" v-show="loading">
+        <div id="loading-page" v-show="loading">
             <h5>Loading . . .</h5>
             <p>Sematics© 2018 Dashboard Studio.</p>
-        </div> -->
+        </div>
 
         <div class="container-3">
-            <!-- <div class="text-center">
-                <hr>
-                <h1>List Dashboard</h1>
-                <logout-button></logout-button>
-                <hr>
-            </div> -->
-
             <div class="row">
                 <b-col sm="6" lg="3">
                     <b-card no-body class="bg-primary">
                         <button-create></button-create>
                     </b-card>
                 </b-col>
-
-                <b-col sm="6" lg="3" v-for="dashboard in dashboards">
+                <b-col sm="6" lg="3" :key="dashboard" v-for="dashboard in dashboards">
                     <b-card no-body class="bg">
-                        <router-link tag="div" :to="{ name: 'dashboard', params: { name: dashboard['name'].replace(/ /g, '-'), type: 'view' } }" class="bg-container">
-                            <h4 v-text="dashboard['name']"></h4>                                                       
+                        <router-link tag="div" :to="{ name: 'dashboard', params: { name: dashboard.split('-').splice(2).join('-'), type: 'view' } }" class="bg-container">
+                            <h4>{{ dashboard | nameFormat }}</h4>                                             
                         </router-link>
                         <b-button-group>
-                            <b-button class="btn-dashboard" @click="deleteDashboard(dashboard['name'].replace(/ /g, '-'))"><font-awesome-icon icon="trash-alt"/></b-button>
-                            <b-button class="btn-dashboard" @click="duplicate(dashboard['name'].replace(/ /g, '-'))"><font-awesome-icon icon="copy"/></b-button>
+                            <b-button class="btn-dashboard" @click="deleteDashboard(dashboard.replace(/ /g, '-'))"><font-awesome-icon icon="trash-alt"/></b-button>
+                            <b-button class="btn-dashboard" @click="duplicate(dashboard.replace(/ /g, '-'))"><font-awesome-icon icon="copy"/></b-button>
                         </b-button-group>
                         
                     </b-card>
@@ -41,7 +33,6 @@
 
 <script>
     import ButtonCreate from './components/buttonCreate.vue'
-    import logoutButton from './components/logoutButton.vue'
     import navbar from './navbar.vue'
     import { mapGetters } from 'vuex'
 
@@ -49,7 +40,7 @@
         name: 'gallery',
 
         components: {
-            ButtonCreate, logoutButton, navbar
+            ButtonCreate, navbar
         },
 
         methods: {
@@ -59,16 +50,22 @@
 
             duplicate(template) {
                 this.$store.dispatch('workspace/duplicateDashboard', template)
-                    .then(res => {
+                    .then(() => {
                         this.loadTemplate()
                     })
             },
 
             deleteDashboard(template) {
                 this.$store.dispatch('workspace/deleteDashboard', template)
-                    .then(res => {
+                    .then(() => {
                         this.loadTemplate()
                     })
+            }
+        },
+
+        filters: {
+            nameFormat: function (value) {
+                return value.split('-').splice(2).join(' ')
             }
         },
 

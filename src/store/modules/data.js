@@ -18,7 +18,7 @@ const getters = {
         return state.data || {}
     },
 
-    getSpecData(state, param) {
+    getSpecData(state) {
         return state.data || {}
     },
 
@@ -65,6 +65,7 @@ const mutations = {
     },
 
     SET_SELECTED(state, selected) {
+        console.log(selected)
         state.selected = selected
     },
 
@@ -74,25 +75,19 @@ const mutations = {
 }
 
 const actions = {
-    selectData({ commit, dispatch }, {model, res}) {
+    selectData({ commit }, {model, res}) {
         commit('ADD_DATA', {model, res})
-
-        // dispatch('saveData')
     },
 
-    removeSelected({ commit, dispatch }, i) {
+    removeSelected({ commit }, i) {
         commit('REMOVE_SELECTED', i)
-
-        dispatch('saveModels')
     },
 
-    addSelected({ commit, dispatch }, value) {
+    addSelected({ commit }, value) {
         commit('ADD_SELECTED', value)
-
-        dispatch('saveModels')
     },
 
-    setSelected({ commit, rootGetters }, selected) {
+    setSelected({ commit }, selected) {
         commit('SET_SELECTED', selected)
     },
 
@@ -115,18 +110,8 @@ const actions = {
 
         client.post('/api_dashboard/dashboard/' + alls['id'], qs.stringify(payload), {params: data})
     },
-
-    inArray({ getters }, options) {
-        return new Promise((res, rej) => {
-            var length = options['models'].length;
-            for(var i = 0; i < length; i++) {
-                if(options['models'][i] == options['model']) rej('true');
-            }
-            res('false');
-        })
-    },
     
-    loadData({ getters, state, commit, dispatch, rootGetters }, data) {
+    loadData({ dispatch }, data) {
         if(data != undefined) {
             data.forEach((element, row) => {
                 element.forEach((el, col) => {
@@ -135,12 +120,10 @@ const actions = {
                             dispatch('getDatas', {'model': el['model'], 'filters': el['filters_data'], 'date': el['filter_date'], 'titles': el['titles']})
                                 .then(res => {
                                     dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
-                                    commit('core/SET_LOADING', false, {root: true})
                                 })
-                                .catch(err => {
+                                .catch(() => {
                                     let res = []
                                     dispatch('rows/setDataDefaultRow', {res, row, col}, { root: true })
-                                    commit('core/SET_LOADING', false, {root: true})
                                 })
                         }
                     }
@@ -156,7 +139,7 @@ const actions = {
                     .then(res => {
                         dispatch('rows/setDataDefaultRow', {'res': res, 'row': data['row'], 'col': data['col']}, { root: true })
                     })
-                    .catch(err => {
+                    .catch(() => {
                         let res = []
                         dispatch('rows/setDataDefaultRow', {'res': res, 'row': data['row'], 'col': data['col']}, { root: true })
                     })
@@ -165,7 +148,7 @@ const actions = {
     },
 
     getUserData(rootGetters) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const data      = {
                 username: JSON.parse(localStorage.getItem('user'))['username'],
                 password: JSON.parse(localStorage.getItem('user'))['password'],
@@ -179,7 +162,7 @@ const actions = {
         })
     },  
 
-    getDatas({ commit, dispatch, getters, rootGetters }, datas) {
+    getDatas({ commit, rootGetters }, datas) {
         var d       =  new Date(),
             from    = `${d.getFullYear()}-${d.getMonth()+1}-1`,
             to      = `${d.getFullYear()}-${d.getMonth()+2}-1`,
@@ -257,8 +240,6 @@ const actions = {
                         commit('core/SET_LOADING', false, {root: true})
                     })
                     .catch(err => {
-                        console.log(filters)
-                        
                         reject(err.response)
 
                         commit('core/SET_LOADING', false, {root: true})
@@ -286,7 +267,7 @@ const actions = {
         })
     },
 
-    filterData({ commit, dispatch, getters, rootGetters }, filter) {
+    filterData({ commit, rootGetters }, filter) {
         return new Promise((resolve, reject) => {
             let model = rootGetters['rows/getModel']
 
@@ -310,7 +291,6 @@ const actions = {
                     })
                     .catch(err => {
                         reject(err)
-                        // commit('SET_DATA', {res: [], model: model})
                     })
         })
     }

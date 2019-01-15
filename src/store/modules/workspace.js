@@ -48,7 +48,7 @@ const actions = {
         commit('ADD_DASHBOARDS', dashboards)
     },
 
-    addNewDashboard({commit,rootGetters}, datas) {
+    addNewDashboard({rootGetters}, datas) {
         const data      = {
             username: JSON.parse(localStorage.getItem('user'))['username'],
             password: JSON.parse(localStorage.getItem('user'))['password'],
@@ -57,7 +57,7 @@ const actions = {
 
         data['filters'] = `[('user_id','=',${ JSON.parse(localStorage.getItem('login'))['uid'] }), ('name','=','${datas['named']}')]`
 
-        return new Promise((res, rej) => {
+        return new Promise((res, reject) => {
             client.get('/api_dashboard/dashboard', { params: data })
               .then(re => {
                   res(re)
@@ -72,7 +72,7 @@ const actions = {
 
                       client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
                             .then(r => {
-                                rej(r)
+                                reject(r)
                             })
                   }
               })
@@ -88,7 +88,7 @@ const actions = {
 
         data['filters'] = `[('user_id','=',${ JSON.parse(localStorage.getItem('login'))['uid'] }), ('name','=','template-dashboard-${template}')]`
 
-        return new Promise((resolve, rej) => {
+        return new Promise((resolve, reject) => {
             client.get('/api_dashboard/dashboard', { params: data })
               .then(res => {
                 commit('core/SET_LOADING', true, { root: true })   
@@ -105,21 +105,21 @@ const actions = {
                     })
               })
               .catch(err => {
-                  console.log(err)
+                  reject(err)
               })
         })
     },
 
-    deleteDashboard({ commit, rootGetters }, template) {
+    deleteDashboard({ rootGetters }, template) {
         const data      = {
             username: JSON.parse(localStorage.getItem('user'))['username'],
             password: JSON.parse(localStorage.getItem('user'))['password'],
             db_name: rootGetters['core/getDatabase']
         }
 
-        data['filters'] = `[('name','=','template-dashboard-${ template }'), ('user_id','=',${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
+        data['filters'] = `[('name','=','${ template }'), ('user_id','=',${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             client.get('/api_dashboard/dashboard', { params: data })
                 .then(res => {
                     delete data['filters']
@@ -132,6 +132,41 @@ const actions = {
         })
     },
 
+    shareDashboard({ rootState, rootGetters }, id) {
+        let detail  =   rootState.rows.alls,
+            ids     =   JSON.parse(localStorage.getItem('login'))['uid'],
+            payload =   {
+                            name: detail.name,
+                            user_id: id,
+                            template: detail.template,
+                        },
+            data    =   {
+                            username: JSON.parse(localStorage.getItem('user'))['username'],
+                            password: JSON.parse(localStorage.getItem('user'))['password'],
+                            db_name: rootGetters['core/getDatabase']
+                        }
+
+        data['filters'] = `[('user_id','=',${ ids }), ('name', '=', '${ detail.name }')]`
+        data['field']   = "['template']"
+
+        client.get('/api_dashboard/dashboard', { params: data })
+            .then(res => {
+                payload.template          = res.data.results[0].template
+
+                data['filters'] = `[('user_id','=',${ id }), ('name', '=', '${ detail.name }')]`
+                data['field']   = "['id']"
+
+                client.get('/api_dashboard/dashboard', { params: data })
+                    .then(res => {
+                        client.post('/api_dashboard/dashboard/' + res.data.results[0].id, qs.stringify(payload), {params: data})
+                    })
+                    .catch(err => {
+                        if(err.response.status == 404)
+                            client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                    })
+            })
+    },
+
     getDataDashboard({ commit, rootGetters }) {
         const data      = {
             username: JSON.parse(localStorage.getItem('user'))['username'],
@@ -140,6 +175,7 @@ const actions = {
         }
 
         data['filters'] = `[('user_id','=',${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
+        data['field']   = "['name']"
 
         client.get('/api_dashboard/dashboard', { params: data })
               .then(res => {
@@ -148,16 +184,13 @@ const actions = {
                   let data = []
 
                   res.data.results.forEach(el => {
-                      if(el['template'] != false)
-                        data.push(JSON.parse(el['template']))
+                      if(el['name'] != false && data.indexOf(el['name']) < 0)
+                        data.push(el['name'])
                   })
 
                   commit('ADD_DASHBOARDS', data)
 
                   commit('core/SET_LOADING', false, { root: true })
-              })
-              .catch(err => {
-                  console.log(err)
               })
     }
 }
