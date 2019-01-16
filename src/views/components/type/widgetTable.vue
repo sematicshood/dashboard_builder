@@ -10,22 +10,22 @@
         <label for="">Limit Data: </label>
         
         <table class="widget-table" :height="height">
-            <col width="10%">
+            <col width="10%"/>
             <thead>
                 <tr>
                     <th><center>#</center></th>
-                    <th v-for="(title, index) in titles" :key="index" v-text="title.label" :class="{'col-right': (index == 1) ? true : false}"></th>
+                    <th v-for="(title, index) in titles" v-text="title.label" :class="{'col-right': (index == 1) ? true : false}"></th>
                     <th v-show="type == 'edit'">Options</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(data, i) in alls" :key="i" v-if="alls.length > 0 && titles.length > 0 && limit_table > 0 && i < limit_table">
+                <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table > 0 && i < limit_table" :class="{ 'plus': isPlus(data), 'minus': isMinus(data) }">
                     <td v-text="i + 1" align="center"></td>
-                    <td v-for="(title, index) in titles" :key="index" :class="{'col-right': (index == 1) ? true : false}">
+                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magic(data[title.prop], title) }}
                     </td>
                     <td v-show="type == 'edit'">
-                        <span v-for="(i, a) in table_options[data[key]]" :key="a">
+                        <span v-for="(i, a) in table_options[data[key]]">
                             <span v-if="a == 'type'">
                                 {{ i }}
                             </span>
@@ -40,9 +40,9 @@
                         <button v-if="Object.keys(table_options).length != 0" class="btn btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
-                <tr v-for="(data, i) in alls" :key="i" v-else-if="alls.length > 0 && titles.length > 0 && limit_table == 0">
+                <tr v-for="(data, i) in alls" v-else-if="alls.length > 0 && titles.length > 0 && limit_table == 0" :class="{ 'plus': isPlus(data), 'minus': isMinus(data) }">
                     <td v-text="i + 1" align="center"></td>
-                    <td v-for="(title, index) in titles" :key="index" :class="{'col-right': (index == 1) ? true : false}">
+                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magic(data[title.prop], title) }}
                     </td>
                     <td v-show="type == 'edit'">
@@ -63,13 +63,13 @@
                     </td>
                 </tr>
                 <tr v-if="alls.length == 0">
-                    <td class="text-center" :colspan="titles.length + (type == 'edit') ? 2 : 1">Not Found Data</td>
+                    <td class="text-center" :colspan="titles.length + (type == 'edit') ? (titles.length + 2) : 1">Not Found Data</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td>Jumlah</td>
-                    <td v-for="(title, index) in titles" :key="index" :class="{'col-right': (index == 1) ? true : false}">
+                    <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magicFooter(title) }}
                     </td>
                     <td v-show="type == 'edit'">Options</td>
@@ -94,6 +94,16 @@ export default {
     },
 
     methods: {
+        isPlus(data) {
+            if(this.table_options[data[this.key]])
+                if(this.table_options[data[this.key]].operation == '+') return true
+        },
+
+        isMinus(data) {
+            if(this.table_options[data[this.key]])
+                if(this.table_options[data[this.key]].operation == '-') return true
+        },
+
         ChangeOperator(data) {
             let keys  = (this.titles[0]) ? this.titles[0]['prop'] : [],
                 op    = (this.table_options[data[keys]]) ? this.table_options[data[keys]]['operation'] : []
@@ -366,3 +376,15 @@ export default {
     }
 }
 </script>
+
+<style>
+    .plus {
+        background: green;
+        color: white;
+    }
+
+    .minus {
+        background: red;
+        color: white;
+    }
+</style>
