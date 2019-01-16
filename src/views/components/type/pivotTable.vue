@@ -1,6 +1,6 @@
 <template lang="">
     <div>
-        <div class="mb-5">
+        <div class="mb-5 pivot-table" :style="`max-height:${height}px;`">
             <pivot
                 :data="datas"
                 :fields="fieldes"
