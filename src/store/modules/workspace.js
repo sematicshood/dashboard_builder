@@ -79,35 +79,35 @@ const actions = {
         }) 
     },
 
-    duplicateDashboard({ commit, rootGetters, dispatch }, template) {
-        const data      = {
-            username: JSON.parse(localStorage.getItem('user'))['username'],
-            password: JSON.parse(localStorage.getItem('user'))['password'],
-            db_name: rootGetters['core/getDatabase']
-        }
+    duplicateDashboard({ rootGetters, dispatch }, template) {
+        let ids     =   JSON.parse(localStorage.getItem('login'))['uid'],
+            data    =   {
+                            username: JSON.parse(localStorage.getItem('user'))['username'],
+                            password: JSON.parse(localStorage.getItem('user'))['password'],
+                            db_name: rootGetters['core/getDatabase']
+                        }
+            name    =   'Duplicate ' + template.split('-').splice(2).join(' ')
 
-        data['filters'] = `[('user_id','=',${ JSON.parse(localStorage.getItem('login'))['uid'] }), ('name','=','template-dashboard-${template}')]`
+        data['filters'] = `[('user_id','=',${ ids }), ('name', '=', '${ template }')]`
+        data['field']   = "['template']"
 
-        return new Promise((resolve, reject) => {
-            client.get('/api_dashboard/dashboard', { params: data })
-              .then(res => {
-                commit('core/SET_LOADING', true, { root: true })   
-                res.data.results[0]['name'] = `template-dashboard-duplicate-${template}`
+        client.get('/api_dashboard/dashboard', { params: data })
+            .then(res => {
+                let temp    =   JSON.parse(res.data.results[0].template)
+                temp.name   =   name
 
-                let templated = JSON.parse(res.data.results[0]['template'])
+                let payload =   {
+                    name: 'template-dashboard-duplicate-' + template.split('-').splice(2).join('-'),
+                    user_id: ids,
+                    template: JSON.stringify(temp),
+                }
+                
+                delete data['filters']
+                delete data['field']
 
-                templated['name'] = `Duplicate ${template}`
-                JSON.stringify(templated)
-
-                dispatch('rows/syncDatabase', { 'name': res.data.results[0]['name'], 'template': templated, 'id': false }, {root: true})
-                    .then(reso => {
-                        resolve(reso)
-                    })
-              })
-              .catch(err => {
-                  reject(err)
-              })
-        })
+                client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
+                       .then(() => dispatch('getDataDashboard'))
+            })
     },
 
     deleteDashboard({ rootGetters }, template) {
