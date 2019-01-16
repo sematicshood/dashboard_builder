@@ -37,6 +37,8 @@ body {
     background: #e4e5e7;
 }
 
+
+
 .widget-table{
     table-layout: fixed;
     width: 100%;
@@ -58,7 +60,6 @@ body {
 .widget-table tbody tr td, .widget-table tfoot tr td{
     border-bottom: 0.5px solid #c8ced3;
 }
-
 
 .widget-table tbody{
     background-color: #20a8d8;
@@ -179,4 +180,37 @@ body {
 .modal-body .form-control{
     font-size: 85% !important;
     margin: 0 0 10px 0;
+}
+
+.pivot-table{
+    height: auto; 
+    overflow-y: auto; 
+    overflow-x:hidden;
+}
+
+.drag-area .btn{
+    padding: 2px 10px;
+    font-size: 80%;
+    margin: -5px 0px;
+    background-color: #1986ac;
+    border-color: #1986ac;
+}
+
+.drag-area .btn:hover{
+        color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.table-responsive .table-bordered{
+    font-size: 75%;
+}
+.table-responsive .table-bordered thead tr th, .table-responsive .table-bordered tbody tr td{
+    border: 1px solid #c0e6f3;
+}
+.table-responsive .table-bordered thead{
+    background-color: #eff8fc;
+}
+.font-weight-bold{
+    background-color: #eff8fc;
 }

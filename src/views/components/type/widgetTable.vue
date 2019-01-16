@@ -1,5 +1,5 @@
 <template>
-    <div id="widget-table">
+    <div id="widget-table" :style="`max-height: ${height}px; height:auto; overflow: auto;`">
         <b-button-group v-if="type == 'edit'" size="sm" class="btn-group-widget-table">
             <b-button variant="info" @click="set_options('count')">Count</b-button>
             <b-button variant="info" @click="set_options('sum')">Sum</b-button>
@@ -309,7 +309,7 @@ export default {
         },
         height: {
             get() {
-                return this.rows.rows[this.vuerow][0]['height'] - 185
+                return this.rows.rows[this.vuerow][0]['height'] - 110
             }
         },
         titles: {
