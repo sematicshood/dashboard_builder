@@ -112,7 +112,7 @@ const getters = {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
             column  = (state.colOp != '') ? state.colOp : 1
         
-            return (state.rows[row] != undefined) ? state.rows[row][column]['width'] : []
+        return (state.rows[row] != undefined) ? state.rows[row][column]['width'] : []
     },
 
     getColumnFilters(state) {

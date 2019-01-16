@@ -2,7 +2,7 @@
     <div id="jenisColumn" v-if="colOptionShow && type == 'edit'">
         <b-form-group>
             <label class="label-form">Type Chart</label>
-            <b-form-select v-model="selected" :options="options" size="sm" placeholder="Pilih jenis column"/>
+            <b-form-select v-model="selected" :options="all_options" size="sm" placeholder="Pilih jenis column"/>
         </b-form-group>
     </div>
 </template>
@@ -13,10 +13,35 @@
     export default {
         name: 'jenis-column',
 
+        data() {
+            return {
+                all_options: ''
+            }
+        },
+
+        watch: {
+            width: {
+                handler(val){
+                    let show = this.options
+
+                    if(val < 100) {
+                        show = this.options.filter(sel => {
+                                    return sel.value != 'pivot-table'
+                                })
+                    }
+
+                    this.$data.all_options = show
+                },
+                deep: true
+            },
+        },
+
         computed: {
             ...mapGetters('rows', {
                 options: 'getOptions',
-                colOptionShow: 'getColOptionShow'
+                colOptionShow: 'getColOptionShow',
+                rowOp: 'getRowOp',
+                colOp: 'getColOp'
             }),
 
             ...mapGetters('workspace', {
@@ -32,8 +57,18 @@
 
                 get() {
                     return this.rows.selected
-                }
+                },
             },
+
+            width: {
+                get() {
+                    return (this.rows.rows[this.rowOp]) ? this.rows.rows[this.rowOp][this.colOp]['width'] : 0
+                },
+            }
+        },
+
+        created() {
+            this.$data.all_options = this.options
         }
     }
 </script>

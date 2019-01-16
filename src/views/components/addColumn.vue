@@ -11,7 +11,7 @@
             <b-form-input size="sm" type="text" v-model="title"
                           placeholder="Judul Column"/>
             <br>
-            <b-form-select v-model="selected" :options="options" size="sm" placeholder="Pilih jenis column"/>
+            <b-form-select v-model="selected" :options="all_options" size="sm" placeholder="Pilih jenis column"/>
         </b-modal>
     </div>
 </template>
@@ -24,8 +24,33 @@
 
         data() {
             return {
-                selected: ''
+                selected: '',
+                all_options: ''
             }
+        },
+
+        watch: {
+            width: {
+                handler(val){
+                    let show = this.options
+
+                    if(val < 100) {
+                        show = this.options.filter(sel => {
+                                    return sel.value != 'pivot-table'
+                                })
+                    }
+
+                    if(val == '')
+                        show = this.options
+
+                    this.$data.all_options = show
+                },
+                deep: true
+            },
+        },
+
+        created() {
+            this.$data.all_options = this.options
         },
 
         methods: {
@@ -103,16 +128,6 @@
                     return this.rows.title
                 }
             },
-
-            // selected: {
-            //     set(selected) {
-            //         this.$store.dispatch('rows/setSelected', selected)
-            //     },
-
-            //     get() {
-            //         return this.rows.selected
-            //     }
-            // }
         }
     }
 </script>
