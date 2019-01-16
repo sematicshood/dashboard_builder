@@ -1,6 +1,6 @@
 const state = {
     // db_name: 'tes',
-    db_name: 'ferestart',
+    db_name: 'local_eng',
     user: JSON.parse(localStorage.getItem('user')),
     token: null,
     loading: false
