@@ -40,7 +40,7 @@
                         <button v-if="Object.keys(table_options).length != 0" class="btn btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
-                <tr v-for="(data, i) in alls" v-else-if="alls.length > 0 && titles.length > 0 && limit_table == 0" :class="{ 'plus': isPlus(data), 'minus': isMinus(data) }">
+                <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0" :class="{ 'plus': isPlus(data), 'minus': isMinus(data) }">
                     <td v-text="i + 1" align="center"></td>
                     <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magic(data[title.prop], title) }}
