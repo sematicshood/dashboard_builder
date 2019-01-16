@@ -16,7 +16,7 @@ client.interceptors.request.use(config => {
 
 // before a response is returned stop nprogress
 client.interceptors.response.use(response => {
-  // store.commit('core/SET_LOADING', false)
+  store.commit('core/SET_LOADING', false)
 
   return response
 })
