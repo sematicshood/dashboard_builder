@@ -22,9 +22,11 @@
                         <b-button-group>
                             <b-button class="btn-dashboard" @click="deleteDashboard(dashboard.replace(/ /g, '-'))"><font-awesome-icon icon="trash-alt"/></b-button>
                             <b-button class="btn-dashboard" @click="duplicate(dashboard.replace(/ /g, '-'))"><font-awesome-icon icon="copy"/></b-button>
+                            <b-button class="btn-dashboard" v-b-modal="`${dashboard}`">Rename</b-button>
                         </b-button-group>
-                        
                     </b-card>
+
+                    <rename :dashboard="dashboard"/>
                 </b-col>
             </div>
         </div>
@@ -34,13 +36,14 @@
 <script>
     import ButtonCreate from './components/buttonCreate.vue'
     import navbar from './navbar.vue'
+    import Rename from './components/dashboard/Rename.vue'
     import { mapGetters } from 'vuex'
 
     export default {
         name: 'gallery',
 
         components: {
-            ButtonCreate, navbar
+            ButtonCreate, navbar, Rename
         },
 
         methods: {

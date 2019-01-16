@@ -28,12 +28,10 @@
                     splits = route.split('/')
 
                 if(splits[2] == ' :name') {
-                    splits[2] = ' ' + this.$route.params.name
+                    splits[2] = ' ' + this.$route.params.name.toString().replace(/-/g, ' ')
                 }
 
                 this.$data.breadcumb = splits
-
-                // this.$data.breadcumb = splits.toString().replace(/,/g, '/')
             }
         },
 

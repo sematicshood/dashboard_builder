@@ -167,6 +167,33 @@ const actions = {
             })
     },
 
+    renameDashboard({ rootGetters, dispatch }, datas) {
+        let ids     =   JSON.parse(localStorage.getItem('login'))['uid'],
+            payload =   {
+                            name: 'template-dashboard-' + datas.name.replace(/ /g, '-'),
+                            user_id: ids,
+                            template: '',
+                        },
+            data    =   {
+                            username: JSON.parse(localStorage.getItem('user'))['username'],
+                            password: JSON.parse(localStorage.getItem('user'))['password'],
+                            db_name: rootGetters['core/getDatabase']
+                        }
+
+        data['filters'] = `[('user_id','=',${ ids }), ('name', '=', '${ datas.template }')]`
+        data['field']   = "['template']"
+
+        client.get('/api_dashboard/dashboard', { params: data })
+            .then(res => {
+                payload.template          = JSON.parse(res.data.results[0].template)
+                payload.template.name     = datas.name
+                payload.template.name     = JSON.stringify(payload.template.name)
+
+                client.post('/api_dashboard/dashboard/' + res.data.results[0].id, qs.stringify(payload), {params: data})
+                      .then(() => dispatch('getDataDashboard'))     
+            })
+    },
+
     getDataDashboard({ commit, rootGetters }) {
         const data      = {
             username: JSON.parse(localStorage.getItem('user'))['username'],

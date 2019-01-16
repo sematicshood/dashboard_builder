@@ -1,5 +1,5 @@
 <template>
-    <div id="widget-table">
+    <div id="widget-table" :style="`max-height: ${height}px; height:auto; overflow: auto;`">
         <b-button-group v-if="type == 'edit'" size="sm" class="btn-group-widget-table">
             <b-button variant="info" @click="set_options('count')">Count</b-button>
             <b-button variant="info" @click="set_options('sum')">Sum</b-button>
@@ -40,7 +40,7 @@
                         <button v-if="Object.keys(table_options).length != 0" class="btn btn-sm" @click="ChangeOperator(data)">(+/-)</button>
                     </td>
                 </tr>
-                <tr v-for="(data, i) in alls" v-else-if="alls.length > 0 && titles.length > 0 && limit_table == 0" :class="{ 'plus': isPlus(data), 'minus': isMinus(data) }">
+                <tr v-for="(data, i) in alls" v-if="alls.length > 0 && titles.length > 0 && limit_table == 0" :class="{ 'plus': isPlus(data), 'minus': isMinus(data) }">
                     <td v-text="i + 1" align="center"></td>
                     <td v-for="(title, index) in titles" :class="{'col-right': (index == 1) ? true : false}">
                         {{ magic(data[title.prop], title) }}
@@ -309,7 +309,7 @@ export default {
         },
         height: {
             get() {
-                return this.rows.rows[this.vuerow][0]['height'] - 185
+                return this.rows.rows[this.vuerow][0]['height'] - 110
             }
         },
         titles: {
