@@ -8,6 +8,14 @@ function inArray(all, newed) {
     }
 }
 
+function rupiah(bilangan) {
+    var	reverse = bilangan.toString().split('').reverse().join(''),
+        ribuan 	= reverse.match(/\d{1,3}/g);
+        ribuan	= ribuan.join('.').split('').reverse().join('');
+
+    return ribuan
+}
+
 function cekWeek(date) { 
     var target = new Date(date.valueOf()),
         dayNumber = (date.getUTCDay() + 6) % 7,
@@ -46,8 +54,8 @@ const mutations = {
 }
 
 const actions = {
-    optionsChart({dispatch}, options) {
-        return new Promise((res, rej) => {
+    optionsChart({}, options) {
+        return new Promise((res) => {
             let     optionsC    = (options.column['options_chart']) ? options.column['options_chart'] : [],
                     type        = options.column['type']
 
@@ -60,8 +68,8 @@ const actions = {
                 options.options['scales']['yAxes'] = [
                     {
                         ticks: {
-                            callback: function(label, index, labels) {
-                                return (optionsC['scales']['yuang']) ? 'Rp. ' + label.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : label
+                            callback: function(label) {
+                                return (optionsC['scales']['yuang']) ? 'Rp. ' + rupiah(label) : label
                             }
                         },
                     }
@@ -70,8 +78,8 @@ const actions = {
                 options.options['scales']['xAxes'] = [
                     {
                         ticks: {
-                            callback: function(label, index, labels) {
-                                return (optionsC['scales']['xuang']) ? 'Rp. ' + label.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : label
+                            callback: function(label) {
+                                return (optionsC['scales']['xuang']) ? 'Rp. ' + rupiah(label) : label
                             }
                         },
                     }
@@ -85,9 +93,9 @@ const actions = {
                         if(type == 'pie' || type == 'doughnut' || type == 'polar') {
                             var value     = data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index];
                             
-                            return (optionsC['tooltip']['uang']) ? 'Rp. ' +  value.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : value
+                            return (optionsC['tooltip']['uang']) ? 'Rp. ' +  rupiah(value) : value
                         } else {
-                            return (optionsC['tooltip']['uang']) ? 'Rp. ' +  tooltipItems.yLabel.toString().replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1\.") : tooltipItems.yLabel
+                            return (optionsC['tooltip']['uang']) ? 'Rp. ' +  rupiah(tooltipItems.yLabel) : tooltipItems.yLabel
                         }
                     }
                 }
@@ -97,8 +105,8 @@ const actions = {
         })
     },
 
-    renderChartOne({dispatch}, options) {
-        return new Promise((res, rej) => {
+    renderChartOne({}, options) {
+        return new Promise((res) => {
             let xaxis       = (options.titles[0]) ? options.titles[0]['prop'] : [],
                 type        = (options.titles[0]) ? options.titles[0]['type'] : [],
                 key         = (options.titles[1]) ? options.titles[1]['prop'] : [],
@@ -261,7 +269,7 @@ const actions = {
     },
 
     renderChartTwo({}, options) {
-        return new Promise((res, rej) => {
+        return new Promise((res) => {
             let labels          = [],
                 datasets        = [],
                 values          = [],
@@ -329,8 +337,6 @@ const actions = {
                     alls.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
 
                     labels.forEach(el => {
-                        let amount = 0
-
                         values.push(counts[el])
 
                         backgroundColor.push(getRandomColor())

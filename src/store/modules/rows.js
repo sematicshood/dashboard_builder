@@ -87,10 +87,6 @@ const getters = {
         return state.options
     },
 
-    getColumnDetail: (state) => (data) => {
-        return state.rows[0][1]
-    },
-
     getColumns(state) {
         let row     = (state.rowOp != '') ? state.rowOp : 0,
             column  = (state.colOp != '') ? state.colOp : 0
@@ -254,8 +250,7 @@ const mutations = {
     },
 
     SET_COLUMN_WIDTH(state, width) {
-        let totalWidth       = 100,
-            before           = state.rows[state.rowOp][state.colOp]['width']
+        let totalWidth       = 100
 
         state.rows[state.rowOp].forEach((val, i) => {
             if(parseInt(val['width'])) {
@@ -603,7 +598,7 @@ const actions = {
         }
     },
 
-    deleteRow({commit, dispatch}, index) {
+    deleteRow({commit}, index) {
         commit('DELETE_ROW', index)
     },
 
@@ -616,7 +611,7 @@ const actions = {
         dispatch('reset')
     },
 
-    syncDatabase({ rootGetters, dispatch }, datad) {
+    syncDatabase({ rootGetters }, datad) {
         let name        = datad['name'],
             rows        = datad['template']
 
@@ -634,7 +629,7 @@ const actions = {
 
         data['filters'] = `[('name', '=', '${ name }'), ('user_id', '=', ${ JSON.parse(localStorage.getItem('login'))['uid'] })]`
 
-        return new Promise((resolve, rej) => {
+        return new Promise((resolve) => {
             client.get('/api_dashboard/dashboard', { params: data })
               .then(res => {
                   delete data['filters']
@@ -646,7 +641,7 @@ const actions = {
                                 resolve(re)
                                 if(datad['id']) {
                                     payload['parent_id'] =   payload['id']
-                                    payload['user_id']   =   id
+                                    payload['user_id']   =   datad['id']
                                     delete payload['id']
 
                                     client.post('/api_dashboard/dashboard', qs.stringify(payload), {params: data})
@@ -701,7 +696,7 @@ const actions = {
         commit('SET_SELECTED', selected)
     },
 
-    deleteColumn({commit, dispatch}) {
+    deleteColumn({commit}) {
         commit('DELETE_COLUMN')
     },
 
@@ -884,7 +879,7 @@ const actions = {
               })
     },
 
-    getSelectedFromServer({ commit, rootGetters, dispatch }, name) {
+    getSelectedFromServer({ commit, rootGetters }, name) {
         const data      = {
             username: JSON.parse(localStorage.getItem('user'))['username'],
             password: JSON.parse(localStorage.getItem('user'))['password'],

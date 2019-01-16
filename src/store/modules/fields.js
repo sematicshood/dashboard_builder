@@ -1,6 +1,4 @@
-// const client = require('./client');
 import client from './client'
-import qs from 'qs'
 
 const state = {
     fields: {}
@@ -19,8 +17,8 @@ const mutations = {
 }
 
 const actions = {
-    getFields({ commit, dispatch, getters, rootGetters }, id) {
-        return new Promise((resolve, reject) => {
+    getFields({ commit, dispatch, rootGetters }, id) {
+        return new Promise((resolve) => {
             dispatch('login/reload', {}, {root: true})
                 .then((res) => {
                     const token     = res,
@@ -48,12 +46,6 @@ const actions = {
                                 
                                 resolve(res.data['results'])
                             })
-                            .catch(err => {
-                                console.log(err)
-                            })
-                })
-                .catch((err) => {
-                    console.log(err)
                 })
         })
     }

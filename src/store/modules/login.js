@@ -12,20 +12,18 @@ const getters = {
 }
 
 const actions = {
-    login({dispatch, rootGetters}, data) {
+    login({rootGetters}, data) {
         const db        =   rootGetters['core/getDatabase'],
               url       =   '/api_v2/auth/get_tokens'
 
         data['db']  =   db
 
-        new Promise((resolve, reject) => {
+        new Promise(() => {
             client.post(url, qs.stringify(data))
                     .then((res) => {
                         data['db'] = ':P'
                         localStorage.setItem('user', JSON.stringify(data))
                         localStorage.setItem('login', JSON.stringify(res.data))
-
-                        alert('Login berhasil, selamat datang ')
 
                         window.location = '/'
                     })

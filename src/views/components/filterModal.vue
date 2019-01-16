@@ -7,7 +7,9 @@
                  @ok="submitFilter"
                  @cancel="cancel">
                 <b-list-group>
-                    <b-list-group-item v-for="(fil, i) in filters_list" href="#" :key="i"><span>{{ fil['name'] }}</span>&nbsp;<font-awesome-icon @click="deleteFilter(i)" icon="window-close" class="icon-close"/></b-list-group-item>
+                    <b-list-group-item v-for="(fil, i) in filters_list" href="#" :key="i">
+                        <span>{{ fil['name'] }}</span>&nbsp;<font-awesome-icon @click="deleteFilter(i)" icon="window-close" class="icon-close"/>
+                    </b-list-group-item>
                 </b-list-group>
                 <br>
                 <select v-model="filter['value']" class="form-control" @change="change">

@@ -6,7 +6,6 @@
 </template>
 
 <script>
-    import { Event } from '../../event.js'
     import { mapGetters } from 'vuex'
 
     export default {

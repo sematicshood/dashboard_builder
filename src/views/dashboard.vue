@@ -24,9 +24,9 @@
     import workspace from './workspace.vue'
     import { mapGetters } from 'vuex'
 
-
     export default {
         name: 'dashboard',
+
         components: {
             navbar, breadcumb, sidebar, workspace
         },

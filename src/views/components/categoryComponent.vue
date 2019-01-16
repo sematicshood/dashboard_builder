@@ -1,7 +1,7 @@
 <template>
     <div id="category">
         <select v-model="val" @change="change()"  class="custom-select custom-select-sm">
-            <option v-for="category in categories" :value="category" v-text="category" ></option>
+            <option v-for="(category, i) in categories" :value="category" v-text="category" :key="i"></option>
         </select>
     </div>
 </template>

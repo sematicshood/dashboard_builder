@@ -48,7 +48,7 @@ sync(store, router)
 
 Vue.config.productionTip = false
 
-var vm = new Vue({
+new Vue({
   render: h => h(App),
   router,
   store

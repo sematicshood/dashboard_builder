@@ -1,7 +1,7 @@
 <template>
     <div style="position: absolute; z-index: 9999; right: 20px;">
         <b-button-group size="sm">
-            <b-button v-for="option in options" :variant="(select == option) ? 'success': ''" @click="changeGroup(option)" v-text="option"></b-button>
+            <b-button v-for="(option, i) in options" :key="i" :variant="(select == option) ? 'success': ''" @click="changeGroup(option)" v-text="option"></b-button>
         </b-button-group>
     </div>
 </template>
@@ -38,7 +38,7 @@
                     return this.rows.rows[this.vuerow][this.vuecolumn]['group_data']
                 },
 
-                set() {
+                set(select) {
                     this.$store.dispatch('rows/setGroupData', select)
                 }
             }

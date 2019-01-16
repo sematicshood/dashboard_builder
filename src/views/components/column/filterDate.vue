@@ -2,14 +2,14 @@
     <div id="filterDate" style="position: absolute; z-index: 999;">
         <vue-rangedate-picker :configs="selectedDate" @selected="onDateSelected" :captions="captions" i18n="ID" ></vue-rangedate-picker>
         <div class="filterdate-area">
-            <span class="filter-date" v-for="(select, i) in selectedDate">{{ select | dateFilter }}<span v-if="i == 'start'"> to </span></span>            
+            <span class="filter-date" v-for="(select, i) in selectedDate" :key="i">{{ select | dateFilter }}<span v-if="i == 'start'"> to </span></span>            
         </div>
     </div>
 </template>
 
 <script>
     import VueRangedatePicker from 'vue-rangedate-picker'
-    import { mapGetters, mapState } from 'vuex'
+    import { mapState } from 'vuex'
 
     export default {
         name: 'filter-date',
@@ -61,12 +61,10 @@
 
                 this.$store.dispatch('data/getDatas', {'date': date, 'filters': this.filterData})
                     .then(res => {
-                        console.log(res)
                         this.$store.dispatch('rows/setDataRow', res)
                         this.$store.dispatch('rows/save', false)
                     })
-                    .catch(err => {
-                        console.log(res)
+                    .catch(() => {
                         this.$store.dispatch('rows/setDataRow', [])
                         this.$store.dispatch('rows/save', false)
                     })

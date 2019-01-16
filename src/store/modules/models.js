@@ -27,10 +27,10 @@ const mutations = {
 }
 
 const actions = {
-    getModels({ commit, dispatch, getters, rootGetters }) {
+    getModels({ commit, dispatch }) {
         // commit('core/SET_LOADING', true, {root: true})
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             dispatch('login/reload', {}, {root: true})
                 .then((res) => {
                     const token     = res,
@@ -50,13 +50,11 @@ const actions = {
                                 resolve(res.data['results'])
                                 commit('core/SET_LOADING', false, {root: true})
                             })
-                            .catch(err => {
-                                console.log(err)
+                            .catch(() => {
                                 commit('core/SET_LOADING', false, {root: true})
                             })
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch(() => {
                     commit('core/SET_LOADING', false, {root: true})
                 })
         })
@@ -78,17 +76,11 @@ const actions = {
     
             client.get('/api_dashboard/filter-modul/' + category, {params: data})
                         .then(res => {
-                            let data          =   {}
-    
                             commit('setModels', res.data)
-                            
-                            resolve(res.data['results'])
 
                             commit('core/SET_LOADING', false, {root: true})
                         })
-                        .catch(err => {
-                            console.log(err.response)
-
+                        .catch(() => {
                             commit('core/SET_LOADING', false, {root: true})
                         })
         }

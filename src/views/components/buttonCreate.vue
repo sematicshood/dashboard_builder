@@ -40,10 +40,10 @@
                 }
 
                 this.$store.dispatch('workspace/addNewDashboard', {'named': named, 'name': this.$data.name})
-                    .then(res => {
+                    .then(() => {
                         alert('Nama sudah digunakan')
                     })
-                    .catch(err => {
+                    .catch(() => {
                         this.$data.name = ''
 
                         this.$router.push({ name: 'dashboard', params: { name: name, type: 'edit' } })
